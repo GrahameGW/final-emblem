@@ -1,25 +1,24 @@
 ﻿namespace FinalEmblem.Core
 {
-    public class TileTerrain
+    public struct TileTerrain
     {
-        public TerrainType Terrain { get; private set; }
-        public int Evade { get; private set; }
-        public int Defense { get; private set; }
+        public TerrainIndex Index;
+        public int Evade;
+        public int Defense;
     }
 
-    public enum TerrainType
+    public enum TerrainIndex
     {
         Grass,
+        Water,
+        Stone,
         Road,
         Dirt,
         Forest,
         Jungle,
         Mountain,
-        Stone,
         River,
-        Stream,
         Lake,
-        Pond,
         Coast,
         Beach,
         Sea,

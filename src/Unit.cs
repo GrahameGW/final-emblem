@@ -1,7 +1,14 @@
-﻿namespace FinalEmblem.Core
+﻿using Godot;
+
+namespace FinalEmblem.Core
 {
-    public abstract class Unit
+    public partial class Unit : Node2D
     {
-        public abstract int GetMoveCost(TerrainType terrain);
+        public Tile Tile { get; set; }
+        
+        public int GetMoveCost(TerrainIndex terrain)
+        {
+            return 0;
+        }
     }
 }
