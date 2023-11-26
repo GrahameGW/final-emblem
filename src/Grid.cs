@@ -1,4 +1,5 @@
 ﻿using Godot;
+using System.Runtime.CompilerServices;
 
 namespace FinalEmblem.Core
 {
@@ -62,22 +63,20 @@ namespace FinalEmblem.Core
             };
         }
 
-        private void SetAllTileNeighbors()
+        public void SetAllTileNeighbors()
         {
-            var yInc = InvertY ? -1 : 1;
-
             for (int i = 0; i < Tiles.Length; i++)
             {
                 var tile = Tiles[i];
 
-                var nw = GetTile(tile.Coordinates + new Vector2I(-1, yInc));
-                var n = GetTile(tile.Coordinates + new Vector2I(0, yInc));
-                var ne = GetTile(tile.Coordinates + new Vector2I(1, yInc));
+                var nw = GetTile(tile.Coordinates + new Vector2I(-1, 1));
+                var n = GetTile(tile.Coordinates + new Vector2I(0, 1));
+                var ne = GetTile(tile.Coordinates + new Vector2I(1, 1));
                 var e = GetTile(tile.Coordinates + Vector2I.Right);
 
-                tile.SetTileNeighbor(Compass.NW, nw);
-                tile.SetTileNeighbor(Compass.N, n);
-                tile.SetTileNeighbor(Compass.NE, ne);
+                tile.SetTileNeighbor(InvertY ? Compass.SW : Compass.NW, nw);
+                tile.SetTileNeighbor(InvertY ? Compass.S : Compass.N, n);
+                tile.SetTileNeighbor(InvertY ? Compass.SE : Compass.NE, ne);
                 tile.SetTileNeighbor(Compass.E, e);
             }
         }

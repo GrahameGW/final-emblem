@@ -8,7 +8,7 @@ namespace FinalEmblem.Core
     {
         public Vector2I Coordinates { get; private set; }
         public Terrain Terrain { get; private set; }
-        public Vector3 WorldPosition { get; private set; }
+        public Vector3 WorldPosition { get; set; }
 
         public Unit Unit { get; set; }
         public readonly List<Feature> Features = new();
@@ -33,7 +33,7 @@ namespace FinalEmblem.Core
             var coords = invertY ? Coordinates * new Vector2(1f, -1f) : Coordinates;
             Vector2 pos = coords * cellSize;
             WorldPosition = isXZ ? new Vector3(pos.X, 0f, pos.Y)  : new Vector3(pos.X, pos.Y, 0f);
-            WorldPosition += gridOrigin;
+            WorldPosition -= gridOrigin;
             return WorldPosition;
         }
 
@@ -47,11 +47,11 @@ namespace FinalEmblem.Core
                     break;
                 case Compass.S:
                     NeighborSouth = other;
-                    if (other == null) { other.NeighborNorth = this; }
+                    if (other != null) { other.NeighborNorth = this; }
                     break;
                 case Compass.E:
                     NeighborEast = other;
-                    if (other == null) { other.NeighborWest = this; }
+                    if (other != null) { other.NeighborWest = this; }
                     break;
                 case Compass.W:
                     NeighborWest = other;

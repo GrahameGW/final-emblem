@@ -7,10 +7,8 @@ namespace FinalEmblem.Godot2D
     {
        // [Export] PackedScene unit;
         
-        private Vector2 gridOffset;
-        private Vector2I gridSize;
+        private Vector2 gridWorldOrigin;
         private Rect2I gameRect;
-
         private Grid grid;
 
         // CDL = Custom Data Layer
@@ -18,34 +16,47 @@ namespace FinalEmblem.Godot2D
         private const int TERRAIN_BASE_LAYER = 0;
 
 
+        public override void _Ready()
+        {
+            GenerateGridFromMap();
+        }
+
         public Grid GenerateGridFromMap()
         {
             gameRect = GetUsedRect();
-            gridOffset = gameRect.Position * TileSet.TileSize + GlobalPosition;
-            var gridOrigin = new Vector3(gridOffset.X, gridOffset.Y, 0f);
-            gridSize = gameRect.Size;
+            gridWorldOrigin = ToGlobal(MapToLocal(gameRect.Position));
 
+            var vec3gridOrigin = new Vector3(gridWorldOrigin.X, gridWorldOrigin.Y, 0f);
+            grid = new Grid(gameRect.Size, vec3gridOrigin, TileSet.TileSize, invertY: true);
+            GD.Print($"GI: {gridWorldOrigin} | GS: {gameRect.Size} | Rect: {gameRect}");
 
-            grid = new Grid(gridSize, gridOrigin, TileSet.TileSize, invertY: true);
-            GD.Print($"GI: {gridOffset} | GS: {gridSize} | Rect: {gameRect}");
             // tiles are ordered by x, y (e.g., (0,0), (0, 1), (0, 2) etc.)
-            for (int x = 0; x < gridSize.X; x++)
+            // y gets bigger as it goes down
+            for (int x = 0; x < grid.Size.X; x++)
             {
-                for (int y = 0; y < gridSize.Y; y++)
+                for (int y = 0; y < grid.Size.Y; y++)
                 {
                     var coord = new Vector2I(x, y);
                     var tilemapCoords = coord + gameRect.Position;
                     var tile = GetCellTileData(TERRAIN_BASE_LAYER, tilemapCoords);
-                    if (tile == null)
-                    {
-                        GD.Print("foo");
-                    }
                     int terrainIdx = tile.GetCustomData(CDL_TERRAIN).AsInt32();
                     grid.CreateTile(coord, (Terrain)terrainIdx);
                 }
             }
 
+            grid.SetAllTileNeighbors();
             return grid;
+        }
+
+        public override void _Input(InputEvent input)
+        {
+            if (input is InputEventMouseButton && input.IsPressed())
+            {
+                var pos = GetGlobalMousePosition();
+                var tilePos = LocalToMap(ToLocal(pos));
+                var tile = grid.GetTile(tilePos - gameRect.Position);
+                GD.Print($"TM Coords: {tilePos} Tile: {tile?.Coordinates} Terrain: {tile?.Terrain}");
+            }
         }
         /*
         private void GenerateMapFromGrid(Grid grid)
