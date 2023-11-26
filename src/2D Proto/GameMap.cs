@@ -1,10 +1,11 @@
 using Godot;
+using FinalEmblem.Core;
 
-namespace FinalEmblem.Core
+namespace FinalEmblem.Godot2D
 {
     public partial class GameMap : TileMap
     {
-        [Export] PackedScene unit;
+       // [Export] PackedScene unit;
         
         private Vector2 gridOffset;
         private Vector2I gridSize;
@@ -21,10 +22,11 @@ namespace FinalEmblem.Core
         {
             gameRect = GetUsedRect();
             gridOffset = gameRect.Position * TileSet.TileSize + GlobalPosition;
+            var gridOrigin = new Vector3(gridOffset.X, gridOffset.Y, 0f);
             gridSize = gameRect.Size;
 
 
-            grid = new Grid(gridSize.X, gridSize.Y, TileSet.TileSize, gridOffset);
+            grid = new Grid(gridSize, gridOrigin, TileSet.TileSize, invertY: true);
             GD.Print($"GI: {gridOffset} | GS: {gridSize} | Rect: {gameRect}");
             // tiles are ordered by x, y (e.g., (0,0), (0, 1), (0, 2) etc.)
             for (int x = 0; x < gridSize.X; x++)
@@ -39,19 +41,13 @@ namespace FinalEmblem.Core
                         GD.Print("foo");
                     }
                     int terrainIdx = tile.GetCustomData(CDL_TERRAIN).AsInt32();
-                    var terrain = new TileTerrain
-                    {
-                        Index = (TerrainIndex)terrainIdx,
-                        Evade = 0,
-                        Defense = 10
-                    };
-                    grid.CreateTile(x * gridSize.Y + y, coord, terrain);
+                    grid.CreateTile(coord, (Terrain)terrainIdx);
                 }
             }
 
             return grid;
         }
-
+        /*
         private void GenerateMapFromGrid(Grid grid)
         {
             ErrorOnMislabeledTilesets(0, CDL_TERRAIN);
@@ -62,7 +58,7 @@ namespace FinalEmblem.Core
                 SetCell(0, tile.Coordinates, 0, atlasCoords);
             }
         }
-
+        */
         private void ErrorOnMislabeledTilesets(int layerIndex, string layerName)
         {
             var layer = TileSet.GetCustomDataLayerName(layerIndex);

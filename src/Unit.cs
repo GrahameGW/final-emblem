@@ -1,14 +1,19 @@
-﻿using Godot;
-
-namespace FinalEmblem.Core
+﻿namespace FinalEmblem.Core
 {
-    public partial class Unit : Node2D
+    public class Unit
     {
-        public Tile Tile { get; set; }
-        
-        public int GetMoveCost(TerrainIndex terrain)
+        public Tile Tile
         {
-            return 0;
+            get => _tile;
+            set
+            {
+                _tile.Unit = this;
+                _tile = value;
+            }
         }
+        public int Move { get; set; }
+
+        private Tile _tile;
     }
+
 }

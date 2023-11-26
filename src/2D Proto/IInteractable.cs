@@ -1,4 +1,4 @@
-﻿namespace FinalEmblem.Core
+﻿namespace FinalEmblem.Godot2D
 {
     public interface IInteractable
     {
