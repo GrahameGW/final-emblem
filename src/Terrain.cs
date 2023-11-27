@@ -3,8 +3,9 @@
     public enum Terrain
     {
         Grass,
-        Forest,
         Water,
+        Forest,
+        StonePath,
     }
 
 }

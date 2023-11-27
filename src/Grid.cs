@@ -46,6 +46,11 @@ namespace FinalEmblem.Core
             return Tiles[x + y * Size.X];
         }
 
+        public int GetTileIndex(Tile tile)
+        {
+            return tile.Coordinates.X + tile.Coordinates.Y * Size.X;
+        }
+
         public Tile GetNeighborTile(Tile tile, Compass direction)
         {
             int yInc = InvertY ? -1 : 1;
@@ -68,6 +73,7 @@ namespace FinalEmblem.Core
             for (int i = 0; i < Tiles.Length; i++)
             {
                 var tile = Tiles[i];
+                if (tile == null) continue;
 
                 var nw = GetTile(tile.Coordinates + new Vector2I(-1, 1));
                 var n = GetTile(tile.Coordinates + new Vector2I(0, 1));

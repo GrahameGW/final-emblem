@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Godot;
+﻿using Godot;
+using System.Collections.Generic;
 
 namespace FinalEmblem.Core
 {
@@ -7,13 +7,14 @@ namespace FinalEmblem.Core
     {
         public readonly List<Faction> Factions = new();
         public int CurrentFaction { get; private set; }
+        private readonly Grid grid;
 
-        public Level()
+        public Level(Grid grid, List<Faction> factions)
         {
+            this.grid = grid;
+            Factions = factions;
             Faction.OnTurnComplete += TurnCompleteHandler;
-            var grid = new Grid(new Vector2I(15, 10), Vector3.Zero, new Vector2(16f, 16f));
-            NavService.SetGridInstance(grid);
-            Factions.AddRange(new List<Faction> { new(), new() });
+
             CurrentFaction = 0;
             Factions[CurrentFaction].StartTurn();
         }
@@ -24,11 +25,19 @@ namespace FinalEmblem.Core
             NavService.SetGridInstance(null);
         }
 
+        private Faction InitFaction() 
+        {
+            // will later need params for player vs AI
+            var unit = new Unit { Move = 5, Tile = grid.GetTile(5, 8) };
+            var faction = new Faction();
+            faction.Units.Add(unit);
+            return faction;
+        }
+
         private void TurnCompleteHandler(Faction factionDone)
         {
             CurrentFaction = CurrentFaction == Factions.Count - 1 ? 0 : CurrentFaction + 1;
             Factions[CurrentFaction].StartTurn();
         }
     }
-
 }

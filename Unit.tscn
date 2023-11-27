@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://erjeaagy43sb"]
 
-[ext_resource type="Script" path="res://src/Unit.cs" id="1_6jne0"]
+[ext_resource type="Script" path="res://src/2D/UnitNode.cs" id="1_w6sk8"]
 [ext_resource type="Texture2D" uid="uid://bvgkr2dpuc5l4" path="res://assets/03-soldier.png" id="1_wn86x"]
 
 [sub_resource type="Animation" id="Animation_j8syx"]
@@ -42,7 +42,8 @@ _data = {
 }
 
 [node name="Unit" type="Node2D"]
-script = ExtResource("1_6jne0")
+script = ExtResource("1_w6sk8")
+Move = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_wn86x")

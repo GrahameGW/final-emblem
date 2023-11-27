@@ -1,12 +1,12 @@
 using Godot;
 using FinalEmblem.Core;
+using System.Collections.Generic;
+using System;
 
 namespace FinalEmblem.Godot2D
 {
     public partial class GameMap : TileMap
     {
-       // [Export] PackedScene unit;
-        
         private Vector2 gridWorldOrigin;
         private Rect2I gameRect;
         private Grid grid;
@@ -14,12 +14,9 @@ namespace FinalEmblem.Godot2D
         // CDL = Custom Data Layer
         private const string CDL_TERRAIN = "CDL_TERRAIN";
         private const int TERRAIN_BASE_LAYER = 0;
-
-
-        public override void _Ready()
-        {
-            GenerateGridFromMap();
-        }
+        private const int TERRAIN_BASE_SOURCE = 1;
+        private const int NAV_OVERLAY_LAYER = 1;
+        private const int NAV_OVERLAY_SOURCE = 4;
 
         public Grid GenerateGridFromMap()
         {
@@ -39,6 +36,10 @@ namespace FinalEmblem.Godot2D
                     var coord = new Vector2I(x, y);
                     var tilemapCoords = coord + gameRect.Position;
                     var tile = GetCellTileData(TERRAIN_BASE_LAYER, tilemapCoords);
+                    if (tile == null)
+                    {
+                        continue;
+                    }
                     int terrainIdx = tile.GetCustomData(CDL_TERRAIN).AsInt32();
                     grid.CreateTile(coord, (Terrain)terrainIdx);
                 }
@@ -53,10 +54,69 @@ namespace FinalEmblem.Godot2D
             if (input is InputEventMouseButton && input.IsPressed())
             {
                 var pos = GetGlobalMousePosition();
-                var tilePos = LocalToMap(ToLocal(pos));
-                var tile = grid.GetTile(tilePos - gameRect.Position);
-                GD.Print($"TM Coords: {tilePos} Tile: {tile?.Coordinates} Terrain: {tile?.Terrain}");
+                var tile = GetGridTile(pos);
+
+                var inRange = NavService.FindTilesInRange(5, tile, includeStart: false);
+                HighlightGameTiles(inRange);
+                GD.Print($"{inRange.Count} tiles in range. Final tile: {inRange[^1].Coordinates}");
             }
+        }
+
+        public Tile GetGridTile(Vector2 globalPos)
+        {
+            var tilePos = LocalToMap(ToLocal(globalPos));
+            return grid.GetTile(tilePos - gameRect.Position);
+        }
+
+        private void HighlightGameTiles(List<Tile> tiles)
+        {
+            ClearHighlights();
+            AddLayer(NAV_OVERLAY_LAYER);
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                var cell = tiles[i].Coordinates + gameRect.Position;
+                SetCell(NAV_OVERLAY_LAYER, cell, NAV_OVERLAY_SOURCE, Vector2I.One);
+            }
+
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                var neighbors = tiles[i].GetNeighborsAsArray(false);
+                // skip if all neighbors are there
+                if (neighbors.Length == 4) { continue; }
+                var mask = new Compass();
+                for (int j = 0; j < neighbors.Length; j++)
+                {
+                    if (neighbors[j] != null)
+                    {
+                        mask |= (Compass)Mathf.Pow(2, j);
+                    }
+                }
+
+                var cell = tiles[i].Coordinates + gameRect.Position;
+                SetCell(NAV_OVERLAY_LAYER, cell, NAV_OVERLAY_SOURCE, NavOverlayLookup(mask));
+            }
+        }
+
+        private Vector2I NavOverlayLookup(Compass mask)
+        {
+            var index = (int)mask;
+            // only good with current TileSet
+            return index switch
+            {
+                0 => new(5, 2),
+                1 => new(5, 0),
+                2 => new(5, 2),
+                3 => new(5, 2),
+                4 => new(4, 2),
+                5 => new(0, 2),
+                6 => new(4, 2),
+                _ => Vector2I.One
+            };
+        }
+
+        private void ClearHighlights()
+        {
+            RemoveLayer(NAV_OVERLAY_LAYER);
         }
         /*
         private void GenerateMapFromGrid(Grid grid)

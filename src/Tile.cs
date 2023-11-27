@@ -1,9 +1,12 @@
 ﻿
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Godot;
 
 namespace FinalEmblem.Core
 {
+    [DebuggerDisplay("{Coordinates}")]
     public class Tile
     {
         public Vector2I Coordinates { get; private set; }
@@ -13,14 +16,14 @@ namespace FinalEmblem.Core
         public Unit Unit { get; set; }
         public readonly List<Feature> Features = new();
 
-        public Tile NeighborEast { get; set; }
-        public Tile NeighborWest { get; set; }
-        public Tile NeighborNorth { get; set; }
-        public Tile NeighborSouth { get; set; }
-        public Tile NeighborNortheast { get; set; }
-        public Tile NeighborNorthwest { get; set; }
-        public Tile NeighborSoutheast { get; set; }
-        public Tile NeighborSouthwest { get; set; }
+        public Tile East { get; set; }
+        public Tile West { get; set; }
+        public Tile North { get; set; }
+        public Tile South { get; set; }
+        public Tile Northeast { get; set; }
+        public Tile Northwest { get; set; }
+        public Tile Southeast { get; set; }
+        public Tile Southwest { get; set; }
 
         public Tile(Vector2I coords, Terrain terrain)
         {
@@ -30,10 +33,9 @@ namespace FinalEmblem.Core
 
         public Vector3 SetWorldPosition(Vector3 gridOrigin, Vector2 cellSize, bool isXZ = false, bool invertY = false)
         {
-            var coords = invertY ? Coordinates * new Vector2(1f, -1f) : Coordinates;
-            Vector2 pos = coords * cellSize;
+            Vector2 pos = Coordinates * cellSize;
             WorldPosition = isXZ ? new Vector3(pos.X, 0f, pos.Y)  : new Vector3(pos.X, pos.Y, 0f);
-            WorldPosition -= gridOrigin;
+            WorldPosition += gridOrigin;
             return WorldPosition;
         }
 
@@ -42,38 +44,60 @@ namespace FinalEmblem.Core
             switch (direction)
             {
                 case Compass.N:
-                    NeighborNorth = other;
-                    if (other != null) { other.NeighborSouth = this; }
+                    North = other;
+                    if (other != null) { other.South = this; }
                     break;
                 case Compass.S:
-                    NeighborSouth = other;
-                    if (other != null) { other.NeighborNorth = this; }
+                    South = other;
+                    if (other != null) { other.North = this; }
                     break;
                 case Compass.E:
-                    NeighborEast = other;
-                    if (other != null) { other.NeighborWest = this; }
+                    East = other;
+                    if (other != null) { other.West = this; }
                     break;
                 case Compass.W:
-                    NeighborWest = other;
-                    if (other != null) { other.NeighborEast = this; }
+                    West = other;
+                    if (other != null) { other.East = this; }
                     break;
                 case Compass.NE:
-                    NeighborNortheast = other;
-                    if (other != null) { other.NeighborSouthwest = this; }
+                    Northeast = other;
+                    if (other != null) { other.Southwest = this; }
                     break;
                 case Compass.NW:
-                    NeighborNorthwest = other;
-                    if (other != null) { other.NeighborSoutheast = this; }
+                    Northwest = other;
+                    if (other != null) { other.Southeast = this; }
                     break;
                 case Compass.SE:
-                    NeighborSoutheast = other;
-                    if (other != null) { other.NeighborNorthwest = this; }
+                    Southeast = other;
+                    if (other != null) { other.Northwest = this; }
                     break;
                 case Compass.SW:
-                    NeighborSouthwest = other;
-                    if (other != null) { other.NeighborNortheast = this; }
+                    Southwest = other;
+                    if (other != null) { other.Northeast = this; }
                     break;
             }
+        }
+
+        public List<Tile> GetNeighbors(bool includeDiagonals = false)
+        {
+            var neighbors = includeDiagonals ? new List<Tile>
+            {
+                North, Northeast, East, Southeast, South, Southwest, West, Northwest
+            } : new List<Tile>
+            {
+                North, East, South, West
+            };
+            return neighbors.Where(n => n != null).ToList();
+        }
+        public Tile[] GetNeighborsAsArray(bool includeDiagonals = false)
+        {
+            return includeDiagonals ? new Tile[]
+            {
+                North, Northeast, East, Southeast, South, Southwest, West, Northwest
+            } : new Tile[]
+            {
+                North, East, South, West
+            };
         }
     }
 
