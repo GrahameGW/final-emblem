@@ -29,6 +29,10 @@ namespace FinalEmblem.Godot2D
             var other = new Faction();
 
             var units = this.FindNodesOfType(new List<UnitNode>());
+            for (int i = 0; i < units.Count; i++)
+            {
+                units[i].Initialize();
+            }
 
             var playerUnits = units.Where(u => u.Faction == FactionName.Player).ToList();
             var enemyUnits = units.Where(u => u.Faction == FactionName.Enemy).ToList();
@@ -54,6 +58,8 @@ namespace FinalEmblem.Godot2D
             player.Units.AddRange(playerUnits.Select(u => u.Unit));
             enemy.Units.AddRange(enemyUnits.Select(u => u.Unit));
             other.Units.AddRange(otherUnits.Select(u => u.Unit));
+
+            // TODO: Add to faction controllers
 
             return new List<Faction> { player, enemy, other };
         }

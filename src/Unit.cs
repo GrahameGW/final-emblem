@@ -7,13 +7,13 @@
             get => _tile;
             set
             {
-                _tile.Unit = this;
                 _tile = value;
+                _tile.Unit = this;
             }
         }
         public int Move { get; set; }
+        public FactionName Faction { get; set; }
 
         private Tile _tile;
     }
-
 }

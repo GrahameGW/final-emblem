@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bg1fvi6pk0np0"]
+[gd_scene load_steps=9 format=3 uid="uid://bg1fvi6pk0np0"]
 
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="1_f7s02"]
 [ext_resource type="Script" path="res://src/2D/LevelNode.cs" id="1_tlxmd"]
 [ext_resource type="Script" path="res://src/2D/GameMap.cs" id="2_3pasc"]
+[ext_resource type="PackedScene" uid="uid://erjeaagy43sb" path="res://Unit.tscn" id="3_v8don"]
 [ext_resource type="Texture2D" uid="uid://dmutbv5x2wohq" path="res://assets/16x16 Area Select.png" id="4_xqjvv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwb5v"]
@@ -443,3 +444,10 @@ script = ExtResource("2_3pasc")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(209, 83)
 zoom = Vector2(2, 2)
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Unit" parent="Node" instance=ExtResource("3_v8don")]
+
+[node name="Unit2" parent="Node" instance=ExtResource("3_v8don")]
+position = Vector2(103, 85)

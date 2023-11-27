@@ -15,7 +15,7 @@ namespace TiercelFoundry.GDUtils
             var children = node.GetChildren();
             for (int i = 0; i < children.Count; i++)
             {
-                result.AddRange(children[i].FindNodesOfType<T>(result));
+                result = children[i].FindNodesOfType<T>(result);
             }
             return result;
         }
