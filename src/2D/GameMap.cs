@@ -1,7 +1,6 @@
 using Godot;
 using FinalEmblem.Core;
 using System.Collections.Generic;
-using System;
 
 namespace FinalEmblem.Godot2D
 {
@@ -49,26 +48,13 @@ namespace FinalEmblem.Godot2D
             return grid;
         }
 
-        public override void _Input(InputEvent input)
-        {
-            if (input is InputEventMouseButton && input.IsPressed())
-            {
-                var pos = GetGlobalMousePosition();
-                var tile = GetGridTile(pos);
-
-                var inRange = NavService.FindTilesInRange(5, tile, includeStart: false);
-                HighlightGameTiles(inRange);
-                GD.Print($"{inRange.Count} tiles in range. Final tile: {inRange[^1].Coordinates}");
-            }
-        }
-
         public Tile GetGridTile(Vector2 globalPos)
         {
             var tilePos = LocalToMap(ToLocal(globalPos));
             return grid.GetTile(tilePos - gameRect.Position);
         }
 
-        private void HighlightGameTiles(List<Tile> tiles)
+        public void HighlightGameTiles(List<Tile> tiles)
         {
             ClearHighlights();
             AddLayer(NAV_OVERLAY_LAYER);

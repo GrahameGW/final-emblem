@@ -10,23 +10,26 @@ namespace FinalEmblem.Godot2D
     {
         private GameMap gameMap;
         private Grid grid;
-        private List<Faction> factions = new();
+        private List<UnitGroup> factions = new();
         private Level level;
+        private PlayerController player;
 
         public override void _Ready()
         {
             gameMap = GetNode<GameMap>("GameMap");
+            player = GetNode<PlayerController>("Player");
+            player.Initialize(gameMap);
             grid = gameMap.GenerateGridFromMap();
             factions = GenerateFactionsFromMap(gameMap);
-            level = new Level(grid, factions);
+            level = new Level(grid, factions.SelectMany(f => f.Units).ToList());
             NavService.SetGridInstance(grid);
         }
 
-        private List<Faction> GenerateFactionsFromMap(GameMap map)
+        private List<UnitGroup> GenerateFactionsFromMap(GameMap map)
         {
-            var player = new Faction();
-            var enemy = new Faction();
-            var other = new Faction();
+            var player = new UnitGroup();
+            var enemy = new UnitGroup();
+            var other = new UnitGroup();
 
             var units = this.FindNodesOfType(new List<UnitNode>());
             for (int i = 0; i < units.Count; i++)
@@ -34,9 +37,9 @@ namespace FinalEmblem.Godot2D
                 units[i].Initialize();
             }
 
-            var playerUnits = units.Where(u => u.Faction == FactionName.Player).ToList();
-            var enemyUnits = units.Where(u => u.Faction == FactionName.Enemy).ToList();
-            var otherUnits = units.Where(u => u.Faction == FactionName.Other).ToList();
+            var playerUnits = units.Where(u => u.Faction == Faction.Player).ToList();
+            var enemyUnits = units.Where(u => u.Faction == Faction.Enemy).ToList();
+            var otherUnits = units.Where(u => u.Faction == Faction.Other).ToList();
 
             void AssignUnitTile(List<UnitNode> units)
             {
@@ -48,6 +51,7 @@ namespace FinalEmblem.Godot2D
                         GD.PrintErr($"Multiple units have been loaded to tile {tile.Coordinates}: {tile.Unit}, {units[i]}");
                     }
                     units[i].Unit.Tile = tile;
+                    units[i].GlobalPosition = new Vector2(tile.WorldPosition.X, tile.WorldPosition.Y);
                 }
             }
 
@@ -61,22 +65,7 @@ namespace FinalEmblem.Godot2D
 
             // TODO: Add to faction controllers
 
-            return new List<Faction> { player, enemy, other };
-        }
-    }
-
-    public partial class UnitManager : Node
-    {
-        [Export] PackedScene unitPrefab;
-
-        private List<UnitNode> units = new();
-
-        public void AddUnitsToGrid(List<Unit> toAdd)
-        {
-            for (int i = 0; i < toAdd.Count; i++)
-            {
-               // if (units.Select(u => u.unit)
-            }
+            return new List<UnitGroup> { player, enemy, other };
         }
     }
 }

@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace FinalEmblem.Core
+﻿namespace FinalEmblem.Core
 {
-    public class Faction
+    public enum Faction
     {
-        public static Action<Faction> OnTurnComplete;
-        public readonly List<Unit> Units = new();
-
-        public void StartTurn()
-        {
-
-        }
+        Player,
+        Enemy,
+        Other
     }
 }

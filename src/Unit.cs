@@ -12,7 +12,7 @@
             }
         }
         public int Move { get; set; }
-        public FactionName Faction { get; set; }
+        public Faction Faction { get; set; }
 
         private Tile _tile;
     }
