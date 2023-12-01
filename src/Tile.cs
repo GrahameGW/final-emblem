@@ -101,4 +101,23 @@ namespace FinalEmblem.Core
         }
     }
 
+    public static class TileExtensions
+    {
+        public static int DistanceTo(this Tile tile, Tile other, bool diagonalEdges = false)
+        {
+            int x = Mathf.Abs(tile.Coordinates.X - other.Coordinates.X);
+            int y = Mathf.Abs(tile.Coordinates.Y - other.Coordinates.Y);
+
+            if (diagonalEdges)
+            {
+                int delta = Mathf.Abs(y - x);
+                return x > y ? y + delta : x + delta;
+            }
+            else
+            {
+                return x + y;
+            }
+        }
+    }
+
 }

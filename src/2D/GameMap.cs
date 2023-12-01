@@ -83,27 +83,11 @@ namespace FinalEmblem.Godot2D
             }
         }
 
-        private Vector2I NavOverlayLookup(Compass mask)
-        {
-            var index = (int)mask;
-            // only good with current TileSet
-            return index switch
-            {
-                0 => new(5, 2),
-                1 => new(5, 0),
-                2 => new(5, 2),
-                3 => new(5, 2),
-                4 => new(4, 2),
-                5 => new(0, 2),
-                6 => new(4, 2),
-                _ => Vector2I.One
-            };
-        }
-
         private void ClearHighlights()
         {
             RemoveLayer(NAV_OVERLAY_LAYER);
         }
+
         /*
         private void GenerateMapFromGrid(Grid grid)
         {
@@ -124,6 +108,23 @@ namespace FinalEmblem.Godot2D
                 GD.PrintErr($"Tileset custom data layer {layerIndex} is not named {layerName}. " +
                     $"Ensure it is properly named in the Godot inspector then rerun the program");
             }
+        }
+
+        private Vector2I NavOverlayLookup(Compass mask)
+        {
+            var index = (int)mask;
+            // only good with current TileSet
+            return index switch
+            {
+                0 => new(5, 2),
+                1 => new(5, 0),
+                2 => new(5, 2),
+                3 => new(5, 2),
+                4 => new(4, 2),
+                5 => new(0, 2),
+                6 => new(4, 2),
+                _ => Vector2I.One
+            };
         }
     }
 }

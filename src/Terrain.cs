@@ -6,6 +6,7 @@
         Water,
         Forest,
         StonePath,
+        Cliff
     }
 
 }

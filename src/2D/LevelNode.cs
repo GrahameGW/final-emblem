@@ -23,6 +23,8 @@ namespace FinalEmblem.Godot2D
             factions = GenerateFactionsFromMap(gameMap);
             level = new Level(grid, factions.SelectMany(f => f.Units).ToList());
             NavService.SetGridInstance(grid);
+
+            level.StartTurn(Faction.Player);
         }
 
         private List<UnitGroup> GenerateFactionsFromMap(GameMap map)
