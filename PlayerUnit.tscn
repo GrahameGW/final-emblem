@@ -45,6 +45,7 @@ _data = {
 script = ExtResource("1_w6sk8")
 Move = 5
 Actions = Array[int]([0, 1, 2])
+travelSpeed = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_wn86x")

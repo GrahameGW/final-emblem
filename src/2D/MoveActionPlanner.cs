@@ -1,14 +1,14 @@
 ﻿using Godot;
 using FinalEmblem.Core;
-using System;
 using System.Collections.Generic;
 using TiercelFoundry.GDUtils;
+using System;
 
 namespace FinalEmblem.Godot2D
 {
     public partial class MoveActionPlanner : Line2D, IActionPlanner
     {
-        public Action<IAction> BuildAction { get; set; }
+        public Action<List<IAction>> OnActionsBuilt { get; set; }
 
         private List<Tile> tilesInRange;
         private List<Tile> currentPath = new();
@@ -37,11 +37,15 @@ namespace FinalEmblem.Godot2D
             }
             if (input is InputEventMouseButton && input.IsPressed())
             {
-                if (tilesInRange.Contains(currentTile))
+                if (currentPath == null) { return; }
+                var actions = new List<IAction>();
+
+                for (int i = 1; i < currentPath.Count; i++)
                 {
-                    var move = new MoveAction(currentPath);
-                    BuildAction?.Invoke(move);
+                    actions.Add(new MoveAction(currentPath[i - 1], currentPath[i]));
                 }
+
+                OnActionsBuilt?.Invoke(actions);
             }
         }
 

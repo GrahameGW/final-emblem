@@ -33,7 +33,7 @@ namespace FinalEmblem.Godot2D
                 var tile = player.GetTileUnderMouse();
                 player.SelectedTile = tile;
 
-                if (tile.Unit != null)
+                if (tile.Unit != null && !tile.Unit.HasMoved)
                 {
                     var inRange = NavService.FindTilesInRange(tile.Unit.Move, tile, includeStart: false);
                     player.Map.HighlightGameTiles(inRange);

@@ -13,20 +13,20 @@ namespace FinalEmblem.Godot2D
         private List<UnitGroup> factions = new();
         private Level level;
         private PlayerController player;
-        //private ActionFactory actionFactory;
+
 
         public override void _Ready()
         {
             gameMap = GetNode<GameMap>("GameMap");
-            player = GetNode<PlayerController>("Player");
-            var actionList = GetNode<ActionList>("HUD/ActionList");
-
-            player.Initialize(gameMap);
-            actionList.Initialize(player);
-
             grid = gameMap.GenerateGridFromMap();
             factions = GenerateFactionsFromMap(gameMap);
             level = new Level(grid, factions.SelectMany(f => f.Units).ToList());
+
+            player = GetNode<PlayerController>("Player");
+            var actionList = GetNode<ActionList>("HUD/ActionList");
+            var playerUnits = factions.FirstOrDefault(f => f.Units[0].Faction == Faction.Player);
+            player.Initialize(gameMap, playerUnits);
+            actionList.Initialize(player);
 
             NavService.SetGridInstance(grid);
             CombatService.SetGridInstance(grid);
@@ -68,9 +68,9 @@ namespace FinalEmblem.Godot2D
             AssignUnitTile(enemyUnits);
             AssignUnitTile(otherUnits);
 
-            player.Units.AddRange(playerUnits.Select(u => u.Unit));
-            enemy.Units.AddRange(enemyUnits.Select(u => u.Unit));
-            other.Units.AddRange(otherUnits.Select(u => u.Unit));
+            player?.UnitNodes.AddRange(playerUnits);
+            enemy?.UnitNodes.AddRange(enemyUnits);
+            other?.UnitNodes.AddRange(otherUnits);
 
             // TODO: Add to faction controllers
 

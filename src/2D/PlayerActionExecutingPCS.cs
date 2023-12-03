@@ -5,28 +5,35 @@ namespace FinalEmblem.Godot2D
 {
     public partial class PlayerActionExecutingPCS : PlayerControlState
     {
-        private readonly IAction action;
+        private readonly UnitNode unitNode;
         
-        public PlayerActionExecutingPCS(IAction action, PlayerController player) : base(player)
+        public PlayerActionExecutingPCS(UnitNode node, PlayerController player) : base(player)
         {
-            this.action = action;
+            unitNode = node;
         }
 
         public override void EnterState()
         {
             GD.Print("Entered PlayerActionExecuting");
-            action.Execute(player.SelectedTile.Unit);
+            unitNode.OnActionPlaybackCompleted += ActionPlaybackCompletedHandler;
+            player.Map.ClearTileHighlights();
+            unitNode.PlayNextAction();
         }
 
         public override void ExitState()
         {
             GD.Print("Exited PlayerActionExecuting");
-            player.ChangeState(new PlayerTurnIdlePCS(player));
+            unitNode.OnActionPlaybackCompleted -= ActionPlaybackCompletedHandler;
             Free();
         }
 
         public override void HandleInput(InputEvent input)
         {
+        }
+
+        private void ActionPlaybackCompletedHandler()
+        {
+            player.ChangeState(new PlayerTurnIdlePCS(player));
         }
     }
 }

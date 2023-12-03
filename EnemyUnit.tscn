@@ -47,6 +47,7 @@ script = ExtResource("1_dyk2m")
 Move = 5
 Faction = 1
 Actions = Array[int]([0, 1, 2])
+travelSpeed = 4.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_uowe4")

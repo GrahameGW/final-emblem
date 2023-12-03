@@ -1,5 +1,7 @@
 ﻿using Godot;
 using FinalEmblem.Core;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace FinalEmblem.Godot2D
 {
@@ -14,12 +16,12 @@ namespace FinalEmblem.Godot2D
 
         public override void EnterState()
         {
-            planner.BuildAction += ActionBuiltHandler;
+            planner.OnActionsBuilt += ActionsBuiltHandler;
         }
 
         public override void ExitState()
         {
-            planner.BuildAction -= ActionBuiltHandler;
+            planner.OnActionsBuilt -= ActionsBuiltHandler;
             player.ActiveActionPlanner.QueueFree();
             Free();
         }
@@ -29,9 +31,14 @@ namespace FinalEmblem.Godot2D
             planner.HandleInput(input);
         }
 
-        private void ActionBuiltHandler(IAction action)
+        private void ActionsBuiltHandler(List<IAction> actions)
         {
-            player.ChangeState(new PlayerActionExecutingPCS(action, player));
+            var node = player.UnitGroup.UnitNodes.First(u => u.Unit == player.SelectedTile.Unit);
+            foreach ( var action in actions )
+            {
+                node.Unit.EnqueueAction(action);
+            }
+            player.ChangeState(new PlayerActionExecutingPCS(node, player));
         }
     }
 }

@@ -129,6 +129,7 @@ namespace FinalEmblem.Core
                     }
                 }
             }
+            path.Reverse();
             return path;
         }       
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FinalEmblem.Core
@@ -20,7 +21,13 @@ namespace FinalEmblem.Core
         public bool HasMoved { get; set; }
 
         public List<UnitAction> Actions { get; set; }
+
+        private Queue<IAction> actionQueue = new();
         private Tile _tile;
+
+        public event Action<IAction> OnActionStarted;
+        public event Action<IAction> OnActionProcessed;
+        public event Action<IAction> OnActionFinished;
 
         public List<UnitAction> GetAvailableActions()
         {
@@ -35,6 +42,35 @@ namespace FinalEmblem.Core
             }
 
             return Actions;
+        }
+
+        public void EnqueueAction(IAction action)
+        {
+            actionQueue.Enqueue(action);
+        }
+
+        public IAction DequeueAction()
+        {
+            if (actionQueue.Count == 0)
+            {
+                return null;
+            }
+            return actionQueue.Dequeue();
+        }
+
+        public void StartActionPlayback(IAction action)
+        {
+            OnActionStarted?.Invoke(action);
+        }
+
+        public void ContinueActionPlayback(IAction action)
+        {
+            OnActionProcessed?.Invoke(action);
+        }
+
+        public void FinishActionPlayback(IAction action)
+        {
+            OnActionFinished?.Invoke(action);
         }
     }
 }

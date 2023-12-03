@@ -1,7 +1,6 @@
 ﻿using Godot;
 using FinalEmblem.Core;
 using System;
-using Godot.Collections;
 
 namespace FinalEmblem.Godot2D
 {
@@ -9,6 +8,7 @@ namespace FinalEmblem.Godot2D
     {
         public GameMap Map { get; private set; }
         public Node ActiveActionPlanner { get; private set; }
+        public UnitGroup UnitGroup { get; private set; }
         public Tile SelectedTile
         {
             get => _selectedTile;
@@ -26,13 +26,15 @@ namespace FinalEmblem.Godot2D
         private PlayerControlState state;
         private Tile _selectedTile;
 
+
         public event Action<Tile> OnSelectedTileChanged;
         public event Action<IActionPlanner> OnActionPlanningStarted;
 
 
-        public void Initialize(GameMap gameMap)
+        public void Initialize(GameMap gameMap, UnitGroup units)
         {
             Map = gameMap;
+            UnitGroup = units;
             state = new OtherTurnPCS(this);
             state.EnterState();
         }

@@ -12,22 +12,13 @@ namespace FinalEmblem.Core
             grid = instance;
         }
 
-        public static IEnumerator StartExecution(Unit unit, IAction action)
+        public static bool TryExecution(Unit unit, IAction action)
         {
-            var routine = action.Execute(unit);
-            // check for triggers and do stuff if triggered
-            return routine;
-        }
-
-        public static IEnumerator NextStep(IEnumerator routine, Action onFinished = null)
-        {
-            if (!routine.MoveNext())
-            {
-                onFinished?.Invoke();
-                return null;
-            }
-
-            return routine;
+            action.Execute(unit);
+            // check for triggers and do stuff if triggered 
+            // all good for now
+            unit.StartActionPlayback(action);
+            return true;  // return false if fails later
         }
     }
 }

@@ -57,7 +57,6 @@ namespace FinalEmblem.Godot2D
         public void HighlightGameTiles(List<Tile> tiles)
         {
             ClearTileHighlights();
-            AddLayer(NAV_OVERLAY_LAYER);
             for (int i = 0; i < tiles.Count; i++)
             {
                 var cell = tiles[i].Coordinates + gameRect.Position;

@@ -4,7 +4,7 @@ namespace FinalEmblem.Core
 {
     public interface IAction
     {
-        IEnumerator Execute(Unit unit);
+        void Execute(Unit unit);
     }
 }
 
