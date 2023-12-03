@@ -57,7 +57,7 @@ namespace FinalEmblem.Core
         {
             actionQueue.Enqueue(action);
         }
-
+        
         public IAction DequeueAction()
         {
             if (actionQueue.Count == 0)
@@ -65,6 +65,33 @@ namespace FinalEmblem.Core
                 return null;
             }
             return actionQueue.Dequeue();
+        }
+
+        public IAction PeekAction()
+        {
+            if (actionQueue.Count > 0)
+            {
+                return actionQueue.Peek();
+            }
+            return null;
+        }
+
+        public void DoNextAction()
+        {
+            var action = DequeueAction();
+            action?.Execute(this);
+            // combatservice do trigger stuff
+            if (actionQueue.Count == 0)
+            {
+                if (action is MoveAction)
+                {
+                    HasMoved = true;
+                }
+                else
+                {
+                    HasActed = true;
+                }
+            }
         }
     }
 }

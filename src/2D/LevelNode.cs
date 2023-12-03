@@ -13,32 +13,33 @@ namespace FinalEmblem.Godot2D
         private List<UnitGroup> factions = new();
         private Level level;
         private PlayerController player;
-
+        private UIController ui;
 
         public override void _Ready()
         {
             gameMap = GetNode<GameMap>("GameMap");
             grid = gameMap.GenerateGridFromMap();
             factions = GenerateFactionsFromMap(gameMap);
-            level = new Level(grid, factions.SelectMany(f => f.Units).ToList());
+            level = new Level(grid, factions.Select(f => f.Units).ToList());
 
             player = GetNode<PlayerController>("Player");
-            var actionList = GetNode<ActionList>("HUD/ActionList");
             var playerUnits = factions.FirstOrDefault(f => f.Units[0].Faction == Faction.Player);
             player.Initialize(gameMap, playerUnits);
-            actionList.Initialize(player);
+
+            ui = GetNode<UIController>("HUD");
+            ui.Initialize(level, player);
 
             NavService.SetGridInstance(grid);
             CombatService.SetGridInstance(grid);
 
-            level.StartTurn(Faction.Player);
+            level.StartTurn(Faction.Player, factions[0].Units);
         }
 
         private List<UnitGroup> GenerateFactionsFromMap(GameMap map)
         {
-            var player = new UnitGroup();
-            var enemy = new UnitGroup();
-            var other = new UnitGroup();
+            var player = new UnitGroup(Faction.Player);
+            var enemy = new UnitGroup(Faction.Enemy);
+            var other = new UnitGroup(Faction.Other);
 
             var units = this.FindNodesOfType(new List<UnitNode>());
             for (int i = 0; i < units.Count; i++)
@@ -68,13 +69,31 @@ namespace FinalEmblem.Godot2D
             AssignUnitTile(enemyUnits);
             AssignUnitTile(otherUnits);
 
-            player?.UnitNodes.AddRange(playerUnits);
-            enemy?.UnitNodes.AddRange(enemyUnits);
-            other?.UnitNodes.AddRange(otherUnits);
+            var group = new List<UnitGroup>();
+
+            if (playerUnits.Count > 0)
+            {
+                player?.UnitNodes.AddRange(playerUnits);
+                group.Add(player);
+            }
+            if (enemyUnits.Count > 0)
+            {
+                enemy?.UnitNodes.AddRange(enemyUnits);
+                group.Add(enemy);
+            }
+            if (otherUnits.Count > 0)
+            {
+                other?.UnitNodes.AddRange(otherUnits);
+                group.Add(other);
+            }
 
             // TODO: Add to faction controllers
+            return group;
+        }
 
-            return new List<UnitGroup> { player, enemy, other };
+        public void EndTurn()
+        {
+            level.EndTurn();
         }
     }
 }

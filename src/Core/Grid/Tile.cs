@@ -133,6 +133,12 @@ namespace FinalEmblem.Core
                 return delta.LengthSquared() == 1;
             }
         }
+
+        public static bool IsDiagonalTo(this Tile tile, Tile other)
+        {
+            var delta = tile.Coordinates - other.Coordinates;
+            return Mathf.Abs(delta.X) - Mathf.Abs(delta.Y) == 0;
+        }
     }
 
 }

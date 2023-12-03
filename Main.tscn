@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bcn8firi3rrvm"]
+[gd_scene load_steps=15 format=3 uid="uid://bcn8firi3rrvm"]
 
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="1_f7s02"]
 [ext_resource type="Script" path="res://src/2D/LevelNode.cs" id="1_tlxmd"]
@@ -8,7 +8,9 @@
 [ext_resource type="Script" path="res://src/2D/Player/PlayerController.cs" id="5_x1i0p"]
 [ext_resource type="PackedScene" uid="uid://dpppyi0mie2fg" path="res://MoveActionPlanner.tscn" id="6_lhxv7"]
 [ext_resource type="Script" path="res://src/2D/Actions/ActionList.cs" id="7_pnh74"]
+[ext_resource type="Script" path="res://src/2D/UIController.cs" id="8_edx8p"]
 [ext_resource type="PackedScene" uid="uid://b6u5fjtuva313" path="res://EnemyUnit.tscn" id="9_jp1tf"]
+[ext_resource type="Script" path="res://src/2D/CurrentTurnDisplay.cs" id="10_sl635"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwb5v"]
 resource_name = "terrain"
@@ -469,6 +471,7 @@ Actions = Array[int]([0, 2])
 scale = Vector2(0.5, 0.5)
 transform = Transform2D(0.5, 0, 0, 0.5, 0, 0)
 follow_viewport_enabled = true
+script = ExtResource("8_edx8p")
 
 [node name="ActionList" type="ItemList" parent="HUD"]
 offset_left = 35.0
@@ -478,6 +481,24 @@ offset_bottom = 718.0
 item_count = 1
 item_0/text = "Move"
 script = ExtResource("7_pnh74")
+
+[node name="EndTurnButton" type="Button" parent="HUD"]
+offset_left = 22.0
+offset_top = 24.0
+offset_right = 100.0
+offset_bottom = 55.0
+text = "End Turn"
+
+[node name="CurrentTurnDisplay" type="PanelContainer" parent="HUD"]
+offset_left = 22.0
+offset_top = 60.0
+offset_right = 71.0
+offset_bottom = 100.0
+script = ExtResource("10_sl635")
+
+[node name="Label" type="Label" parent="HUD/CurrentTurnDisplay"]
+layout_mode = 2
+text = "Player's Turn"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(324, 184)

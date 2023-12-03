@@ -6,23 +6,29 @@ namespace FinalEmblem.Godot2D
 {
     public partial class MoveActionPlayback : ActionPlayback
     {
+        private Vector2 start;
         private Vector2 destination;
         private float speed;
-        private Vector2 path;
+        private float distance;
+        private float progress;
+
+        private const float ROOT_TWO = 1.41421356f;
 
         public MoveActionPlayback(UnitNode unit, Tile from, Tile to, float speed) : base(unit) 
         {
+            start = from.WorldPosition.Vector2XY();
             destination = to.WorldPosition.Vector2XY();
-            this.speed = speed;
-            path = (to.WorldPosition - from.WorldPosition).Vector2XY();
+            distance = from.IsDiagonalTo(to) ? ROOT_TWO : 1;
+            this.speed = speed / distance;
         
         }
 
         public override void Update(double delta)
         {
-            unit.Position += (float)delta * speed * path;
+            progress += speed * (float)delta;
+            unit.Position = start.Lerp(destination, progress);
 
-            if (unit.Position.DistanceTo(destination) < 0.1f)
+            if (progress >= 1)
             {
                 unit.Position = destination;
                 unit.PlayNextAction();
