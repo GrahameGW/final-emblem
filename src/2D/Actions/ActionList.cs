@@ -14,6 +14,7 @@ namespace FinalEmblem.Godot2D
         {
             player = playerController;
             player.OnSelectedTileChanged += SelectedTileChangedHandler;
+            player.OnPlayerStateChanged += PlayerStateChangedHandler;
             ItemSelected += ItemClickedHandler;
             Hide();
         }
@@ -21,6 +22,7 @@ namespace FinalEmblem.Godot2D
         public override void _ExitTree()
         {
             player.OnSelectedTileChanged -= SelectedTileChangedHandler;
+            player.OnPlayerStateChanged -= PlayerStateChangedHandler;
             ItemSelected -= ItemClickedHandler;
         }
 
@@ -70,6 +72,11 @@ namespace FinalEmblem.Godot2D
         {
             player.StartActionPlanning(currentUnit, currentActions[(int)index]);
             Hide();
+        }
+
+        private void PlayerStateChangedHandler()
+        {
+            SelectedTileChangedHandler(player.SelectedTile);
         }
     }
 }

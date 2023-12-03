@@ -11,7 +11,7 @@ namespace FinalEmblem.Godot2D
         public override void EnterState()
         {
             GD.Print("Entered PlayerTurnIdle");
-            player.SelectedTile = null;
+            // player.SelectedTile = null;
             player.IsActing = true;
             player.OnActionPlanningStarted += ActionPlanningHandler;
             Level.OnTurnStarted += FactionTurnStartHandler;

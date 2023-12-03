@@ -29,6 +29,7 @@ namespace FinalEmblem.Godot2D
 
         public event Action<Tile> OnSelectedTileChanged;
         public event Action<IActionPlanner> OnActionPlanningStarted;
+        public event Action OnPlayerStateChanged;
 
 
         public void Initialize(GameMap gameMap, UnitGroup units)
@@ -44,6 +45,7 @@ namespace FinalEmblem.Godot2D
             state.ExitState();
             next.EnterState();
             state = next;
+            OnPlayerStateChanged?.Invoke();
         }
 
         public override void _UnhandledInput(InputEvent input)
