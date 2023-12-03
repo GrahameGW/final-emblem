@@ -19,6 +19,20 @@ namespace TiercelFoundry.GDUtils
             }
             return result;
         }
+
+        public static T FindChildOfType<T>(this Node node) where T : Node
+        {
+            var children = node.GetChildren();
+            for (int i = 0; i < children.Count; i++)
+            {
+                if (children[i] is T)
+                {
+                    return children[i] as T;
+                }
+            }
+
+            return null;
+        }
     }
 }
 

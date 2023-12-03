@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ckg7368b3occv"]
+
+[ext_resource type="Shader" path="res://assets/materials/shaders/grayscale.gdshader" id="1_0a1yu"]
+
+[resource]
+shader = ExtResource("1_0a1yu")
+shader_parameter/saturation = 0.5

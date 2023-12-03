@@ -17,7 +17,6 @@ namespace FinalEmblem.Core
             action.Execute(unit);
             // check for triggers and do stuff if triggered 
             // all good for now
-            unit.StartActionPlayback(action);
             return true;  // return false if fails later
         }
     }

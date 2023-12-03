@@ -5,9 +5,9 @@
 [ext_resource type="Script" path="res://src/2D/GameMap.cs" id="2_3pasc"]
 [ext_resource type="PackedScene" uid="uid://bchaxgrrm4d32" path="res://PlayerUnit.tscn" id="3_v8don"]
 [ext_resource type="Texture2D" uid="uid://dmutbv5x2wohq" path="res://assets/16x16 Area Select.png" id="4_xqjvv"]
-[ext_resource type="Script" path="res://src/2D/PlayerController.cs" id="5_x1i0p"]
+[ext_resource type="Script" path="res://src/2D/Player/PlayerController.cs" id="5_x1i0p"]
 [ext_resource type="PackedScene" uid="uid://dpppyi0mie2fg" path="res://MoveActionPlanner.tscn" id="6_lhxv7"]
-[ext_resource type="Script" path="res://src/2D/ActionList.cs" id="7_pnh74"]
+[ext_resource type="Script" path="res://src/2D/Actions/ActionList.cs" id="7_pnh74"]
 [ext_resource type="PackedScene" uid="uid://b6u5fjtuva313" path="res://EnemyUnit.tscn" id="9_jp1tf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwb5v"]

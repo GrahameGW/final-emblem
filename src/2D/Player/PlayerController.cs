@@ -62,6 +62,7 @@ namespace FinalEmblem.Godot2D
             IActionPlanner planner = actionName switch
             {
                 UnitAction.Move => movePlanner.Instantiate<MoveActionPlanner>(),
+                UnitAction.Wait => new WaitActionPlanner(),
                 _ => throw new ArgumentOutOfRangeException(actionName.ToString())
             };
             ActiveActionPlanner = planner as Node;

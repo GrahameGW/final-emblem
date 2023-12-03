@@ -3,6 +3,7 @@ using FinalEmblem.Core;
 using Godot.Collections;
 using System.Linq;
 using System.Collections;
+using TiercelFoundry.GDUtils;
 using System;
 
 namespace FinalEmblem.Godot2D
@@ -10,6 +11,8 @@ namespace FinalEmblem.Godot2D
     [GlobalClass]
     public partial class UnitNode : Node2D
     {
+        public Unit Unit { get; private set; }
+
         [ExportGroup("Unit Stats")]
         [Export] public int Move { get; private set; }
         [Export] public Faction Faction { get; private set; }
@@ -18,10 +21,11 @@ namespace FinalEmblem.Godot2D
         [ExportGroup("Playback")]
         [Export] float travelSpeed;
 
-        public Unit Unit { get; private set; }
         private ActionPlayback currentPlayback;
         private IAction currentAction;
         private bool isPlayingActions;
+
+        private UnitSprite sprite;
 
         public event Action OnActionPlaybackCompleted;
 
@@ -36,6 +40,13 @@ namespace FinalEmblem.Godot2D
             };
 
             isPlayingActions = false;
+            sprite = this.FindChildOfType<UnitSprite>();
+            Unit.OnUnitHasActedChanged += _ => UnitHasActedHandler();
+        }
+
+        public override void _ExitTree()
+        {
+            Unit.OnUnitHasActedChanged -= _ => UnitHasActedHandler();
         }
 
         public override void _Process(double delta)
@@ -85,6 +96,10 @@ namespace FinalEmblem.Godot2D
             throw new NotImplementedException();
         }
 
+        private void UnitHasActedHandler()
+        {
+            sprite.ToggleMaterial(Unit.HasActed);
+        }
     }
 }
 

@@ -15,19 +15,28 @@ namespace FinalEmblem.Core
                 _tile.Unit = this;
             }
         }
+        public bool HasActed 
+        { 
+            get => _hasActed; 
+            set
+            {
+                _hasActed = value;
+                OnUnitHasActedChanged?.Invoke(value);
+            }
+        }
         public int Move { get; set; }
         public Faction Faction { get; set; }
-        public bool HasActed { get; set; }
+
         public bool HasMoved { get; set; }
 
         public List<UnitAction> Actions { get; set; }
 
         private Queue<IAction> actionQueue = new();
         private Tile _tile;
+        private bool _hasActed;
 
-        public event Action<IAction> OnActionStarted;
-        public event Action<IAction> OnActionProcessed;
-        public event Action<IAction> OnActionFinished;
+        public event Action<bool> OnUnitHasActedChanged;
+
 
         public List<UnitAction> GetAvailableActions()
         {
@@ -56,21 +65,6 @@ namespace FinalEmblem.Core
                 return null;
             }
             return actionQueue.Dequeue();
-        }
-
-        public void StartActionPlayback(IAction action)
-        {
-            OnActionStarted?.Invoke(action);
-        }
-
-        public void ContinueActionPlayback(IAction action)
-        {
-            OnActionProcessed?.Invoke(action);
-        }
-
-        public void FinishActionPlayback(IAction action)
-        {
-            OnActionFinished?.Invoke(action);
         }
     }
 }
