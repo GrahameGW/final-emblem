@@ -118,6 +118,21 @@ namespace FinalEmblem.Core
                 return x + y;
             }
         }
+
+        public static bool IsNeighborOf(this Tile tile, Tile other, bool diagonalEdges = false)
+        {
+            var delta = tile.Coordinates - other.Coordinates;
+            if (diagonalEdges)
+            {
+                delta.X = Mathf.Abs(delta.X);
+                delta.Y = Mathf.Abs(delta.Y);
+                return (delta.X == 0 || delta.X == 1) && (delta.Y == 0 || delta.Y == 1);
+            }
+            else
+            {
+                return delta.LengthSquared() == 1;
+            }
+        }
     }
 
 }

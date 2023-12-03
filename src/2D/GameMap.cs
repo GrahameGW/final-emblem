@@ -12,9 +12,9 @@ namespace FinalEmblem.Godot2D
 
         // CDL = Custom Data Layer
         private const string CDL_TERRAIN = "CDL_TERRAIN";
-        private const int TERRAIN_BASE_LAYER = 0;
+        private const int TERRAIN_BASE_LAYER = 1;
         private const int TERRAIN_BASE_SOURCE = 1;
-        private const int NAV_OVERLAY_LAYER = 1;
+        private const int NAV_OVERLAY_LAYER = 2;
         private const int NAV_OVERLAY_SOURCE = 4;
 
         public Grid GenerateGridFromMap()
@@ -56,7 +56,7 @@ namespace FinalEmblem.Godot2D
 
         public void HighlightGameTiles(List<Tile> tiles)
         {
-            ClearHighlights();
+            ClearTileHighlights();
             AddLayer(NAV_OVERLAY_LAYER);
             for (int i = 0; i < tiles.Count; i++)
             {
@@ -79,13 +79,13 @@ namespace FinalEmblem.Godot2D
                 }
 
                 var cell = tiles[i].Coordinates + gameRect.Position;
-                SetCell(NAV_OVERLAY_LAYER, cell, NAV_OVERLAY_SOURCE, NavOverlayLookup(mask));
+                SetCell(NAV_OVERLAY_LAYER, cell, NAV_OVERLAY_SOURCE, Vector2I.One);
             }
         }
 
-        private void ClearHighlights()
+        public void ClearTileHighlights()
         {
-            RemoveLayer(NAV_OVERLAY_LAYER);
+            ClearLayer(NAV_OVERLAY_LAYER);
         }
 
         /*
@@ -108,23 +108,6 @@ namespace FinalEmblem.Godot2D
                 GD.PrintErr($"Tileset custom data layer {layerIndex} is not named {layerName}. " +
                     $"Ensure it is properly named in the Godot inspector then rerun the program");
             }
-        }
-
-        private Vector2I NavOverlayLookup(Compass mask)
-        {
-            var index = (int)mask;
-            // only good with current TileSet
-            return index switch
-            {
-                0 => new(5, 2),
-                1 => new(5, 0),
-                2 => new(5, 2),
-                3 => new(5, 2),
-                4 => new(4, 2),
-                5 => new(0, 2),
-                6 => new(4, 2),
-                _ => Vector2I.One
-            };
         }
     }
 }

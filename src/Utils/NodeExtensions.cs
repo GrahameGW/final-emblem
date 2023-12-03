@@ -5,7 +5,7 @@ namespace TiercelFoundry.GDUtils
 {
     public static class NodeExtensions
     {
-        public static List<T> FindNodesOfType<T>(this Node node, List<T> result) where T : Node
+        public static List<T> FindNodesOfType<T>(this Node node, List<T> result = null) where T : Node
         {
             result ??= new List<T>();
             if (node is T)
@@ -18,14 +18,6 @@ namespace TiercelFoundry.GDUtils
                 result = children[i].FindNodesOfType<T>(result);
             }
             return result;
-        }
-    }
-
-    public static class VectorExtensions
-    {
-        public static Vector2 Vector2XY(this Vector3 vector)
-        {
-            return new Vector2 (vector.X, vector.Y);
         }
     }
 }

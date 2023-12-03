@@ -1,69 +1,71 @@
 ﻿using Godot;
 using FinalEmblem.Core;
-using System.Collections.Generic;
-using TiercelFoundry.GDUtils;
+using System;
+using Godot.Collections;
 
 namespace FinalEmblem.Godot2D
 {
     public partial class PlayerController : Node
     {
-        private GameMap map;
-        private Tile tileUnderMouse;
-        private List<Tile> tilesInRange;
-        private Tile selectedTile;
-
-        [Export] bool isActing;
-        [Export] Line2D line;
-
-        public void Initialize(GameMap gameMap)
+        public GameMap Map { get; private set; }
+        public Node ActiveActionPlanner { get; private set; }
+        public Tile SelectedTile
         {
-            map = gameMap;
-            tilesInRange = new List<Tile>();
-            Level.OnTurnStarted += FactionTurnStartHandler;
-        }
-
-        public override void _Input(InputEvent input)
-        {
-            tileUnderMouse = GetTileUnderMouse();
-            if (tileUnderMouse == null || !isActing) { return; }
-
-            if (input is InputEventMouseButton && input.IsPressed())
+            get => _selectedTile;
+            set
             {
-                tilesInRange = NavService.FindTilesInRange(5, tileUnderMouse, includeStart: false);
-                map.HighlightGameTiles(tilesInRange);
-                selectedTile = tileUnderMouse;
-            } else if (tilesInRange.Contains(tileUnderMouse) && selectedTile != null)
-            {
-                var path = NavService.FindShortestPath(selectedTile, tileUnderMouse, tilesInRange);
-                line.ClearPoints();
-                for (int i = 0; i < path.Count; i++)
-                {
-                    line.AddPoint(path[i].WorldPosition.Vector2XY());
-                }
-            } else
-            {
-                line.ClearPoints();
+                _selectedTile = value;
+                OnSelectedTileChanged?.Invoke(value);
             }
         }
 
-        private Tile GetTileUnderMouse()
+        [Export] public bool IsActing;
+        [Export] PackedScene movePlanner;
+        [Export] CanvasLayer hudLayer;
+
+        private PlayerControlState state;
+        private Tile _selectedTile;
+
+        public event Action<Tile> OnSelectedTileChanged;
+        public event Action<IActionPlanner> OnActionPlanningStarted;
+
+
+        public void Initialize(GameMap gameMap)
         {
-            var pos = map.GetGlobalMousePosition();
-            return map.GetGridTile(pos);
+            Map = gameMap;
+            state = new OtherTurnPCS(this);
+            state.EnterState();
         }
 
-        private void FactionTurnStartHandler(Faction faction)
+        public void ChangeState(PlayerControlState next)
         {
-            isActing = faction == Faction.Player;
+            state.ExitState();
+            next.EnterState();
+            state = next;
         }
 
-
-        public void ShowPathLine(List<Tile> tiles)
+        public override void _UnhandledInput(InputEvent input)
         {
+            state.HandleInput(input);
+        }
 
+        public Tile GetTileUnderMouse()
+        {
+            var pos = Map.GetGlobalMousePosition();
+            return Map.GetGridTile(pos);
+        }
+
+        public void StartActionPlanning(Unit unit, UnitAction actionName)
+        {
+            IActionPlanner planner = actionName switch
+            {
+                UnitAction.Move => movePlanner.Instantiate<MoveActionPlanner>(),
+                _ => throw new ArgumentOutOfRangeException(actionName.ToString())
+            };
+            ActiveActionPlanner = planner as Node;
+            AddChild(ActiveActionPlanner);
+            OnActionPlanningStarted?.Invoke(planner);
         }
     }
-
-
 }
 

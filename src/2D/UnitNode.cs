@@ -1,5 +1,7 @@
 ﻿using Godot;
 using FinalEmblem.Core;
+using Godot.Collections;
+using System.Linq;
 
 namespace FinalEmblem.Godot2D
 {
@@ -8,6 +10,7 @@ namespace FinalEmblem.Godot2D
     {
         [Export] public int Move { get; private set; }
         [Export] public Faction Faction { get; private set; }
+        [Export] public Array<UnitAction> Actions { get; private set; }
 
         public Unit Unit { get; private set; }
 
@@ -16,7 +19,8 @@ namespace FinalEmblem.Godot2D
             Unit = new Unit()
             {
                 Move = Move,
-                Faction = Faction
+                Faction = Faction,
+                Actions = Actions.ToList()
             };
         }
     }

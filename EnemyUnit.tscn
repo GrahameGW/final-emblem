@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://erjeaagy43sb"]
+[gd_scene load_steps=6 format=3 uid="uid://b6u5fjtuva313"]
 
-[ext_resource type="Script" path="res://src/2D/UnitNode.cs" id="1_w6sk8"]
-[ext_resource type="Texture2D" uid="uid://bvgkr2dpuc5l4" path="res://assets/03-soldier.png" id="1_wn86x"]
+[ext_resource type="Script" path="res://src/2D/UnitNode.cs" id="1_dyk2m"]
+[ext_resource type="Texture2D" uid="uid://bvgkr2dpuc5l4" path="res://assets/03-soldier.png" id="2_uowe4"]
 
 [sub_resource type="Animation" id="Animation_j8syx"]
 length = 0.001
@@ -42,19 +42,23 @@ _data = {
 }
 
 [node name="Unit" type="Node2D"]
-script = ExtResource("1_w6sk8")
+z_index = 1
+script = ExtResource("1_dyk2m")
 Move = 5
+Faction = 1
+Actions = Array[int]([0, 1, 2])
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_wn86x")
+texture = ExtResource("2_uowe4")
 hframes = 3
 vframes = 4
 frame = 1
 region_enabled = true
-region_rect = Rect2(0, 0, 48, 64)
+region_rect = Rect2(96, 0, 48, 64)
+region_filter_clip_enabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "forward"
 libraries = {
 "": SubResource("AnimationLibrary_a64cd")
 }
+autoplay = "forward"

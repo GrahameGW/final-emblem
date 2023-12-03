@@ -12,8 +12,13 @@ config_version=5
 
 config/name="Final Emblem"
 run/main_scene="res://Main.tscn"
-config/features=PackedStringArray("4.1", "C#", "Mobile")
+config/features=PackedStringArray("4.2", "C#", "Mobile")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
 
 [dotnet]
 
@@ -24,3 +29,5 @@ project/assembly_name="Final Emblem"
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"
 anti_aliasing/quality/msaa_2d=2
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true

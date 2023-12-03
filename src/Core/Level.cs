@@ -25,6 +25,12 @@ namespace FinalEmblem.Core
         {
             CurrentFaction = faction;
             ActionableUnits = Units.Where(u => u.Faction == faction).ToList();
+
+            for (int i =  0; i < ActionableUnits.Count; i++)
+            {
+                ActionableUnits[i].HasActed = false;
+            }
+
             OnTurnStarted?.Invoke(CurrentFaction);
         }
     }

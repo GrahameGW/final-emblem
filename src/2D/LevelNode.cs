@@ -13,16 +13,23 @@ namespace FinalEmblem.Godot2D
         private List<UnitGroup> factions = new();
         private Level level;
         private PlayerController player;
+        //private ActionFactory actionFactory;
 
         public override void _Ready()
         {
             gameMap = GetNode<GameMap>("GameMap");
             player = GetNode<PlayerController>("Player");
+            var actionList = GetNode<ActionList>("HUD/ActionList");
+
             player.Initialize(gameMap);
+            actionList.Initialize(player);
+
             grid = gameMap.GenerateGridFromMap();
             factions = GenerateFactionsFromMap(gameMap);
             level = new Level(grid, factions.SelectMany(f => f.Units).ToList());
+
             NavService.SetGridInstance(grid);
+            CombatService.SetGridInstance(grid);
 
             level.StartTurn(Faction.Player);
         }
