@@ -12,6 +12,7 @@ namespace FinalEmblem.Core
         public List<Unit> ActionableUnits { get; private set; }
 
         public static Action<Faction> OnTurnStarted;
+        public static Action<Faction> OnTurnEnded;
 
         private List<List<Unit>> factions = new();
         private readonly Grid grid;
@@ -34,6 +35,7 @@ namespace FinalEmblem.Core
                 ActionableUnits[i].HasMoved = false;
                 ActionableUnits[i].HasActed = false;
                 ActionableUnits[i].OnUnitHasActedChanged += _ => UnitActedHandler();
+                ActionableUnits[i].OnUnitDied += UnitDiedHandler;
             }
 
             OnTurnStarted?.Invoke(CurrentFaction);
@@ -48,8 +50,14 @@ namespace FinalEmblem.Core
                 ActionableUnits[i].HasMoved = false;
                 ActionableUnits[i].HasActed = false;
                 ActionableUnits[i].OnUnitHasActedChanged -= _ => UnitActedHandler();
+                ActionableUnits[i].OnUnitDied -= UnitDiedHandler;
             }
 
+            OnTurnEnded?.Invoke(CurrentFaction);
+        }
+
+        public void StartNextTurn()
+        {
             var current = factions.First(u => u[0].Faction == CurrentFaction);
             int idx = factions.IndexOf(current);
             idx = idx == factions.Count - 1 ? 0 : idx + 1;
@@ -61,6 +69,23 @@ namespace FinalEmblem.Core
             if (ActionableUnits.Find(u => !u.HasActed) == null)
             {
                 EndTurn();
+            }
+        }
+        public void UnitDiedHandler(Unit deceased)
+        {
+            Units.Remove(deceased);
+            var faction = deceased.Faction;
+            var deceasedFaction = factions.First(u => u[0].Faction == faction);
+            deceasedFaction.Remove(deceased);
+
+            if (CurrentFaction == faction)
+            {
+                ActionableUnits.Remove(deceased);
+            }
+
+            if (deceasedFaction.Count == 0)
+            {
+                GD.Print($"Faction Eliminated: {faction}");
             }
         }
     }

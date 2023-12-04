@@ -24,7 +24,11 @@ namespace FinalEmblem.Core
                 OnUnitHasActedChanged?.Invoke(value);
             }
         }
+
         public int Move { get; set; }
+        public int HP { get; set; }
+        public int MaxHP { get; set; }
+        public int Attack { get; set; }
         public Faction Faction { get; set; }
 
         public bool HasMoved { get; set; }
@@ -36,7 +40,7 @@ namespace FinalEmblem.Core
         private bool _hasActed;
 
         public event Action<bool> OnUnitHasActedChanged;
-
+        public event Action<Unit> OnUnitDied;
 
         public List<UnitAction> GetAvailableActions()
         {
@@ -57,7 +61,6 @@ namespace FinalEmblem.Core
         {
             actionQueue.Enqueue(action);
         }
-        
         public IAction DequeueAction()
         {
             if (actionQueue.Count == 0)
@@ -66,7 +69,6 @@ namespace FinalEmblem.Core
             }
             return actionQueue.Dequeue();
         }
-
         public IAction PeekAction()
         {
             if (actionQueue.Count > 0)
@@ -75,7 +77,6 @@ namespace FinalEmblem.Core
             }
             return null;
         }
-
         public void DoNextAction()
         {
             var action = DequeueAction();
@@ -91,6 +92,16 @@ namespace FinalEmblem.Core
                 {
                     HasActed = true;
                 }
+            }
+        }
+
+        public void Damage(int damage)
+        {
+            HP -= damage;
+            if (HP <= 0)
+            {
+                HP = 0;
+                OnUnitDied?.Invoke(this);
             }
         }
     }

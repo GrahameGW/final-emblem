@@ -24,6 +24,7 @@ namespace FinalEmblem.Godot2D
         private void EndTurnButtonPressedHandler()
         {
             level.EndTurn();
+            level.StartNextTurn();
         }
     }
 }

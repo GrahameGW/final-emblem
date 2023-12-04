@@ -1,12 +1,13 @@
-﻿using Godot;
-using FinalEmblem.Core;
+﻿using FinalEmblem.Core;
+using Godot;
 
 namespace FinalEmblem.Godot2D
 {
     public partial class PlayerActionExecutingPCS : PlayerControlState
     {
         private readonly UnitNode unitNode;
-        
+        private PlayerControlState queuedState;
+
         public PlayerActionExecutingPCS(UnitNode node, PlayerController player) : base(player)
         {
             unitNode = node;
@@ -16,6 +17,7 @@ namespace FinalEmblem.Godot2D
         {
             GD.Print("Entered PlayerActionExecuting");
             unitNode.OnActionPlaybackCompleted += ActionPlaybackCompletedHandler;
+            Level.OnTurnEnded += TurnEndedHandler;
             player.Map.ClearTileHighlights();
             unitNode.PlayNextAction();
         }
@@ -24,6 +26,7 @@ namespace FinalEmblem.Godot2D
         {
             GD.Print("Exited PlayerActionExecuting");
             unitNode.OnActionPlaybackCompleted -= ActionPlaybackCompletedHandler;
+            Level.OnTurnEnded -= TurnEndedHandler;
             Free();
         }
 
@@ -33,7 +36,25 @@ namespace FinalEmblem.Godot2D
 
         private void ActionPlaybackCompletedHandler()
         {
-            player.ChangeState(new PlayerTurnIdlePCS(player));
+            player.SelectedTile = unitNode.Unit.Tile;
+            if (queuedState != null)
+            {
+                player.Level.StartNextTurn();
+                player.ChangeState(queuedState);
+            }
+            else
+            {
+                player.ChangeState(new PlayerTurnIdlePCS(player));
+            }
+            
+        }
+
+        private void TurnEndedHandler(Faction faction)
+        {
+            if (faction == Faction.Player)
+            {
+                queuedState = new OtherTurnPCS(player);
+            }
         }
     }
 }

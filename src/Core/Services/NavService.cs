@@ -64,8 +64,6 @@ namespace FinalEmblem.Core
             return inRange;
         }
 
-
-
         public static List<Tile> FindShortestPath(Tile start, Tile end, List<Tile> availableTiles, bool includeStart = true, bool diagonalEdges = false)
         {
             SearchItem[] items = availableTiles.Select(t => new SearchItem { Tile = t }).ToArray();

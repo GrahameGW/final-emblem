@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
+using FinalEmblem.Core;
 
-namespace FinalEmblem.Core
+namespace FinalEmblem.src.Core.Services
 {
     public static class CombatService
     {

@@ -6,6 +6,7 @@ namespace FinalEmblem.Godot2D
 {
     public partial class PlayerController : Node
     {
+        public Level Level { get; private set; }
         public GameMap Map { get; private set; }
         public Node ActiveActionPlanner { get; private set; }
         public UnitGroup UnitGroup { get; private set; }
@@ -18,22 +19,22 @@ namespace FinalEmblem.Godot2D
                 OnSelectedTileChanged?.Invoke(value);
             }
         }
+        public bool IsActing { get; set; }
 
-        [Export] public bool IsActing;
+
         [Export] PackedScene movePlanner;
         [Export] CanvasLayer hudLayer;
 
         private PlayerControlState state;
         private Tile _selectedTile;
 
-
         public event Action<Tile> OnSelectedTileChanged;
         public event Action<IActionPlanner> OnActionPlanningStarted;
         public event Action OnPlayerStateChanged;
 
-
-        public void Initialize(GameMap gameMap, UnitGroup units)
+        public void Initialize(GameMap gameMap, UnitGroup units, Level level)
         {
+            Level = level;
             Map = gameMap;
             UnitGroup = units;
             state = new OtherTurnPCS(this);
@@ -64,6 +65,7 @@ namespace FinalEmblem.Godot2D
             IActionPlanner planner = actionName switch
             {
                 UnitAction.Move => movePlanner.Instantiate<MoveActionPlanner>(),
+                UnitAction.Attack => new AttackActionPlanner(),
                 UnitAction.Wait => new WaitActionPlanner(),
                 _ => throw new ArgumentOutOfRangeException(actionName.ToString())
             };
@@ -71,6 +73,8 @@ namespace FinalEmblem.Godot2D
             AddChild(ActiveActionPlanner);
             OnActionPlanningStarted?.Invoke(planner);
         }
+
+
     }
 }
 

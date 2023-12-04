@@ -54,13 +54,13 @@ namespace FinalEmblem.Godot2D
             return grid.GetTile(tilePos - gameRect.Position);
         }
 
-        public void HighlightGameTiles(List<Tile> tiles)
+        public void HighlightGameTiles(List<Tile> tiles, int alternative = 0)
         {
             ClearTileHighlights();
             for (int i = 0; i < tiles.Count; i++)
             {
                 var cell = tiles[i].Coordinates + gameRect.Position;
-                SetCell(NAV_OVERLAY_LAYER, cell, NAV_OVERLAY_SOURCE, Vector2I.One);
+                SetCell(NAV_OVERLAY_LAYER, cell, NAV_OVERLAY_SOURCE, Vector2I.One, alternative);
             }
 
             for (int i = 0; i < tiles.Count; i++)

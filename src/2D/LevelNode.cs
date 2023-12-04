@@ -3,6 +3,7 @@ using FinalEmblem.Core;
 using System.Collections.Generic;
 using TiercelFoundry.GDUtils;
 using System.Linq;
+using FinalEmblem.src.Core.Services;
 
 namespace FinalEmblem.Godot2D
 {
@@ -24,7 +25,7 @@ namespace FinalEmblem.Godot2D
 
             player = GetNode<PlayerController>("Player");
             var playerUnits = factions.FirstOrDefault(f => f.Units[0].Faction == Faction.Player);
-            player.Initialize(gameMap, playerUnits);
+            player.Initialize(gameMap, playerUnits, level);
 
             ui = GetNode<UIController>("HUD");
             ui.Initialize(level, player);

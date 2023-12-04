@@ -10,11 +10,14 @@ namespace FinalEmblem.Godot2D
         public override void EnterState()
         {
             player.SelectedTile = null;
+            player.IsActing = false;
             Level.OnTurnStarted += FactionTurnStartHandler;
+            GD.Print("Entered OtherTurn");
         }
 
         public override void ExitState()
         {
+            GD.Print("Exited OtherTurn");
             Level.OnTurnStarted -= FactionTurnStartHandler;
             Free();
         }

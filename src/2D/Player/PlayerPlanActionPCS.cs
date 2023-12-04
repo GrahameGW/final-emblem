@@ -16,11 +16,13 @@ namespace FinalEmblem.Godot2D
 
         public override void EnterState()
         {
+            GD.Print("Entered PlayerPlanAction");
             planner.OnActionsBuilt += ActionsBuiltHandler;
         }
 
         public override void ExitState()
         {
+            GD.Print("Exited PlayerPlanAction");
             planner.OnActionsBuilt -= ActionsBuiltHandler;
             player.ActiveActionPlanner.QueueFree();
             Free();
@@ -28,7 +30,15 @@ namespace FinalEmblem.Godot2D
 
         public override void HandleInput(InputEvent input)
         {
-            planner.HandleInput(input);
+            var mouse = input as InputEventMouseButton;
+            if (mouse?.ButtonIndex == MouseButton.Right && mouse.IsPressed())
+            {
+                player.ChangeState(new PlayerTurnIdlePCS(player));
+            }
+            else
+            {
+                planner.HandleInput(input);
+            }
         }
 
         private void ActionsBuiltHandler(List<IAction> actions)

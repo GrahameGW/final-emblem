@@ -20,7 +20,6 @@ namespace FinalEmblem.Godot2D
         public override void ExitState()
         {
             GD.Print("Exited PlayerTurnIdle");
-            player.IsActing = false;
             player.OnActionPlanningStarted -= ActionPlanningHandler;
             Level.OnTurnStarted -= FactionTurnStartHandler;
             Free();

@@ -420,7 +420,10 @@ texture = ExtResource("4_xqjvv")
 5:0/0 = 0
 6:0/0 = 0
 0:1/0 = 0
+1:1/next_alternative_id = 2
 1:1/0 = 0
+1:1/1 = 1
+1:1/1/modulate = Color(0.945098, 0.329412, 0.580392, 1)
 2:1/0 = 0
 3:1/0 = 0
 4:1/0 = 0
@@ -442,6 +445,10 @@ sources/4 = SubResource("TileSetAtlasSource_7utes")
 [node name="Main" type="Node"]
 script = ExtResource("1_tlxmd")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(324, 184)
+zoom = Vector2(2, 2)
+
 [node name="GameMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_70d14")
 format = 2
@@ -452,20 +459,6 @@ layer_1/tile_data = PackedInt32Array(0, 393216, 1, 65536, 393216, 0, 131072, 327
 layer_2/name = "nav_overlay"
 layer_2/tile_data = PackedInt32Array()
 script = ExtResource("2_3pasc")
-
-[node name="Player" type="Node" parent="." node_paths=PackedStringArray("hudLayer")]
-script = ExtResource("5_x1i0p")
-movePlanner = ExtResource("6_lhxv7")
-hudLayer = NodePath("../HUD")
-
-[node name="Unit" parent="Player" instance=ExtResource("3_v8don")]
-position = Vector2(392, 278)
-Move = 10
-
-[node name="Unit2" parent="Player" instance=ExtResource("3_v8don")]
-position = Vector2(183, 135)
-Move = 10
-Actions = Array[int]([0, 2])
 
 [node name="HUD" type="CanvasLayer" parent="."]
 scale = Vector2(0.5, 0.5)
@@ -500,11 +493,21 @@ script = ExtResource("10_sl635")
 layout_mode = 2
 text = "Player's Turn"
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(324, 184)
-zoom = Vector2(2, 2)
+[node name="Player" type="Node" parent="." node_paths=PackedStringArray("hudLayer")]
+script = ExtResource("5_x1i0p")
+movePlanner = ExtResource("6_lhxv7")
+hudLayer = NodePath("../HUD")
+
+[node name="Unit" parent="Player" instance=ExtResource("3_v8don")]
+position = Vector2(392, 278)
+
+[node name="Unit2" parent="Player" instance=ExtResource("3_v8don")]
+position = Vector2(183, 135)
 
 [node name="Enemy" type="Node" parent="."]
 
 [node name="Unit" parent="Enemy" instance=ExtResource("9_jp1tf")]
 position = Vector2(344, 57)
+
+[node name="Unit2" parent="Enemy" instance=ExtResource("9_jp1tf")]
+position = Vector2(344, 180)

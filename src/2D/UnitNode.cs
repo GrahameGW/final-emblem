@@ -2,9 +2,9 @@
 using FinalEmblem.Core;
 using Godot.Collections;
 using System.Linq;
-using System.Collections;
 using TiercelFoundry.GDUtils;
 using System;
+using FinalEmblem.src.Core.Services;
 
 namespace FinalEmblem.Godot2D
 {
@@ -15,6 +15,8 @@ namespace FinalEmblem.Godot2D
 
         [ExportGroup("Unit Stats")]
         [Export] public int Move { get; private set; }
+        [Export] public int HP { get; private set; }
+        [Export] public int Attack { get; private set; }
         [Export] public Faction Faction { get; private set; }
         [Export] public Array<UnitAction> Actions { get; private set; }
 
@@ -35,6 +37,9 @@ namespace FinalEmblem.Godot2D
             Unit = new Unit()
             {
                 Move = Move,
+                MaxHP = HP,
+                HP = HP,
+                Attack = Attack,
                 Faction = Faction,
                 Actions = Actions.ToList()
             };
@@ -87,9 +92,13 @@ namespace FinalEmblem.Godot2D
                 var move = action as MoveAction;
                 return new MoveActionPlayback(this, move.from, move.to, travelSpeed);
             }
-
             if (action is WaitAction)
             {
+                return new WaitActionPlayback(this);
+            }
+            if (action is AttackAction)
+            {
+                // return new AttackActionPlayback();
                 return new WaitActionPlayback(this);
             }
 
