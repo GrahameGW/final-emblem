@@ -47,11 +47,13 @@ namespace FinalEmblem.Godot2D
             isPlayingActions = false;
             sprite = this.FindChildOfType<UnitSprite>();
             Unit.OnUnitHasActedChanged += _ => UnitHasActedHandler();
+            Unit.OnUnitHpChanged += hp => { HP = hp; };
         }
 
         public override void _ExitTree()
         {
             Unit.OnUnitHasActedChanged -= _ => UnitHasActedHandler();
+            Unit.OnUnitHpChanged -= hp => { HP = hp; };
         }
 
         public override void _Process(double delta)

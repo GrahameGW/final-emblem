@@ -25,8 +25,23 @@ namespace FinalEmblem.Core
             }
         }
 
-        public int Move { get; set; }
-        public int HP { get; set; }
+        public int Move
+        {
+            get => _move;
+            set
+            {
+                _move = value;
+                OnUnitMoveChanged?.Invoke(value);
+            }
+        }
+        public int HP { 
+            get => _hp;
+            set
+            {
+                _hp = value;
+                OnUnitHpChanged?.Invoke(value);
+            }
+        }
         public int MaxHP { get; set; }
         public int Attack { get; set; }
         public Faction Faction { get; set; }
@@ -38,7 +53,11 @@ namespace FinalEmblem.Core
         private Queue<IAction> actionQueue = new();
         private Tile _tile;
         private bool _hasActed;
+        private int _move;
+        private int _hp;
 
+        public event Action<int> OnUnitMoveChanged;
+        public event Action<int> OnUnitHpChanged;
         public event Action<bool> OnUnitHasActedChanged;
         public event Action<Unit> OnUnitDied;
 

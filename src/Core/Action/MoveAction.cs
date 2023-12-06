@@ -17,5 +17,10 @@ namespace FinalEmblem.Core
             unit.Tile = to;
         }
     }
+
+    public class DeathAction : IAction
+    {
+
+    }
 }
 

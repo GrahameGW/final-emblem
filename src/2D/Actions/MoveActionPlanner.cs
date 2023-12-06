@@ -19,7 +19,7 @@ namespace FinalEmblem.Godot2D
         {
             player = GetParent<PlayerController>();
             var tile = player.SelectedTile;
-            tilesInRange = NavService.FindTilesInRange(tile.Unit.Move, tile, includeStart: false);
+            tilesInRange = NavService.FindAvailableMoves(tile.Unit.Move, tile);
         }
 
         public void HandleInput(InputEvent input)

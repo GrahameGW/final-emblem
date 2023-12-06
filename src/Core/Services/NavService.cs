@@ -130,5 +130,11 @@ namespace FinalEmblem.Core
             path.Reverse();
             return path;
         }       
+
+        public static List<Tile> FindAvailableMoves(int maxDistance, Tile start, bool diagonalEdges = false)
+        {
+            var list = FindTilesInRange(maxDistance, start, diagonalEdges: diagonalEdges);
+            return list.Where(t => t.Unit == null).ToList();
+        }
     }
 }
