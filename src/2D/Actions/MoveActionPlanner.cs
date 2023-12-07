@@ -42,7 +42,7 @@ namespace FinalEmblem.Godot2D
 
                 for (int i = 1; i < currentPath.Count; i++)
                 {
-                    actions.Add(new MoveAction(currentPath[i - 1], currentPath[i]));
+                    actions.Add(new MoveActionOld(currentPath[i - 1], currentPath[i]));
                 }
 
                 OnActionsBuilt?.Invoke(actions);

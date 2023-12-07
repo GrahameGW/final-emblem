@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
-using FinalEmblem.Core;
+using System.Collections.Generic;
 
-namespace FinalEmblem.src.Core.Services
+namespace FinalEmblem.Core
 {
     public static class CombatService
     {
@@ -34,6 +34,12 @@ namespace FinalEmblem.src.Core.Services
                     unit.EnqueueAction(new DeathAction());
                 }
             }
+        }
+
+        public static List<IAction> CalculateActionImplications(IAction action)
+        {
+            // for action result framework
+            return new List<IAction> { action };
         }
     }
 }

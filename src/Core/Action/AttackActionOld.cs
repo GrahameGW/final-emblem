@@ -1,11 +1,11 @@
 ﻿
 namespace FinalEmblem.Core
 {
-    public class AttackAction : IAction
+    public class AttackActionOld : IAction
     {
-        private readonly Unit target;
+        public Unit target;
 
-        public AttackAction(Unit target)
+        public AttackActionOld(Unit target)
         {
             this.target = target;
         }

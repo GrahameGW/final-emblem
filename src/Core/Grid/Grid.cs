@@ -1,6 +1,5 @@
 ﻿using Godot;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace FinalEmblem.Core
 {
@@ -13,6 +12,8 @@ namespace FinalEmblem.Core
         public bool XZOrientation { get; private set; }
 
         public readonly Tile[] Tiles;
+        public List<Unit> Units { get; private set; }
+
 
         public Grid(Vector2I size, Vector3 worldOrigin, Vector2 cellSize, bool xZOrientation = false, bool invertY = false)
         {
@@ -86,6 +87,15 @@ namespace FinalEmblem.Core
                 tile.SetTileNeighbor(InvertY ? Compass.SE : Compass.NE, ne);
                 tile.SetTileNeighbor(Compass.E, e);
             }
+        }
+
+        public void SetUnitList(List<Unit> units)
+        {
+            if (Units != null)
+            {
+                GD.PushWarning("You are overwriting an existing units list for this level");
+            }
+            Units = units;
         }
     }
 

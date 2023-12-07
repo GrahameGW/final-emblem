@@ -3,7 +3,6 @@ using FinalEmblem.Core;
 using System.Collections.Generic;
 using TiercelFoundry.GDUtils;
 using System.Linq;
-using FinalEmblem.src.Core.Services;
 
 namespace FinalEmblem.Godot2D
 {

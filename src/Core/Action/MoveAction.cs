@@ -1,26 +1,24 @@
 ﻿
+using System.Collections.Generic;
+
 namespace FinalEmblem.Core
 {
     public class MoveAction : IAction
     {
-        public readonly Tile from;
-        public readonly Tile to;
+        public readonly List<Tile> Path;
 
-        public MoveAction(Tile from, Tile to)
+        public MoveAction(List<Tile> path)
         {
-            this.from = from;
-            this.to = to;
+            Path = path;
         }
 
-        public void Execute(Unit unit)
-        {
-            unit.Tile = to;
+        public void Execute(Unit unit) 
+        { 
+            foreach (var tile in Path)
+            {
+                unit.Tile = tile;
+            }
         }
-    }
-
-    public class DeathAction : IAction
-    {
-
     }
 }
 

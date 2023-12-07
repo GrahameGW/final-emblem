@@ -33,7 +33,7 @@ namespace FinalEmblem.Godot2D
                 // hard code attack enemy faction
                 if (underMouse.Unit?.Faction != Faction.Player)
                 {
-                    var actions = new List<IAction> { new AttackAction(underMouse.Unit) };
+                    var actions = new List<IAction> { new AttackActionOld(underMouse.Unit) };
                     OnActionsBuilt?.Invoke(actions);
                 }
             }

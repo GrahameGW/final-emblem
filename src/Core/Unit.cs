@@ -11,8 +11,13 @@ namespace FinalEmblem.Core
             get => _tile;
             set
             {
+                if (_tile != null)
+                {
+                    _tile.Unit = null;
+                }
                 _tile = value;
                 _tile.Unit = this;
+                OnTileChanged?.Invoke(value);
             }
         }
         public bool HasActed 
@@ -60,6 +65,7 @@ namespace FinalEmblem.Core
         public event Action<int> OnUnitHpChanged;
         public event Action<bool> OnUnitHasActedChanged;
         public event Action<Unit> OnUnitDied;
+        public event Action<Tile> OnTileChanged;
 
         public List<UnitAction> GetAvailableActions()
         {
@@ -76,6 +82,10 @@ namespace FinalEmblem.Core
             return Actions;
         }
 
+        public void ClearActions()
+        {
+            actionQueue.Clear();
+        }
         public void EnqueueAction(IAction action)
         {
             actionQueue.Enqueue(action);
@@ -103,7 +113,7 @@ namespace FinalEmblem.Core
             // combatservice do trigger stuff
             if (actionQueue.Count == 0)
             {
-                if (action is MoveAction)
+                if (action is MoveActionOld)
                 {
                     HasMoved = true;
                 }
@@ -120,7 +130,6 @@ namespace FinalEmblem.Core
             if (HP <= 0)
             {
                 HP = 0;
-                OnUnitDied?.Invoke(this);
             }
         }
     }

@@ -2,13 +2,12 @@
 using FinalEmblem.Core;
 using Godot.Collections;
 using System.Linq;
-using TiercelFoundry.GDUtils;
 using System;
 
-namespace FinalEmblem.Godot2D
+namespace FinalEmblem.QueryModel
 {
     [GlobalClass]
-    public partial class UnitNode : Node2D
+    public partial class UnitToken : Node2D
     {
         public Unit Unit { get; private set; }
 
@@ -22,18 +21,20 @@ namespace FinalEmblem.Godot2D
         [ExportGroup("Playback")]
         [Export] float travelSpeed;
 
-        private ActionPlayback currentPlayback;
-        private IAction currentAction;
-        private bool isPlayingActions;
+        [ExportGroup("Materials")]
+        [Export] Material defaultMaterial;
+        [Export] Material unitActedMaterial;
 
-        private UnitSprite sprite;
+        //private ActionPlayback currentPlayback;
+        private IAction currentAction;
+        private bool isPlayingActions = false;
 
         public event Action OnActionPlaybackCompleted;
 
 
-        public void Initialize()
+        public Unit GenerateUnitFromToken()
         {
-            Unit = new Unit()
+            return new Unit()
             {
                 Move = Move,
                 MaxHP = HP,
@@ -42,9 +43,17 @@ namespace FinalEmblem.Godot2D
                 Faction = Faction,
                 Actions = Actions.ToList()
             };
+        }
 
-            isPlayingActions = false;
-            sprite = this.FindChildOfType<UnitSprite>();
+        public void SetUnit(Unit unit)
+        {
+            if (unit == null)
+            {
+                GD.PushWarning($"Tried to set a null value for Unit on token {Name}. This is not allowed.");
+                return;
+            }
+
+            Unit = unit;
             Unit.OnUnitHasActedChanged += _ => UnitHasActedHandler();
             Unit.OnUnitHpChanged += hp => { HP = hp; };
         }
@@ -57,7 +66,7 @@ namespace FinalEmblem.Godot2D
 
         public override void _Process(double delta)
         {
-            currentPlayback?.Update(delta);
+            // currentPlayback?.Update(delta);
         }
 
         public void PlayNextAction()
@@ -67,13 +76,13 @@ namespace FinalEmblem.Godot2D
             if (currentAction == null)
             {
                 isPlayingActions = false;
-                currentPlayback = null;
+              //  currentPlayback = null;
                 OnActionPlaybackCompleted?.Invoke();
                 return;
             }
 
             CombatService.TryExecution(Unit, currentAction);
-            currentPlayback = InitializePlayback(currentAction);
+           // currentPlayback = InitializePlayback(currentAction);
             isPlayingActions = true;
 
             if (currentAction is MoveActionOld)
@@ -86,18 +95,19 @@ namespace FinalEmblem.Godot2D
             }
         }
 
+        /*
         private ActionPlayback InitializePlayback(IAction action)
         {
-            if (action is MoveActionOld)
+            if (action is MoveAction)
             {
-                var move = action as MoveActionOld;
+                var move = action as MoveAction;
                 return new MoveActionPlayback(this, move.from, move.to, travelSpeed);
             }
             if (action is WaitAction)
             {
                 return new WaitActionPlayback(this);
             }
-            if (action is AttackActionOld)
+            if (action is AttackAction)
             {
                 // return new AttackActionPlayback();
                 return new WaitActionPlayback(this);
@@ -105,10 +115,10 @@ namespace FinalEmblem.Godot2D
 
             throw new NotImplementedException();
         }
-
+        */
         private void UnitHasActedHandler()
         {
-            sprite.ToggleMaterial(Unit.HasActed);
+            // Material = Unit.HasActed ? unitActedMaterial : defaultMaterial;
         }
     }
 }
