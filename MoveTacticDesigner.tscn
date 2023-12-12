@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://n3jfd2hk2dix"]
+
+[ext_resource type="Script" path="res://src/Query/Designers/MoveTacticDesigner.cs" id="1_03wsx"]
+
+[node name="MoveLine" type="Line2D"]
+width = 5.0
+default_color = Color(0.894118, 0, 0.843137, 1)
+script = ExtResource("1_03wsx")
