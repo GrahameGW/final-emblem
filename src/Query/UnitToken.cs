@@ -52,9 +52,9 @@ namespace FinalEmblem.QueryModel
             Unit.OnUnitHpChanged -= hp => { HP = hp; };
         }
 
-        public void ToggleActedMaterial()
+        public void ToggleActedMaterial(bool hasActed)
         {
-            sprite.Material = Unit.HasActed ? unitActedMaterial : defaultMaterial;
+            sprite.Material = hasActed ? unitActedMaterial : defaultMaterial;
         }
     }
 }

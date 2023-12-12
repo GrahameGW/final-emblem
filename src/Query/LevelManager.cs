@@ -1,11 +1,13 @@
 ﻿using Godot;
 using FinalEmblem.Core;
+using System.Linq;
 
 namespace FinalEmblem.QueryModel
 {
     public partial class LevelManager : Node
     {
-        private Level level;
+        public Level Level { get; private set; }
+
         private GameMap gameMap;
         private TacticsController tactics;
         private TokenController tokens;
@@ -23,19 +25,20 @@ namespace FinalEmblem.QueryModel
             gameMap.SetUnitPositionsFromTokens(tokens.Tokens);
             var units = tokens.Units;
 
-            level = new Level(grid, units);
-            tactics.Initialize(gameMap, level, tokens);
-            hud.Initialize(level, gameMap, tactics);
+            Level = new Level(grid, units);
+            tactics.Initialize(gameMap, Level, tokens);
+            hud.Initialize(Level, gameMap, tactics);
 
             NavService.SetGridInstance(grid);
-            CombatService.SetLevelInstance(level);
+            CombatService.SetLevelInstance(Level);
 
-            level.StartTurn(Faction.Player, units);
+            Level.StartTurn(Faction.Player);
         }
+
 
         public void EndTurn()
         {
-            level.EndTurn();
+            Level.EndTurn();
         }
     }
 }

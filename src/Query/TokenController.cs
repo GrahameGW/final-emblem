@@ -22,6 +22,13 @@ namespace FinalEmblem.QueryModel
             {
                 Tokens[i].GenerateUnitFromToken();
             }
+
+            Level.OnTurnEnded += _ => TurnEndedHandler();
+        }
+
+        public override void _ExitTree()
+        {
+            Level.OnTurnEnded -= _ => TurnEndedHandler();
         }
 
         public UnitToken GetTokenFromUnit(Unit unit)
@@ -57,6 +64,14 @@ namespace FinalEmblem.QueryModel
                 ActionResultId.Died => new DeathActionAnimator(actor),
                 _ => throw new NotImplementedException(),
             };
+        }
+
+        private void TurnEndedHandler()
+        {
+            for (int i = 0; i < Tokens.Count; i++)
+            {
+                Tokens[i].ToggleActedMaterial(false);
+            }
         }
     }
 }

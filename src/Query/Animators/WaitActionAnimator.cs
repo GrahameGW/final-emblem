@@ -13,7 +13,7 @@ namespace FinalEmblem.QueryModel
 
         public override async void StartAnimation()
         {
-            token.ToggleActedMaterial();
+            token.ToggleActedMaterial(true);
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
             EmitSignal(AnimCompleteSignal);
         }

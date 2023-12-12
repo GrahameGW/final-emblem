@@ -40,10 +40,16 @@ namespace FinalEmblem.QueryModel
 
         private void ActionAnimationCompletedHandler()
         {
-            // if no other actions available end turn
-            // else:
             context.ChangeState(new IdleTacticsState(context));
-            context.Map.SelectTile(actor.Tile);
+
+            if (context.Level.HaveAllUnitsActed())
+            {
+                context.Level.NextTurn();
+            }
+            else
+            {
+                context.Map.SelectTile(actor.Tile);
+            }
         }
     }
 }
