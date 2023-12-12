@@ -1,18 +1,28 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace FinalEmblem.Core
 {
     public class AttackAction : IAction
     {
-        public Unit target;
+        public Unit Actor { get; set; }
+        public readonly Unit Target;
 
-        public AttackAction(Unit target)
+        public AttackAction(Unit actor, Unit target)
         {
-            this.target = target;
+            Actor = actor;
+            Target = target;
         }
 
-        public void Execute(Unit unit)
+        public ActionResult Execute()
         {
-            target.Damage(unit.Attack);
+            Target.Damage(Actor.Attack);
+
+            return new ActionResult
+            {
+                actor = Actor,
+                result = ActionResultId.Attacked,
+                affected = new List<Tile> { Target.Tile },
+            };
         }
     }
 }

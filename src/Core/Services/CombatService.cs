@@ -1,39 +1,61 @@
 ﻿using System;
 using System.Collections;
-using FinalEmblem.Core;
+using System.Collections.Generic;
 
-namespace FinalEmblem.src.Core.Services
+namespace FinalEmblem.Core
 {
     public static class CombatService
     {
-        private static Grid grid;
+        private static Level level;
 
-        public static void SetGridInstance(Grid instance)
+        public static void SetLevelInstance(Level instance)
         {
-            grid = instance;
+            level = instance;
         }
 
-        public static bool TryExecution(Unit unit, IAction action)
+        public static List<IAction> CalculateActionImplications(Unit actor, IAction action)
         {
-            action.Execute(unit);
-            // check for triggers and do stuff if triggered 
-            // all good for now
-            return true;  // return false if fails later
-        }
+            var actuals = new List<IAction> { action };
 
-        private static void KillAnyDeadUnits()
-        {
-            for (int i = 0; i < grid.Tiles.Length; i++)
+            if (action is MoveAction move)
             {
-                var unit = grid.Tiles[i].Unit;
-                if (unit == null) { continue; }
-
-                if (unit.HP <= 0)
+                for (int i = 0; i < move.Path.Count; i++)
                 {
-                    unit.ClearActions();
-                    unit.EnqueueAction(new DeathAction());
+                    if (move.Path[i].Unit == null) { continue; }
+
+                    if (move.Path[i].Unit?.Faction != actor.Faction)
+                    {
+                        var changedPath = new List<Tile>();
+                        changedPath.AddRange(move.Path);
+                        changedPath.RemoveRange(i, changedPath.Count - i);
+                        var changedMove = new MoveAction(actor, changedPath);
+                        var collision = new CollideAction(move.Path[i]);
+                        actuals = new List<IAction> { changedMove, collision };
+                        return actuals;
+                    }
                 }
             }
+            else if (action is AttackAction attack)
+            {
+                if (attack.Target.HP <= actor.Attack)
+                {
+                    actuals.Add(KillUnit(attack.Target));
+                }
+
+                actuals.Add(new WaitAction { Actor = actor });
+                return actuals;
+            }
+
+            return actuals;
+        }
+
+        private static DeathAction KillUnit(Unit deceased)
+        {
+            return new DeathAction
+            {
+                Actor = deceased,
+                OnDeathCallback = level.RemoveUnit
+            };
         }
     }
 }

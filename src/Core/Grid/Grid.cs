@@ -1,6 +1,4 @@
 ﻿using Godot;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace FinalEmblem.Core
 {
@@ -13,6 +11,7 @@ namespace FinalEmblem.Core
         public bool XZOrientation { get; private set; }
 
         public readonly Tile[] Tiles;
+
 
         public Grid(Vector2I size, Vector3 worldOrigin, Vector2 cellSize, bool xZOrientation = false, bool invertY = false)
         {
@@ -88,6 +87,4 @@ namespace FinalEmblem.Core
             }
         }
     }
-
-
 }

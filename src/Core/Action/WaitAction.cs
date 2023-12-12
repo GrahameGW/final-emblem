@@ -2,8 +2,11 @@
 {
     public class WaitAction : IAction
     {
-        public void Execute(Unit unit)
+        public Unit Actor { get; set; }
+
+        public ActionResult Execute()
         {
+            return new ActionResult(Actor, ActionResultId.Waited);
         }
     }
 }

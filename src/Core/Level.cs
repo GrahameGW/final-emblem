@@ -2,91 +2,63 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace FinalEmblem.Core
 {
     public class Level
     {
         public Faction CurrentFaction { get; private set; }
+        public List<Faction> Factions { get; private set; }
         public List<Unit> Units { get; private set; }
-        public List<Unit> ActionableUnits { get; private set; }
+        public List<Unit> ActingUnits { get; private set; }
 
-        public static Action<Faction> OnTurnStarted;
+        public event Action<Faction> OnTurnStarted;
         public static Action<Faction> OnTurnEnded;
 
-        private List<List<Unit>> factions = new();
         private readonly Grid grid;
 
-        public Level(Grid grid, List<List<Unit>> factions)
+        public Level(Grid grid, List<Unit> units)
         {
             this.grid = grid;
-            this.factions = factions;
-            Units = factions.SelectMany(u => u).ToList();
-            ActionableUnits = new();
+            Units = units;
+            Factions = units.Select(u => u.Faction).Distinct().ToList();
         }
 
-        public void StartTurn(Faction faction, List<Unit> units)
+        public void StartTurn(Faction faction)
         {
             CurrentFaction = faction;
-            ActionableUnits = units;
-
-            for (int i =  0; i < ActionableUnits.Count; i++)
-            {
-                ActionableUnits[i].HasMoved = false;
-                ActionableUnits[i].HasActed = false;
-                ActionableUnits[i].OnUnitHasActedChanged += _ => UnitActedHandler();
-                ActionableUnits[i].OnUnitDied += UnitDiedHandler;
-            }
-
             OnTurnStarted?.Invoke(CurrentFaction);
             GD.Print($"Starting turn for {CurrentFaction}");
+            ActingUnits = Units.Where(u => u.Faction == CurrentFaction).ToList();
+            for (int i = 0; i < ActingUnits.Count; i++)
+            {
+                ActingUnits[i].HasActed = ActingUnits[i].HasMoved = false;
+            }
         }
 
         public void EndTurn()
         {
             GD.Print($"Ending turn for {CurrentFaction}");
-            for (int i = 0; i < ActionableUnits.Count; i++)
-            {
-                ActionableUnits[i].HasMoved = false;
-                ActionableUnits[i].HasActed = false;
-                ActionableUnits[i].OnUnitHasActedChanged -= _ => UnitActedHandler();
-                ActionableUnits[i].OnUnitDied -= UnitDiedHandler;
-            }
-
             OnTurnEnded?.Invoke(CurrentFaction);
         }
 
-        public void StartNextTurn()
+        public void NextTurn()
         {
-            var current = factions.First(u => u[0].Faction == CurrentFaction);
-            int idx = factions.IndexOf(current);
-            idx = idx == factions.Count - 1 ? 0 : idx + 1;
-            StartTurn(factions[idx][0].Faction, factions[idx]);
+            EndTurn();
+            var index = Factions.IndexOf(CurrentFaction);
+            index = index == Factions.Count - 1 ? 0 : index + 1;
+            StartTurn(Factions[index]);
         }
 
-        public void UnitActedHandler() 
-        { 
-            if (ActionableUnits.Find(u => !u.HasActed) == null)
-            {
-                EndTurn();
-            }
-        }
-        public void UnitDiedHandler(Unit deceased)
+        public void RemoveUnit(Unit unit)
         {
-            Units.Remove(deceased);
-            var faction = deceased.Faction;
-            var deceasedFaction = factions.First(u => u[0].Faction == faction);
-            deceasedFaction.Remove(deceased);
+            Units.Remove(unit);
+            // will have stuff about end of game logic and stuff here
+        }
 
-            if (CurrentFaction == faction)
-            {
-                ActionableUnits.Remove(deceased);
-            }
 
-            if (deceasedFaction.Count == 0)
-            {
-                GD.Print($"Faction Eliminated: {faction}");
-            }
+        public bool HaveAllUnitsActed()
+        {
+            return ActingUnits.All(u => u.HasActed);
         }
     }
 }

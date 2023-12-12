@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b1efj2jwc5m53"]
+[gd_scene load_steps=16 format=3 uid="uid://d4blbwgry3ol0"]
 
 [ext_resource type="Script" path="res://src/Query/LevelManager.cs" id="1_62dkj"]
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="2_amato"]
@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://src/Query/ActionList.cs" id="6_swnid"]
 [ext_resource type="Script" path="res://src/Query/CurrentTurnDisplay.cs" id="7_2jper"]
 [ext_resource type="Script" path="res://src/Query/Tactics/TacticsController.cs" id="8_q8isx"]
-[ext_resource type="PackedScene" uid="uid://n3jfd2hk2dix" path="res://MoveTacticDesigner.tscn" id="9_yooa8"]
+[ext_resource type="PackedScene" uid="uid://cim5w46gaunua" path="res://MoveTacticDesigner.tscn" id="9_yooa8"]
 [ext_resource type="Script" path="res://src/Query/TokenController.cs" id="10_1ngve"]
 [ext_resource type="PackedScene" uid="uid://bchaxgrrm4d32" path="res://PlayerUnit.tscn" id="10_n2014"]
 [ext_resource type="PackedScene" uid="uid://b6u5fjtuva313" path="res://EnemyUnit.tscn" id="11_uubaa"]
@@ -421,7 +421,7 @@ texture = ExtResource("3_2ofpo")
 5:0/0 = 0
 6:0/0 = 0
 0:1/0 = 0
-1:1/next_alternative_id = 2
+1:1/next_alternative_id = 3
 1:1/0 = 0
 1:1/1 = 1
 1:1/1/modulate = Color(0.945098, 0.329412, 0.580392, 1)
@@ -505,10 +505,12 @@ script = ExtResource("10_1ngve")
 position = Vector2(344, 57)
 
 [node name="Enemy2" parent="Tokens" instance=ExtResource("11_uubaa")]
-position = Vector2(344, 180)
+position = Vector2(344, 263)
 
 [node name="Player1" parent="Tokens" instance=ExtResource("10_n2014")]
 position = Vector2(392, 278)
+Attack = 10000
 
 [node name="Player2" parent="Tokens" instance=ExtResource("10_n2014")]
 position = Vector2(183, 135)
+Attack = 10000

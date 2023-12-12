@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace FinalEmblem.Godot2D
+namespace FinalEmblem.QueryModel
 {
     public partial class UnitSprite : Sprite2D
     {

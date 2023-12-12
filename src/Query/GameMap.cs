@@ -1,14 +1,20 @@
 using Godot;
 using FinalEmblem.Core;
 using System.Collections.Generic;
+using System;
 
-namespace FinalEmblem.Godot2D
+namespace FinalEmblem.QueryModel
 {
     public partial class GameMap : TileMap
     {
         private Vector2 gridWorldOrigin;
         private Rect2I gameRect;
         private Grid grid;
+        private Tile selected;
+        private Tile underPointer;
+
+        public event Action<Tile> OnTileUnderMouseChanged;
+        public event Action<Tile> OnSelectedTileChanged;
 
         // CDL = Custom Data Layer
         private const string CDL_TERRAIN = "CDL_TERRAIN";
@@ -16,6 +22,23 @@ namespace FinalEmblem.Godot2D
         private const int TERRAIN_BASE_SOURCE = 1;
         private const int NAV_OVERLAY_LAYER = 2;
         private const int NAV_OVERLAY_SOURCE = 4;
+
+        public override void _UnhandledInput(InputEvent input)
+        {
+            var mouse = GetGlobalMousePosition();
+            var tile = GetGridTile(mouse);
+            
+            if (tile != underPointer) 
+            {
+                underPointer = tile;
+                //GD.Print($"Under pointer: {underPointer?.Coordinates}");
+                OnTileUnderMouseChanged?.Invoke(tile);
+            }
+            if (Input.IsActionPressed(InputAction.SUBMIT))
+            {
+                SelectTile(tile);
+            }
+        }
 
         public Grid GenerateGridFromMap()
         {
@@ -48,10 +71,39 @@ namespace FinalEmblem.Godot2D
             return grid;
         }
 
+        public void SetUnitPositionsFromTokens(List<UnitToken> tokens)
+        {
+            for (int i = 0; i < tokens.Count; i++)
+            {
+                var tile = GetGridTile(tokens[i].GlobalPosition);
+
+                tokens[i].Unit.Tile = tile;
+                tokens[i].GlobalPosition = new Vector2(tile.WorldPosition.X, tile.WorldPosition.Y);
+            }
+        }
+
+        private void GenerateMapFromGrid(Grid grid)
+        {
+            ErrorOnMislabeledTilesets(0, CDL_TERRAIN);
+            this.grid = grid;
+            foreach (var tile in grid.Tiles)
+            {
+                var atlasCoords = tile.Terrain == Terrain.Grass ? new Vector2I(1, 7) : new Vector2I(18, 4);
+                SetCell(0, tile.Coordinates, 0, atlasCoords);
+            }
+        }
+
         public Tile GetGridTile(Vector2 globalPos)
         {
             var tilePos = LocalToMap(ToLocal(globalPos));
             return grid.GetTile(tilePos - gameRect.Position);
+        }
+
+        public void SelectTile(Tile tile)
+        {
+            selected = tile;
+            GD.Print($"Selected: {selected?.Coordinates}. Unit: {selected.Unit}");
+            OnSelectedTileChanged?.Invoke(tile);
         }
 
         public void HighlightGameTiles(List<Tile> tiles, int alternative = 0)
@@ -86,19 +138,7 @@ namespace FinalEmblem.Godot2D
         {
             ClearLayer(NAV_OVERLAY_LAYER);
         }
-
-        /*
-        private void GenerateMapFromGrid(Grid grid)
-        {
-            ErrorOnMislabeledTilesets(0, CDL_TERRAIN);
-            this.grid = grid;
-            foreach (var tile in grid.tiles)
-            {
-                var atlasCoords = tile.Terrain.Index == TerrainIndex.Grass ? new Vector2I(1, 7) : new Vector2I(18, 4);
-                SetCell(0, tile.Coordinates, 0, atlasCoords);
-            }
-        }
-        */
+        
         private void ErrorOnMislabeledTilesets(int layerIndex, string layerName)
         {
             var layer = TileSet.GetCustomDataLayerName(layerIndex);
