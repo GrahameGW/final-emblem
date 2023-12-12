@@ -1,23 +1,26 @@
 ﻿using Godot;
 using FinalEmblem.Core;
 using System;
+using FinalEmblem.src.Query.Designers;
 
 namespace FinalEmblem.QueryModel
 {
     public partial class TacticsController : Node
     {
-        public QueryLevel Level { get; private set; }
+        public Level Level { get; private set; }
+        public TokenController Tokens { get; private set; }
         public GameMap Map { get; private set; }
-        public bool IsActive { get; set; }
+        public bool CanAcceptInput { get; set; }
 
         [Export] PackedScene moveDesigner;
 
         private TacticsState state;
 
-        public void Initialize(GameMap gameMap, QueryLevel level)
+        public void Initialize(GameMap gameMap, Level level, TokenController tokens)
         {
             Level = level;
             Map = gameMap;
+            Tokens = tokens;
             state = new IdleTacticsState(this);
 
             Level.OnTurnStarted += TurnStartedHandler;
@@ -43,19 +46,19 @@ namespace FinalEmblem.QueryModel
 
         public override void _UnhandledInput(InputEvent input)
         {
-            if (IsActive)
+            if (CanAcceptInput)
             {
                 state.HandleInput(input);
             }
         }
 
-        public void BuildTacticDesigner(UnitAction actionName, Unit unit)
+        public void BuildTacticDesigner(UnitTactic actionName, Unit unit)
         {
             ITacticDesigner designer = actionName switch
             {
-                UnitAction.Move => InstantiateMoveDesigner(unit.Tile),
-                UnitAction.Attack => InstantiateAttackDesigner(unit),
-                UnitAction.Wait => new WaitTacticDesigner(),
+                UnitTactic.Move => InstantiateMoveDesigner(unit.Tile),
+                UnitTactic.Attack => InstantiateAttackDesigner(unit),
+                UnitTactic.Wait => new WaitTacticDesigner(unit),
                 _ => throw new ArgumentOutOfRangeException(actionName.ToString())
             };
 
@@ -65,7 +68,7 @@ namespace FinalEmblem.QueryModel
         private MoveTacticDesigner InstantiateMoveDesigner(Tile start)
         {
             var designer = moveDesigner.Instantiate<MoveTacticDesigner>();
-            designer.Initialize(start);
+            designer.Initialize(start, Map);
             return designer;
         }
 
@@ -78,8 +81,8 @@ namespace FinalEmblem.QueryModel
 
         private void TurnStartedHandler(Faction faction)
         {
-            IsActive = faction == Faction.Player;
-            if (IsActive)
+            CanAcceptInput = faction == Faction.Player;
+            if (CanAcceptInput)
             {
                 var entry = new IdleTacticsState(this);
                 ChangeState(entry);

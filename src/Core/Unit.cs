@@ -53,9 +53,8 @@ namespace FinalEmblem.Core
 
         public bool HasMoved { get; set; }
 
-        public List<UnitAction> Actions { get; set; }
+        public List<UnitTactic> Actions { get; set; }
 
-        private Queue<IAction> actionQueue = new();
         private Tile _tile;
         private bool _hasActed;
         private int _move;
@@ -67,7 +66,7 @@ namespace FinalEmblem.Core
         public event Action<Unit> OnUnitDied;
         public event Action<Tile> OnTileChanged;
 
-        public List<UnitAction> GetAvailableActions()
+        public List<UnitTactic> GetAvailableActions()
         {
             if (HasActed)
             {
@@ -76,52 +75,10 @@ namespace FinalEmblem.Core
 
             if (HasMoved)
             {
-                return Actions.Where(a => a != UnitAction.Move).ToList();
+                return Actions.Where(a => a != UnitTactic.Move).ToList();
             }
 
             return Actions;
-        }
-
-        public void ClearActions()
-        {
-            actionQueue.Clear();
-        }
-        public void EnqueueAction(IAction action)
-        {
-            actionQueue.Enqueue(action);
-        }
-        public IAction DequeueAction()
-        {
-            if (actionQueue.Count == 0)
-            {
-                return null;
-            }
-            return actionQueue.Dequeue();
-        }
-        public IAction PeekAction()
-        {
-            if (actionQueue.Count > 0)
-            {
-                return actionQueue.Peek();
-            }
-            return null;
-        }
-        public void DoNextAction()
-        {
-            var action = DequeueAction();
-            action?.Execute(this);
-            // combatservice do trigger stuff
-            if (actionQueue.Count == 0)
-            {
-                if (action is MoveActionOld)
-                {
-                    HasMoved = true;
-                }
-                else
-                {
-                    HasActed = true;
-                }
-            }
         }
 
         public void Damage(int damage)

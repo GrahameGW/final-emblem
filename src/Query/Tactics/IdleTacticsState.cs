@@ -22,6 +22,11 @@ namespace FinalEmblem.QueryModel
                 context.Map.ClearTileHighlights();
             }
         }
+
+        public override void ExitState()
+        {
+            context.Map.ClearTileHighlights();
+        }
     }
 }
 

@@ -37,7 +37,7 @@ namespace FinalEmblem.QueryModel
             }
             if (Input.IsActionPressed(InputAction.SUBMIT))
             {
-                SetSelectedTile(tile);
+                SelectTile(tile);
             }
         }
 
@@ -72,19 +72,15 @@ namespace FinalEmblem.QueryModel
             return grid;
         }
 
-        public List<Unit> GenerateUnitsFromMap()
+        public void SetUnitPositionsFromTokens(List<UnitToken> tokens)
         {
-            var units = new List<Unit>();
-            var nodes = GetParent().FindNodesOfType(new List<UnitToken>());
-            for (int i = 0; i < nodes.Count; i++)
+            for (int i = 0; i < tokens.Count; i++)
             {
-                var tile = GetGridTile(nodes[i].GlobalPosition);
-                var unit = nodes[i].GenerateUnitFromToken();
-                unit.Tile = tile;
-                nodes[i].GlobalPosition = new Vector2(tile.WorldPosition.X, tile.WorldPosition.Y);
-                units.Add(nodes[i].Unit);
+                var tile = GetGridTile(tokens[i].GlobalPosition);
+
+                tokens[i].Unit.Tile = tile;
+                tokens[i].GlobalPosition = new Vector2(tile.WorldPosition.X, tile.WorldPosition.Y);
             }
-            return units;
         }
 
         private void GenerateMapFromGrid(Grid grid)
@@ -104,10 +100,10 @@ namespace FinalEmblem.QueryModel
             return grid.GetTile(tilePos - gameRect.Position);
         }
 
-        public void SetSelectedTile(Tile tile)
+        public void SelectTile(Tile tile)
         {
             selected = tile;
-            GD.Print($"Selected: {selected?.Coordinates}");
+            GD.Print($"Selected: {selected?.Coordinates}. Unit: {selected.Unit}");
             OnSelectedTileChanged?.Invoke(tile);
         }
 

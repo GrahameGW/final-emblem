@@ -1,4 +1,5 @@
 ﻿using FinalEmblem.Core;
+using System.Collections.Generic;
 
 namespace FinalEmblem.QueryModel
 {
@@ -15,13 +16,36 @@ namespace FinalEmblem.QueryModel
 
         public override void EnterState()
         {
-            var actuals = CombatService.CalculateActionImplications(action);
+            context.CanAcceptInput = false;
+            // choose prior to calculations because it's player intent, not what actually happens
+            if (action is MoveAction)
+            {
+                actor.HasMoved = true;
+            }
+            else
+            {
+                actor.HasActed = true;
+            }
+            
+            var actuals = CombatService.CalculateActionImplications(actor, action);
+            var results = new List<ActionResult>();
             for (int i = 0; i < actuals.Count; i++)
             {
-                actuals[i].Execute(actor);
+                var res = actuals[i].Execute();
+                results.Add(res);
             }
 
-            context.ChangeState(new ActionPlaybackTacticsState(context, actuals));
+            var queue = new Queue<ActionResult>(results);
+            context.Tokens.AnimateActionResults(queue, ActionAnimationCompletedHandler);
+        }
+
+        private void ActionAnimationCompletedHandler()
+        {
+            // if no other actions available end turn
+            // else:
+            context.CanAcceptInput = true;
+            context.ChangeState(new IdleTacticsState(context));
+            context.Map.SelectTile(actor.Tile);
         }
     }
 }

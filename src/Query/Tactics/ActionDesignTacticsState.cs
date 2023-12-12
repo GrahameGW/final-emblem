@@ -1,5 +1,6 @@
 ﻿using Godot;
 using FinalEmblem.Core;
+using FinalEmblem.src.Query.Designers;
 
 namespace FinalEmblem.QueryModel
 {
@@ -37,7 +38,7 @@ namespace FinalEmblem.QueryModel
             if (Input.IsActionPressed(InputAction.CANCEL))
             {
                 context.ChangeState(new IdleTacticsState(context));
-                context.Map.SetSelectedTile(unit.Tile);
+                context.Map.SelectTile(unit.Tile);
             }
         }
 

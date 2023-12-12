@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://bchaxgrrm4d32"]
+[gd_scene load_steps=8 format=3 uid="uid://bchaxgrrm4d32"]
 
-[ext_resource type="Script" path="res://src/2D/UnitNode.cs" id="1_w6sk8"]
+[ext_resource type="Script" path="res://src/Query/UnitToken.cs" id="1_p0042"]
 [ext_resource type="Texture2D" uid="uid://bvgkr2dpuc5l4" path="res://assets/03-soldier.png" id="1_wn86x"]
 [ext_resource type="Material" uid="uid://bajcmxt4sr0l0" path="res://assets/materials/mat_default.tres" id="2_cexhp"]
-[ext_resource type="Script" path="res://src/2D/UnitSprite.cs" id="4_o2teu"]
 [ext_resource type="Material" uid="uid://ckg7368b3occv" path="res://assets/materials/mat_grayscale.tres" id="5_02tdh"]
 
 [sub_resource type="Animation" id="Animation_j8syx"]
@@ -45,12 +44,14 @@ _data = {
 }
 
 [node name="Unit" type="Node2D"]
-script = ExtResource("1_w6sk8")
-Move = 10
-HP = 20
-Attack = 2
+script = ExtResource("1_p0042")
+Move = 5
+HP = 16
+Attack = 1
 Actions = Array[int]([0, 1, 2])
-travelSpeed = 5.0
+TravelSpeed = 5.0
+defaultMaterial = ExtResource("2_cexhp")
+unitActedMaterial = ExtResource("5_02tdh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = ExtResource("2_cexhp")
@@ -60,9 +61,6 @@ vframes = 4
 frame = 1
 region_enabled = true
 region_rect = Rect2(0, 0, 48, 64)
-script = ExtResource("4_o2teu")
-defaultMaterial = ExtResource("2_cexhp")
-unitActedMaterial = ExtResource("5_02tdh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

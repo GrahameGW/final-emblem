@@ -1,6 +1,6 @@
 ﻿namespace FinalEmblem.Core
 {
-    public enum UnitAction
+    public enum UnitTactic
     {
         Move,
         Attack,

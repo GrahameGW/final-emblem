@@ -1,12 +1,12 @@
 ﻿namespace FinalEmblem.Core
 {
-    public class WaitAction : IAction
+    public class DeathAction : IAction
     {
         public Unit Actor { get; set; }
-
+        
         public ActionResult Execute()
         {
-            return new ActionResult(Actor, ActionResultId.Waited);
+            return new ActionResult(Actor, ActionResultId.Died);
         }
     }
 }

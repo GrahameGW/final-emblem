@@ -7,12 +7,12 @@ namespace FinalEmblem.QueryModel
 {
     public partial class ActionList : ItemList
     {
-        private List<UnitAction> currentActions;
+        private List<UnitTactic> currentActions;
         private bool isPlayersTurn;
         private Unit unit;
         private TacticsController tactics;
 
-        public event Action<UnitAction> OnActionSelected;
+        public event Action<UnitTactic> OnActionSelected;
 
         public void Initialize(TacticsController tactics)
         {
@@ -31,10 +31,9 @@ namespace FinalEmblem.QueryModel
             if (tile?.Unit?.Faction != Faction.Player || !isPlayersTurn)
             {
                 unit = null;
-                Clear();
                 Hide();
             }
-            else if (unit != tile.Unit)
+            else 
             {
                 unit = tile.Unit;
                 GenerateActionList(unit);
@@ -45,10 +44,10 @@ namespace FinalEmblem.QueryModel
         private void GenerateActionList(Unit unit)
         {
             var actions = unit.GetAvailableActions();
-            currentActions = new List<UnitAction>();
+            currentActions = new List<UnitTactic>();
+            Clear();
 
             if (actions == null) { return; }
-
 
             for (int i = 0; i < actions.Count; i++)
             {

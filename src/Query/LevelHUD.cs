@@ -5,14 +5,14 @@ namespace FinalEmblem.QueryModel
 {
     public partial class LevelHUD : CanvasLayer
     {
-        private QueryLevel level;
+        private Level level;
         private GameMap map;
         private TacticsController tactics;
 
         private ActionList actionList;
         private CurrentTurnDisplay turnDisplay;
 
-        public void Initialize(QueryLevel level, GameMap map, TacticsController tactics)
+        public void Initialize(Level level, GameMap map, TacticsController tactics)
         {
             this.level = level;
             this.map = map;
@@ -42,7 +42,10 @@ namespace FinalEmblem.QueryModel
 
         private void SelectedTileChangedHandler(Tile tile)
         {
-            actionList.UpdatePanelForTile(tile);
+            if (tactics.CanAcceptInput)
+            {
+                actionList.UpdatePanelForTile(tile);
+            }
         }
 
         private void TurnStartedHandler(Faction faction)

@@ -13,33 +13,39 @@ namespace FinalEmblem.Core
             grid = instance;
         }
 
-        public static bool TryExecution(Unit unit, IAction action)
+        public static List<IAction> CalculateActionImplications(Unit actor, IAction action)
         {
-            action.Execute(unit);
-            // check for triggers and do stuff if triggered 
-            // all good for now
-            return true;  // return false if fails later
-        }
+            var actuals = new List<IAction> { action };
 
-        private static void KillAnyDeadUnits()
-        {
-            for (int i = 0; i < grid.Tiles.Length; i++)
+            if (action is MoveAction move)
             {
-                var unit = grid.Tiles[i].Unit;
-                if (unit == null) { continue; }
-
-                if (unit.HP <= 0)
+                for (int i = 0; i < move.Path.Count; i++)
                 {
-                    unit.ClearActions();
-                    unit.EnqueueAction(new DeathAction());
+                    if (move.Path[i].Unit == null) { continue; }
+
+                    if (move.Path[i].Unit?.Faction != actor.Faction)
+                    {
+                        var changedPath = new List<Tile>();
+                        changedPath.AddRange(move.Path);
+                        changedPath.RemoveRange(i, changedPath.Count - i);
+                        var changedMove = new MoveAction(actor, changedPath);
+                        var collision = new CollideAction(move.Path[i]);
+                        actuals = new List<IAction> { changedMove, collision };
+                        return actuals;
+                    }
                 }
             }
-        }
+            else if (action is AttackAction attack)
+            {
+                if (attack.Target.HP <= actor.Attack)
+                {
+                    var death = new DeathAction { Actor = attack.Target };
+                    actuals.Add(death);
+                    return actuals;
+                }
+            }
 
-        public static List<IAction> CalculateActionImplications(IAction action)
-        {
-            // for action result framework
-            return new List<IAction> { action };
+            return actuals;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using FinalEmblem.Core;
 using System;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.src.Query.Designers
 {
     public interface ITacticDesigner
     {

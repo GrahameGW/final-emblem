@@ -2,6 +2,7 @@
 using FinalEmblem.Core;
 using System.Collections.Generic;
 using System;
+using FinalEmblem.src.Query.Designers;
 
 namespace FinalEmblem.QueryModel
 {
@@ -9,6 +10,7 @@ namespace FinalEmblem.QueryModel
     {
         public Action<IAction> OnActionBuilt { get; set; }
 
+        private Unit attacker;
         private List<Tile> inRange;
         private GameMap map;
 
@@ -17,6 +19,7 @@ namespace FinalEmblem.QueryModel
         public void Initialize(Unit attacker, GameMap map)
         {
             this.map = map;
+            this.attacker = attacker;
             inRange = NavService.FindTilesInRange(1, attacker.Tile, includeStart: false);
             map.HighlightGameTiles(inRange, TILE_ALT_ID);
         }
@@ -26,7 +29,7 @@ namespace FinalEmblem.QueryModel
             // hard code attack enemy faction 
             if (inRange.Contains(tile) && tile.Unit?.Faction != Faction.Player)
             {
-                var action = new AttackAction(tile.Unit);
+                var action = new AttackAction(attacker, tile.Unit);
                 OnActionBuilt?.Invoke(action);
                 map.ClearTileHighlights();
                 QueueFree();

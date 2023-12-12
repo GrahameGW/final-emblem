@@ -1,6 +1,7 @@
 ﻿using Godot;
 using FinalEmblem.Core;
 using System;
+using FinalEmblem.src.Query.Designers;
 
 namespace FinalEmblem.QueryModel
 {
@@ -8,9 +9,16 @@ namespace FinalEmblem.QueryModel
     {
         public Action<IAction> OnActionBuilt { get; set; }
 
+        private readonly Unit unit;
+
+        public WaitTacticDesigner(Unit unit) 
+        {
+            this.unit = unit;
+        }
+
         public override void _EnterTree()
         {
-            OnActionBuilt?.Invoke(new WaitAction());
+            OnActionBuilt?.Invoke(new WaitAction { Actor = unit });
             QueueFree();
         }
     }

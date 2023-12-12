@@ -3,6 +3,7 @@ using FinalEmblem.Core;
 using System.Collections.Generic;
 using TiercelFoundry.GDUtils;
 using System;
+using FinalEmblem.src.Query.Designers;
 
 namespace FinalEmblem.QueryModel
 {
@@ -14,11 +15,23 @@ namespace FinalEmblem.QueryModel
         private List<Tile> tilesInRange;
         private List<Tile> currentPath = new();
         private Tile currentTile;
+        private GameMap map;
 
-        public void Initialize(Tile moveStart)
+        public void Initialize(Tile moveStart, GameMap map)
         {
             startTile = moveStart;
             tilesInRange = NavService.FindAvailableMoves(startTile.Unit.Move, startTile);
+            this.map = map;
+        }
+
+        public override void _EnterTree()
+        {
+            map.HighlightGameTiles(tilesInRange);
+        }
+
+        public override void _ExitTree()
+        {
+            map.ClearTileHighlights();
         }
 
         public void SetTileUnderMouse(Tile tile)
@@ -38,7 +51,7 @@ namespace FinalEmblem.QueryModel
         public void SetSelectedTile(Tile _)
         {
             if (currentPath == null) { return; }
-            var action = new MoveAction(currentPath);
+            var action = new MoveAction(startTile.Unit, currentPath);
             OnActionBuilt?.Invoke(action);
             QueueFree();
         }
