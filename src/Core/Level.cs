@@ -1,8 +1,6 @@
 ﻿using Godot;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
 namespace FinalEmblem.Core
 {
     public class Level
@@ -19,11 +17,6 @@ namespace FinalEmblem.Core
         {
             this.grid = grid;
             Units = units;
-
-            for (int i = 0; i < units.Count; i++)
-            {
-                // units[i].OnUnitHasActedChanged += UnitActedHandler;
-            }
         }
 
         public void StartTurn(Faction faction, List<Unit> units)
@@ -50,31 +43,11 @@ namespace FinalEmblem.Core
             */
         }
 
-        /*
-        public void UnitActedHandler()
+        public void RemoveUnit(Unit unit)
         {
-            if (ActionableUnits.Find(u => !u.HasActed) == null)
-            {
-                EndTurn();
-            }
-        }
-        */
-        public void UnitDiedHandler(Unit deceased)
-        {
-            Units.Remove(deceased);
-            var faction = deceased.Faction;
-            // var deceasedFaction = factions.First(u => u[0].Faction == faction);
-            // deceasedFaction.Remove(deceased);
+            Units.Remove(unit);
+            // will have stuff about end of game logic and stuff here
 
-            if (CurrentFaction == faction)
-            {
-            }
-            /*
-            if (deceasedFaction.Count == 0)
-            {
-                GD.Print($"Faction Eliminated: {faction}");
-            }
-            */
         }
     }
 }

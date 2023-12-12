@@ -54,7 +54,7 @@ namespace FinalEmblem.QueryModel
                 ActionResultId.Attacked => new AttackActionAnimator(actor, action.affected),
                 ActionResultId.Collided => throw new NotImplementedException(),
                 // ActionResultId.LostHp => throw new NotImplementedException(),
-                ActionResultId.Died => throw new NotImplementedException(),
+                ActionResultId.Died => new DeathActionAnimator(actor),
                 _ => throw new NotImplementedException(),
             };
         }

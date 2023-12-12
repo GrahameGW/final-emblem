@@ -509,6 +509,8 @@ position = Vector2(344, 263)
 
 [node name="Player1" parent="Tokens" instance=ExtResource("10_n2014")]
 position = Vector2(392, 278)
+Attack = 10000
 
 [node name="Player2" parent="Tokens" instance=ExtResource("10_n2014")]
 position = Vector2(183, 135)
+Attack = 10000

@@ -22,14 +22,13 @@ namespace FinalEmblem.QueryModel
             tokens.Initialize();
             gameMap.SetUnitPositionsFromTokens(tokens.Tokens);
             var units = tokens.Units;
-            grid.SetUnitList(units);
 
             level = new Level(grid, units);
             tactics.Initialize(gameMap, level, tokens);
             hud.Initialize(level, gameMap, tactics);
 
             NavService.SetGridInstance(grid);
-            CombatService.SetGridInstance(grid);
+            CombatService.SetLevelInstance(level);
 
             level.StartTurn(Faction.Player, units);
         }

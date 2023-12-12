@@ -6,11 +6,11 @@ namespace FinalEmblem.Core
 {
     public static class CombatService
     {
-        private static Grid grid;
+        private static Level level;
 
-        public static void SetGridInstance(Grid instance)
+        public static void SetLevelInstance(Level instance)
         {
-            grid = instance;
+            level = instance;
         }
 
         public static List<IAction> CalculateActionImplications(Unit actor, IAction action)
@@ -39,8 +39,7 @@ namespace FinalEmblem.Core
             {
                 if (attack.Target.HP <= actor.Attack)
                 {
-                    var death = new DeathAction { Actor = attack.Target };
-                    actuals.Add(death);
+                    actuals.Add(KillUnit(attack.Target));
                 }
 
                 actuals.Add(new WaitAction { Actor = actor });
@@ -48,6 +47,15 @@ namespace FinalEmblem.Core
             }
 
             return actuals;
+        }
+
+        private static DeathAction KillUnit(Unit deceased)
+        {
+            return new DeathAction
+            {
+                Actor = deceased,
+                OnDeathCallback = level.RemoveUnit
+            };
         }
     }
 }
