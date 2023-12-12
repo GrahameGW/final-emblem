@@ -36,6 +36,7 @@ namespace FinalEmblem.QueryModel
                 var result = results.Dequeue();
                 var animator = InitializeAnimator(result);
                 AddChild(animator);
+                animator.StartAnimation();
                 await ToSignal(animator, ActionAnimator.AnimCompleteSignal);
                 animator.QueueFree();
             }
@@ -50,9 +51,9 @@ namespace FinalEmblem.QueryModel
             {
                 ActionResultId.Moved => new MoveActionAnimator(actor, action.affected),
                 ActionResultId.Waited => new WaitActionAnimator(actor),
-                ActionResultId.Attacked => throw new NotImplementedException(),
+                ActionResultId.Attacked => new AttackActionAnimator(actor, action.affected),
                 ActionResultId.Collided => throw new NotImplementedException(),
-                ActionResultId.LostHp => throw new NotImplementedException(),
+                // ActionResultId.LostHp => throw new NotImplementedException(),
                 ActionResultId.Died => throw new NotImplementedException(),
                 _ => throw new NotImplementedException(),
             };

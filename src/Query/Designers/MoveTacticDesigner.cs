@@ -50,7 +50,7 @@ namespace FinalEmblem.QueryModel
 
         public void SetSelectedTile(Tile _)
         {
-            if (currentPath == null) { return; }
+            if (currentPath == null || currentPath.Count == 0) { return; }
             var action = new MoveAction(startTile.Unit, currentPath);
             OnActionBuilt?.Invoke(action);
             QueueFree();

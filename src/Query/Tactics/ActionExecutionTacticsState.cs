@@ -16,7 +16,6 @@ namespace FinalEmblem.QueryModel
 
         public override void EnterState()
         {
-            context.CanAcceptInput = false;
             // choose prior to calculations because it's player intent, not what actually happens
             if (action is MoveAction)
             {
@@ -43,7 +42,6 @@ namespace FinalEmblem.QueryModel
         {
             // if no other actions available end turn
             // else:
-            context.CanAcceptInput = true;
             context.ChangeState(new IdleTacticsState(context));
             context.Map.SelectTile(actor.Tile);
         }

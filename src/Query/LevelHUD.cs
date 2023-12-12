@@ -18,7 +18,6 @@ namespace FinalEmblem.QueryModel
             this.map = map;
             this.tactics = tactics;
 
-            map.OnSelectedTileChanged += SelectedTileChangedHandler;
             level.OnTurnStarted += TurnStartedHandler;
 
             actionList = GetNode<ActionList>("ActionList");
@@ -30,22 +29,9 @@ namespace FinalEmblem.QueryModel
             endTurnButton.Pressed += EndTurnButtonPressedHandler;
         }
 
-        public override void _ExitTree()
-        {
-            map.OnSelectedTileChanged -= SelectedTileChangedHandler;
-        }
-
         private void EndTurnButtonPressedHandler()
         {
             level.NextTurn();
-        }
-
-        private void SelectedTileChangedHandler(Tile tile)
-        {
-            if (tactics.CanAcceptInput)
-            {
-                actionList.UpdatePanelForTile(tile);
-            }
         }
 
         private void TurnStartedHandler(Faction faction)

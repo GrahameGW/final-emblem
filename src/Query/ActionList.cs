@@ -18,25 +18,26 @@ namespace FinalEmblem.QueryModel
         {
             this.tactics = tactics;
             ItemSelected += ItemClickedHandler;
-            UpdatePanelForTile(null);
+            tactics.OnUnitSelected += UnitSelectedHandler;
+            Hide();
         }
 
         public override void _ExitTree()
         {
             ItemSelected -= ItemClickedHandler;
+            tactics.OnUnitSelected -= UnitSelectedHandler;
         }
 
-        public void UpdatePanelForTile(Tile tile)
+        public void UnitSelectedHandler(Unit selected)
         {
-            if (tile?.Unit?.Faction != Faction.Player || !isPlayersTurn)
+            unit = selected;
+            if (selected == null || selected.HasActed || !tactics.IsIdleState)
             {
-                unit = null;
                 Hide();
             }
             else 
             {
-                unit = tile.Unit;
-                GenerateActionList(unit);
+                GenerateActionList(selected);
                 ToggleVisibilityByCount();
             }
         }

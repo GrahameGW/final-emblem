@@ -1,4 +1,6 @@
-﻿namespace FinalEmblem.QueryModel
+﻿using Godot;
+
+namespace FinalEmblem.QueryModel
 {
     public partial class WaitActionAnimator : ActionAnimator
     {
@@ -9,9 +11,10 @@
             this.token = token;
         }
 
-        public override void _EnterTree()
+        public override async void StartAnimation()
         {
             token.ToggleActedMaterial();
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
             EmitSignal(AnimCompleteSignal);
         }
     }

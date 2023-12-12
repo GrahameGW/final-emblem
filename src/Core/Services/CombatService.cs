@@ -41,8 +41,10 @@ namespace FinalEmblem.Core
                 {
                     var death = new DeathAction { Actor = attack.Target };
                     actuals.Add(death);
-                    return actuals;
                 }
+
+                actuals.Add(new WaitAction { Actor = actor });
+                return actuals;
             }
 
             return actuals;

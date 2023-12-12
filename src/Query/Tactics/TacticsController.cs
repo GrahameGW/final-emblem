@@ -10,11 +10,14 @@ namespace FinalEmblem.QueryModel
         public Level Level { get; private set; }
         public TokenController Tokens { get; private set; }
         public GameMap Map { get; private set; }
-        public bool CanAcceptInput { get; set; }
+        public bool IsActive { get; private set; }
+        public bool IsIdleState => state is IdleTacticsState;
+        
+        private TacticsState state;
 
         [Export] PackedScene moveDesigner;
 
-        private TacticsState state;
+        public event Action<Unit> OnUnitSelected;
 
         public void Initialize(GameMap gameMap, Level level, TokenController tokens)
         {
@@ -46,9 +49,9 @@ namespace FinalEmblem.QueryModel
 
         public override void _UnhandledInput(InputEvent input)
         {
-            if (CanAcceptInput)
+            if (IsActive) 
             {
-                state.HandleInput(input);
+                state.HandleInput(input); 
             }
         }
 
@@ -81,8 +84,8 @@ namespace FinalEmblem.QueryModel
 
         private void TurnStartedHandler(Faction faction)
         {
-            CanAcceptInput = faction == Faction.Player;
-            if (CanAcceptInput)
+            IsActive = faction == Faction.Player;
+            if (IsActive)
             {
                 var entry = new IdleTacticsState(this);
                 ChangeState(entry);
@@ -97,6 +100,7 @@ namespace FinalEmblem.QueryModel
         private void SelectedTileChangedHandler(Tile tile) 
         {
             state.SetSelectedTile(tile);
+            OnUnitSelected?.Invoke(tile.Unit);
         }
     }
 }

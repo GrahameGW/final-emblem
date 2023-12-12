@@ -21,7 +21,16 @@ namespace FinalEmblem.QueryModel
             this.map = map;
             this.attacker = attacker;
             inRange = NavService.FindTilesInRange(1, attacker.Tile, includeStart: false);
+        }
+
+        public override void _EnterTree()
+        {
             map.HighlightGameTiles(inRange, TILE_ALT_ID);
+        }
+
+        public override void _ExitTree()
+        {
+            map.ClearTileHighlights();
         }
 
         public virtual void SetSelectedTile(Tile tile) 

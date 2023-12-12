@@ -12,7 +12,8 @@ namespace FinalEmblem.QueryModel
 
         public override void SetSelectedTile(Tile tile)
         {
-            if (tile?.Unit?.Faction == Faction.Player && !tile.Unit.HasMoved)
+            var isPlayer = tile?.Unit?.Faction == Faction.Player;
+            if (isPlayer && !(tile.Unit.HasMoved || tile.Unit.HasActed))
             {
                 var inRange = NavService.FindAvailableMoves(tile.Unit.Move, tile);
                 context.Map.HighlightGameTiles(inRange);

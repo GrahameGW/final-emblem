@@ -1,7 +1,6 @@
 using Godot;
 using FinalEmblem.Core;
 using System.Collections.Generic;
-using TiercelFoundry.GDUtils;
 using System;
 
 namespace FinalEmblem.QueryModel
