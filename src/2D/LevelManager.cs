@@ -32,13 +32,23 @@ namespace FinalEmblem.QueryModel
             NavService.SetGridInstance(grid);
             CombatService.SetLevelInstance(Level);
 
-            Level.StartTurn(Faction.Player);
-        }
+            Level.OnGameEnded += EndGameHandler;
 
+            Level.StartTurn(Faction.Player);
+
+        }
 
         public void EndTurn()
         {
             Level.EndTurn();
+        }
+
+        private void EndGameHandler(Faction winner)
+        {
+            Level.OnGameEnded -= EndGameHandler;
+
+            GD.Print($"Winner: {winner}");
+            tactics.QueueFree();
         }
     }
 }

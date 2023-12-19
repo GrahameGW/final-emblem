@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bchaxgrrm4d32"]
 
-[ext_resource type="Script" path="res://src/Query/UnitToken.cs" id="1_p0042"]
+[ext_resource type="Script" path="res://src/2D/UnitToken.cs" id="1_p0042"]
 [ext_resource type="Texture2D" uid="uid://bvgkr2dpuc5l4" path="res://assets/03-soldier.png" id="1_wn86x"]
 [ext_resource type="Material" uid="uid://bajcmxt4sr0l0" path="res://assets/materials/mat_default.tres" id="2_cexhp"]
 [ext_resource type="Material" uid="uid://ckg7368b3occv" path="res://assets/materials/mat_grayscale.tres" id="5_02tdh"]

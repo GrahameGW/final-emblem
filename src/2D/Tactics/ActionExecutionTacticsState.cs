@@ -42,6 +42,17 @@ namespace FinalEmblem.QueryModel
         {
             context.ChangeState(new IdleTacticsState(context));
 
+
+        }
+
+        public override void ExitState()
+        {
+            context.Level.EndGameIfFactionWon(out Faction? winner);
+            if (winner != null)
+            {
+                return;
+            }
+
             if (context.Level.HaveAllUnitsActed())
             {
                 context.Level.NextTurn();

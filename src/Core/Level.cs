@@ -13,6 +13,7 @@ namespace FinalEmblem.Core
 
         public event Action<Faction> OnTurnStarted;
         public static Action<Faction> OnTurnEnded;
+        public event Action<Faction> OnGameEnded;
 
         private readonly Grid grid;
 
@@ -55,10 +56,29 @@ namespace FinalEmblem.Core
             // will have stuff about end of game logic and stuff here
         }
 
-
         public bool HaveAllUnitsActed()
         {
             return ActingUnits.All(u => u.HasActed);
+        }
+
+        public void EndGameIfFactionWon(out Faction? winner)
+        {
+            winner = null;
+
+            if (!Units.Any(u => u.Faction == Faction.Player))
+            {
+                winner = Faction.Enemy;
+            }
+            else if (!Units.Any(u => u.Faction == Faction.Enemy))
+            {
+                winner = Faction.Player;
+            }
+            
+            if (winner != null)
+            {
+                EndTurn();
+                OnGameEnded?.Invoke((Faction) winner);
+            }
         }
     }
 }
