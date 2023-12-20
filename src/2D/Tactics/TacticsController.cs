@@ -1,9 +1,7 @@
 ﻿using Godot;
-using FinalEmblem.Core;
 using System;
-using FinalEmblem.src.Query.Designers;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public partial class TacticsController : Node
     {

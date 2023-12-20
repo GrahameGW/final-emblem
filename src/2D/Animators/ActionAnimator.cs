@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public abstract partial class ActionAnimator : Node
     {

@@ -6,6 +6,7 @@ namespace FinalEmblem.Core
 {
     public class Level
     {
+        public int Round { get; private set; }
         public Faction CurrentFaction { get; private set; }
         public List<Faction> Factions { get; private set; }
         public List<Unit> Units { get; private set; }
@@ -15,13 +16,16 @@ namespace FinalEmblem.Core
         public static Action<Faction> OnTurnEnded;
         public event Action<Faction> OnGameEnded;
 
-        private readonly Grid grid;
+        public readonly Grid grid;
+        private readonly IVictoryCondition[] victories;
 
-        public Level(Grid grid, List<Unit> units)
+        public Level(Grid grid, IVictoryCondition[] wins, List<Unit> units, List<Faction> factions)
         {
             this.grid = grid;
+            victories = wins;
             Units = units;
-            Factions = units.Select(u => u.Faction).Distinct().ToList();
+            Factions = factions;
+            Round = 0;
         }
 
         public void StartTurn(Faction faction)
@@ -34,20 +38,16 @@ namespace FinalEmblem.Core
             {
                 ActingUnits[i].HasActed = ActingUnits[i].HasMoved = false;
             }
+            if (faction == Factions[0])
+            {
+                Round += 1;
+            }
         }
 
         public void EndTurn()
         {
             GD.Print($"Ending turn for {CurrentFaction}");
             OnTurnEnded?.Invoke(CurrentFaction);
-        }
-
-        public void NextTurn()
-        {
-            EndTurn();
-            var index = Factions.IndexOf(CurrentFaction);
-            index = index == Factions.Count - 1 ? 0 : index + 1;
-            StartTurn(Factions[index]);
         }
 
         public void RemoveUnit(Unit unit)

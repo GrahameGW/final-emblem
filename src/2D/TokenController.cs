@@ -1,26 +1,22 @@
 ﻿using Godot;
-using FinalEmblem.Core;
+
 using System.Collections.Generic;
 using TiercelFoundry.GDUtils;
 using System.Linq;
 using System;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public partial class TokenController : Node
     {
-        public List<UnitToken> Tokens { get; private set; }
-        public List<Unit> Units
-        {
-            get => Tokens.Select(t => t.Unit).ToList();
-        }
+        public List<Unit> Units { get; private set; }
 
         public void Initialize()
         {
-            Tokens = this.FindNodesOfType(new List<UnitToken>());
-            for (int i = 0; i < Tokens.Count; i++)
+            Units = this.FindNodesOfType(new List<Unit>());
+            for (int i = 0; i < Units.Count; i++)
             {
-                Tokens[i].GenerateUnitFromToken();
+               // Tokens[i].GenerateUnitFromToken();
             }
 
             Level.OnTurnEnded += _ => TurnEndedHandler();
@@ -29,11 +25,6 @@ namespace FinalEmblem.QueryModel
         public override void _ExitTree()
         {
             Level.OnTurnEnded -= _ => TurnEndedHandler();
-        }
-
-        public UnitToken GetTokenFromUnit(Unit unit)
-        {
-            return Tokens.FirstOrDefault(t => t.Unit == unit);
         }
 
         public async void AnimateActionResults(Queue<ActionResult> results, Action onAnimationCompleted)
@@ -53,24 +44,23 @@ namespace FinalEmblem.QueryModel
 
         private ActionAnimator InitializeAnimator(ActionResult action)
         {
-            var actor = GetTokenFromUnit(action.actor);
             return action.result switch
             {
-                ActionResultId.Moved => new MoveActionAnimator(actor, action.affected),
-                ActionResultId.Waited => new WaitActionAnimator(actor),
-                ActionResultId.Attacked => new AttackActionAnimator(actor, action.affected),
+                ActionResultId.Moved => new MoveActionAnimator(action.actor, action.affected),
+                ActionResultId.Waited => new WaitActionAnimator(action.actor),
+                ActionResultId.Attacked => new AttackActionAnimator(action.actor, action.affected),
                 ActionResultId.Collided => throw new NotImplementedException(),
                 // ActionResultId.LostHp => throw new NotImplementedException(),
-                ActionResultId.Died => new DeathActionAnimator(actor),
+                ActionResultId.Died => new DeathActionAnimator(action.actor),
                 _ => throw new NotImplementedException(),
             };
         }
 
         private void TurnEndedHandler()
         {
-            for (int i = 0; i < Tokens.Count; i++)
+            for (int i = 0; i < Units.Count; i++)
             {
-                Tokens[i].ToggleActedMaterial(false);
+                Units[i].ToggleActedMaterial(false);
             }
         }
     }

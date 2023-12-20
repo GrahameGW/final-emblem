@@ -1,10 +1,8 @@
 ﻿using Godot;
-using FinalEmblem.Core;
 using System.Collections.Generic;
 using System;
-using FinalEmblem.src.Query.Designers;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public partial class AttackTacticDesigner : Node, ITacticDesigner
     {

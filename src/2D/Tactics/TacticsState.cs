@@ -1,7 +1,7 @@
-﻿using FinalEmblem.Core;
+﻿
 using Godot;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public abstract class TacticsState : IStateFSM
     {       

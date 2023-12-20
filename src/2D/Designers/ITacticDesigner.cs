@@ -1,7 +1,6 @@
-﻿using FinalEmblem.Core;
-using System;
+﻿using System;
 
-namespace FinalEmblem.src.Query.Designers
+namespace FinalEmblem.Core
 {
     public interface ITacticDesigner
     {

@@ -1,7 +1,7 @@
 ﻿using Godot;
-using FinalEmblem.Core;
 
-namespace FinalEmblem.QueryModel
+
+namespace FinalEmblem.Core
 {
     public partial class LevelHUD : CanvasLayer
     {
@@ -31,7 +31,7 @@ namespace FinalEmblem.QueryModel
 
         private void EndTurnButtonPressedHandler()
         {
-            level.NextTurn();
+            level.EndTurn();
         }
 
         private void TurnStartedHandler(Faction faction)

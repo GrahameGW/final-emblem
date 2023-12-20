@@ -1,4 +1,4 @@
-﻿namespace FinalEmblem.QueryModel
+﻿namespace FinalEmblem.Core
 {
     public static class InputAction
     {

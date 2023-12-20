@@ -1,7 +1,7 @@
-﻿using FinalEmblem.Core;
+﻿
 using System.Collections.Generic;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public class ActionExecutionTacticsState : TacticsState
     {
@@ -55,7 +55,7 @@ namespace FinalEmblem.QueryModel
 
             if (context.Level.HaveAllUnitsActed())
             {
-                context.Level.NextTurn();
+                context.Level.EndTurn();
             }
             else
             {

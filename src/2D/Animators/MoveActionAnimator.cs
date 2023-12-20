@@ -1,13 +1,13 @@
-﻿using FinalEmblem.Core;
+﻿
 using System.Collections.Generic;
 using TiercelFoundry.GDUtils;
 using Godot;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public partial class MoveActionAnimator : ActionAnimator
     {
-        private UnitToken token;
+        private Unit actor;
         private List<Tile> path;
         private float speed;
         private float stepSize;
@@ -18,11 +18,11 @@ namespace FinalEmblem.QueryModel
 
         private const float ROOT_TWO = 1.41421356f;
 
-        public MoveActionAnimator(UnitToken token, List<Tile> path)
+        public MoveActionAnimator(Unit unit, List<Tile> path)
         {
             this.path = path;
-            this.token = token;
-            speed = token.TravelSpeed;
+            actor = unit;
+            speed = unit.TravelSpeed;
             progress = 0f;
             posIndex = 0;
         }
@@ -41,11 +41,11 @@ namespace FinalEmblem.QueryModel
         public override void _Process(double deltaTime)
         {
             progress += stepSize * (float)deltaTime;
-            token.Position = start.Lerp(end, progress);
+            actor.Position = start.Lerp(end, progress);
 
             if (progress >= 1)
             {
-                token.Position = end;
+                actor.Position = end;
                 posIndex += 1;
                 if (posIndex == path.Count - 1)
                 {

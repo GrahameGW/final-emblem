@@ -1,7 +1,7 @@
 ﻿using Godot;
-using FinalEmblem.Core;
 
-namespace FinalEmblem.QueryModel
+
+namespace FinalEmblem.Core
 {
     public partial class CurrentTurnDisplay : Control
     {

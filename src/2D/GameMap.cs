@@ -1,9 +1,9 @@
 using Godot;
-using FinalEmblem.Core;
+
 using System.Collections.Generic;
 using System;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public partial class GameMap : TileMap
     {
@@ -71,13 +71,13 @@ namespace FinalEmblem.QueryModel
             return grid;
         }
 
-        public void SetUnitPositionsFromTokens(List<UnitToken> tokens)
+        public void SetUnitPositionsFromTokens(List<Unit> tokens)
         {
             for (int i = 0; i < tokens.Count; i++)
             {
                 var tile = GetGridTile(tokens[i].GlobalPosition);
 
-                tokens[i].Unit.Tile = tile;
+                tokens[i].Tile = tile;
                 tokens[i].GlobalPosition = new Vector2(tile.WorldPosition.X, tile.WorldPosition.Y);
             }
         }

@@ -1,19 +1,19 @@
 ﻿using Godot;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public partial class WaitActionAnimator : ActionAnimator
     {
-        private UnitToken token;
+        private Unit actor;
 
-        public WaitActionAnimator(UnitToken token) 
+        public WaitActionAnimator(Unit unit) 
         {
-            this.token = token;
+            actor = unit;
         }
 
         public override async void StartAnimation()
         {
-            token.ToggleActedMaterial(true);
+            actor.ToggleActedMaterial(true);
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
             EmitSignal(AnimCompleteSignal);
         }

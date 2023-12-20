@@ -1,8 +1,6 @@
 ﻿using Godot;
-using FinalEmblem.Core;
-using FinalEmblem.src.Query.Designers;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public class ActionDesignTacticsState : TacticsState
     {

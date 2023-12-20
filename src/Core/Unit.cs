@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
+using Godot.Collections;
+using TiercelFoundry.GDUtils;
 
 namespace FinalEmblem.Core
 {
-    public class Unit
+    public partial class Unit : Node2D
     {
         public Tile Tile
         {
@@ -20,6 +23,7 @@ namespace FinalEmblem.Core
                 OnTileChanged?.Invoke(value);
             }
         }
+        public List<UnitTactic> Actions { get; private set; }
         public bool HasActed 
         { 
             get => _hasActed; 
@@ -29,8 +33,10 @@ namespace FinalEmblem.Core
                 OnUnitHasActedChanged?.Invoke(value);
             }
         }
+        public bool HasMoved { get; set; }
 
-        public int Move
+        [ExportGroup("Unit Stats")]
+        [Export] public int Move
         {
             get => _move;
             set
@@ -39,7 +45,7 @@ namespace FinalEmblem.Core
                 OnUnitMoveChanged?.Invoke(value);
             }
         }
-        public int HP { 
+        [Export] public int HP { 
             get => _hp;
             set
             {
@@ -47,24 +53,40 @@ namespace FinalEmblem.Core
                 OnUnitHpChanged?.Invoke(value);
             }
         }
-        public int MaxHP { get; set; }
-        public int Attack { get; set; }
-        public Faction Faction { get; set; }
+        [Export] public int MaxHP { get; set; }
+        [Export] public int Attack { get; set; }
+        [Export] public Faction Faction { get; set; }
+        [Export] Array<UnitTactic> actions;
 
-        public bool HasMoved { get; set; }
+        [ExportGroup("Playback")]
+        [Export] public float TravelSpeed { get; private set; }
 
-        public List<UnitTactic> Actions { get; set; }
+        [ExportGroup("Materials")]
+        [Export] Material defaultMaterial;
+        [Export] Material unitActedMaterial;
 
         private Tile _tile;
         private bool _hasActed;
         private int _move;
         private int _hp;
+        private Sprite2D sprite;
 
         public event Action<int> OnUnitMoveChanged;
         public event Action<int> OnUnitHpChanged;
         public event Action<bool> OnUnitHasActedChanged;
         public event Action<Unit> OnUnitDied;
         public event Action<Tile> OnTileChanged;
+
+
+        public override void _Ready()
+        {
+            Actions = actions.ToList();
+        }
+
+        public override void _EnterTree()
+        {
+            sprite = this.FindChildOfType<Sprite2D>();
+        }
 
         public List<UnitTactic> GetAvailableActions()
         {
@@ -88,6 +110,11 @@ namespace FinalEmblem.Core
             {
                 HP = 0;
             }
+        }
+
+        public void ToggleActedMaterial(bool hasActed)
+        {
+            sprite.Material = hasActed ? unitActedMaterial : defaultMaterial;
         }
     }
 }

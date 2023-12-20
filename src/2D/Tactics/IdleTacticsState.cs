@@ -1,7 +1,7 @@
-﻿using FinalEmblem.Core;
+﻿
 
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public class IdleTacticsState : TacticsState
     {

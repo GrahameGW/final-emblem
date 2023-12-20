@@ -1,14 +1,14 @@
 ﻿using Godot;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public partial class DeathActionAnimator : ActionAnimator
     {
-        private UnitToken actor;
+        private Unit actor;
 
-        public DeathActionAnimator(UnitToken token)
+        public DeathActionAnimator(Unit unit)
         {
-            actor = token;
+            actor = unit;
         }
 
         public override async void StartAnimation()

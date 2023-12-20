@@ -1,11 +1,9 @@
 ﻿using Godot;
-using FinalEmblem.Core;
 using System.Collections.Generic;
 using TiercelFoundry.GDUtils;
 using System;
-using FinalEmblem.src.Query.Designers;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public partial class MoveTacticDesigner : Line2D, ITacticDesigner
     {

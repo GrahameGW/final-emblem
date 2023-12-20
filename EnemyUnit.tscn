@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://b6u5fjtuva313"]
+[gd_scene load_steps=7 format=3 uid="uid://b6u5fjtuva313"]
 
-[ext_resource type="Script" path="res://src/2D/UnitToken.cs" id="1_v6g8a"]
+[ext_resource type="Script" path="res://src/Core/Unit.cs" id="1_4dptk"]
 [ext_resource type="Material" uid="uid://bajcmxt4sr0l0" path="res://assets/materials/mat_default.tres" id="2_3l0cf"]
 [ext_resource type="Texture2D" uid="uid://bvgkr2dpuc5l4" path="res://assets/03-soldier.png" id="2_uowe4"]
-[ext_resource type="Material" uid="uid://ckg7368b3occv" path="res://assets/materials/mat_grayscale.tres" id="5_wln0g"]
 
 [sub_resource type="Animation" id="Animation_j8syx"]
 length = 0.001
@@ -45,15 +44,7 @@ _data = {
 
 [node name="Unit" type="Node2D"]
 z_index = 1
-script = ExtResource("1_v6g8a")
-Move = 3
-HP = 4
-Attack = 2
-Faction = 1
-Actions = Array[int]([0, 1, 2])
-TravelSpeed = 5.0
-defaultMaterial = ExtResource("2_3l0cf")
-unitActedMaterial = ExtResource("5_wln0g")
+script = ExtResource("1_4dptk")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = ExtResource("2_3l0cf")

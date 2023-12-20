@@ -1,9 +1,9 @@
-﻿using FinalEmblem.Core;
+﻿
 using Godot;
 using System;
 using System.Collections.Generic;
 
-namespace FinalEmblem.QueryModel
+namespace FinalEmblem.Core
 {
     public partial class ActionList : ItemList
     {

@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://d4blbwgry3ol0"]
 
-[ext_resource type="Script" path="res://src/2D/LevelManager.cs" id="1_orheb"]
+[ext_resource type="Script" path="res://src/Core/Level.cs" id="1_orheb"]
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="2_6mwdb"]
 [ext_resource type="Texture2D" uid="uid://dmutbv5x2wohq" path="res://assets/16x16 Area Select.png" id="3_eq5p1"]
 [ext_resource type="Script" path="res://src/2D/GameMap.cs" id="4_wevah"]
