@@ -13,27 +13,28 @@
         {
             _context = context;
             SelectedTileChangedHandler(selectedTile);
-            _context.map.OnSelectedTileChanged += SelectedTileChangedHandler;
+            _context.Map.OnSelectedTileChanged += SelectedTileChangedHandler;
         }
 
         public override void ExitState()
         {
-            _context.map.ClearTileHighlights();
-            _context.map.OnSelectedTileChanged -= SelectedTileChangedHandler;
+            _context.Map.ClearTileHighlights();
+            _context.Map.OnSelectedTileChanged -= SelectedTileChangedHandler;
         }
 
         private void SelectedTileChangedHandler(Tile tile)
         {
             selectedTile = tile;
+            _context.SelectedTile = tile;
             bool tileIsEmpty = tile == null || tile.Unit == null;
             if (tileIsEmpty || tile.Unit.Faction != Faction.Player)
             {
-                _context.map.ClearTileHighlights();
+                _context.Map.ClearTileHighlights();
             }
             else
             {
                 var inRange = NavService.FindAvailableMoves(tile.Unit.Move, tile);
-                _context.map.HighlightGameTiles(inRange);
+                _context.Map.HighlightGameTiles(inRange);
             }
         }
     }

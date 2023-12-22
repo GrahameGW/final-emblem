@@ -2,7 +2,7 @@
 {
     public interface IVictoryCondition
     {
-        bool TestCondition(Level level);
+        Faction? TestCondition(Game level);
     }
 }
 

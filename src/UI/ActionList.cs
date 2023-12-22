@@ -10,28 +10,28 @@ namespace FinalEmblem.Core
         private List<UnitTactic> currentActions;
         private bool isPlayersTurn;
         private Unit unit;
-        private TacticsController tactics;
+        private PlayerController player;
 
         public event Action<UnitTactic> OnActionSelected;
 
-        public void Initialize(TacticsController tactics)
+        public void Initialize(PlayerController player)
         {
-            this.tactics = tactics;
+            this.player = player;
             ItemSelected += ItemClickedHandler;
-            tactics.OnUnitSelected += UnitSelectedHandler;
+            player.OnUnitSelected += UnitSelectedHandler;
             Hide();
         }
 
         public override void _ExitTree()
         {
             ItemSelected -= ItemClickedHandler;
-            tactics.OnUnitSelected -= UnitSelectedHandler;
+            player.OnUnitSelected -= UnitSelectedHandler;
         }
 
         public void UnitSelectedHandler(Unit selected)
         {
             unit = selected;
-            if (selected == null || selected.HasActed || !tactics.IsIdleState)
+            if (selected == null || selected.HasActed || selected.Faction != Faction.Player)
             {
                 Hide();
             }
@@ -80,7 +80,7 @@ namespace FinalEmblem.Core
 
         private void ItemClickedHandler(long index)
         {
-            tactics.BuildTacticDesigner(currentActions[(int)index], unit);
+            player.BuildTacticDesigner(currentActions[(int)index], unit);
             Hide();
         }
     }

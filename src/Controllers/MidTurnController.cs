@@ -4,10 +4,8 @@ namespace FinalEmblem.Core
 {
     public partial class MidTurnController : ControllerBase
     {
-        public MidTurnController(Level level) : base(level)
-        {
-        }
-
+        public override string DebugName => "MidTurnController";
+        
         public override async void _EnterTree()
         {
             GD.Print("In between turns!");

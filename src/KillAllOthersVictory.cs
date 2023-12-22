@@ -8,9 +8,16 @@ namespace FinalEmblem.Core
 
         public KillAllOthersVictory(Faction faction) { this.faction = faction; }
 
-        public bool TestCondition(Level level) 
+        public Faction? TestCondition(Game level) 
         {
-            return level.Units.All(u => u.Faction == faction);
+            if (level.Units.All(u => u.Faction == faction))
+            {
+                return faction;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

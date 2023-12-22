@@ -5,23 +5,39 @@ namespace FinalEmblem.Core
 {
     public partial class PlayerController : ControllerBase
     {
+        public override string DebugName => "PlayerController";
+
         public PlayerState State { get; private set; }
+        public Game Level { get; private set; }
+        public GameMap Map { get; private set; }
+        public Tile SelectedTile
+        {
+            get => _selectedTile;
+            set
+            {
+                _selectedTile = value;
+                OnUnitSelected?.Invoke(value?.Unit);
+            }
+        }
 
-        public readonly GameMap map;
+        private Tile _selectedTile;
 
-        [Export] PackedScene moveDesigner;
+        public event Action<Unit> OnUnitSelected;
 
-        public PlayerController(Level level, GameMap map) : base(level) 
+        public void Initialize(Game level, GameMap map)
         {
             Faction = Faction.Player;
-            this.map = map;
+            Level = level;
+            this.Map = map;
         }
         
         public override void _EnterTree()
         {
-            level.StartTurn(Faction);
+            Level.OnTurnEnded += TurnEndedHandler;
+            Level.StartTurn(Faction);
             State = new InitialPlayerState();
             State.EnterState(this);
+            GD.Print("Entering InitialPlayerState");
         }
 
         public override void _UnhandledInput(InputEvent input)
@@ -38,6 +54,7 @@ namespace FinalEmblem.Core
         {
             State.ExitState();
             State = null;
+            Level.OnTurnEnded -=  TurnEndedHandler;
         }
 
         public void ChangeState(PlayerState next)
@@ -52,27 +69,19 @@ namespace FinalEmblem.Core
         {
             ITacticDesigner designer = actionName switch
             {
-                UnitTactic.Move => InstantiateMoveDesigner(unit.Tile),
-                UnitTactic.Attack => InstantiateAttackDesigner(unit),
-                UnitTactic.Wait => new WaitTacticDesigner(unit),
+                UnitTactic.Move => DesignerService.GetMoveDesigner(unit.Tile, Map),
+                UnitTactic.Attack => DesignerService.GetAttackTacticDesigner(unit, Map),
+                UnitTactic.Wait => DesignerService.GetWaitTacticDesigner(unit),
                 _ => throw new ArgumentOutOfRangeException(actionName.ToString())
             };
 
             ChangeState(new ActionDesignPlayerState(designer, unit));
         }
 
-        private MoveTacticDesigner InstantiateMoveDesigner(Tile start)
+        private void TurnEndedHandler()
         {
-            var designer = moveDesigner.Instantiate<MoveTacticDesigner>();
-            designer.Initialize(start, map);
-            return designer;
-        }
-
-        private AttackTacticDesigner InstantiateAttackDesigner(Unit attacker)
-        {
-            var designer = new AttackTacticDesigner();
-            designer.Initialize(attacker, map);
-            return designer;
+            SelectedTile = null;
+            ReleaseControl();
         }
     }
 }

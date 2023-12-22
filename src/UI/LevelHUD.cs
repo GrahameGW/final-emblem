@@ -5,23 +5,23 @@ namespace FinalEmblem.Core
 {
     public partial class LevelHUD : CanvasLayer
     {
-        private Level level;
+        private Game level;
         private GameMap map;
-        private TacticsController tactics;
+        private PlayerController player;
 
         private ActionList actionList;
         private CurrentTurnDisplay turnDisplay;
 
-        public void Initialize(Level level, GameMap map, TacticsController tactics)
+        public void Initialize(Game level, GameMap map, PlayerController player)
         {
             this.level = level;
             this.map = map;
-            this.tactics = tactics;
+            this.player = player;
 
             level.OnTurnStarted += TurnStartedHandler;
 
             actionList = GetNode<ActionList>("ActionList");
-            actionList.Initialize(tactics);
+            actionList.Initialize(player);
 
             turnDisplay = GetNode<CurrentTurnDisplay>("CurrentTurnDisplay");
 

@@ -1,30 +1,23 @@
 ﻿using Godot;
-
 using System.Collections.Generic;
-using TiercelFoundry.GDUtils;
-using System.Linq;
 using System;
 
 namespace FinalEmblem.Core
 {
-    public partial class TokenController : Node
+    public partial class AnimationController : Node
     {
-        public List<Unit> Units { get; private set; }
+        private Game level;
+        private ActionAnimator animator;
 
-        public void Initialize()
+        public void Initialize(Game level)
         {
-            Units = this.FindNodesOfType(new List<Unit>());
-            for (int i = 0; i < Units.Count; i++)
-            {
-               // Tokens[i].GenerateUnitFromToken();
-            }
-
-            Level.OnTurnEnded += _ => TurnEndedHandler();
+            this.level = level;
+            level.OnTurnEnded += TurnEndedHandler;
         }
 
         public override void _ExitTree()
         {
-            Level.OnTurnEnded -= _ => TurnEndedHandler();
+            level.OnTurnEnded -= TurnEndedHandler;
         }
 
         public async void AnimateActionResults(Queue<ActionResult> results, Action onAnimationCompleted)
@@ -32,17 +25,18 @@ namespace FinalEmblem.Core
             while (results.Count > 0)
             {
                 var result = results.Dequeue();
-                var animator = InitializeAnimator(result);
+                animator = InitializeAnimator(result);
                 AddChild(animator);
                 animator.StartAnimation();
                 await ToSignal(animator, ActionAnimator.AnimCompleteSignal);
                 animator.QueueFree();
             }
 
+            await ToSignal(animator, "tree_exited");
             onAnimationCompleted.Invoke();
         }
 
-        private ActionAnimator InitializeAnimator(ActionResult action)
+        private static ActionAnimator InitializeAnimator(ActionResult action)
         {
             return action.result switch
             {
@@ -58,9 +52,9 @@ namespace FinalEmblem.Core
 
         private void TurnEndedHandler()
         {
-            for (int i = 0; i < Units.Count; i++)
+            for (int i = 0; i < level.Units.Count; i++)
             {
-                Units[i].ToggleActedMaterial(false);
+                level.Units[i].ToggleActedMaterial(false);
             }
         }
     }

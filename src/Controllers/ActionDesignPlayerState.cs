@@ -17,8 +17,8 @@ namespace FinalEmblem.Core
         {
             _context = context;
             designer.OnActionBuilt += ActionBuiltHandler;
-            _context.map.OnTileUnderMouseChanged += TileUnderMouseChangedHandler;
-            _context.map.OnSelectedTileChanged += SelectedTileChangedHandler;
+            _context.Map.OnTileUnderMouseChanged += TileUnderMouseChangedHandler;
+            _context.Map.OnSelectedTileChanged += SelectedTileChangedHandler;
             if (designer is Node node)
             {
                 _context.AddChild(node);
@@ -28,8 +28,8 @@ namespace FinalEmblem.Core
         public override void ExitState()
         {
             designer.OnActionBuilt -= ActionBuiltHandler;
-            _context.map.OnTileUnderMouseChanged -= TileUnderMouseChangedHandler;
-            _context.map.OnSelectedTileChanged -= SelectedTileChangedHandler;
+            _context.Map.OnTileUnderMouseChanged -= TileUnderMouseChangedHandler;
+            _context.Map.OnSelectedTileChanged -= SelectedTileChangedHandler;
             if (designer is Node node)
             {
                 node.QueueFree();
@@ -46,17 +46,19 @@ namespace FinalEmblem.Core
 
         private void ActionBuiltHandler(IAction action)
         {
-            //_context.ChangeState(new ActionExecutionTacticsState(context, action, unit));
+            _context.ChangeState(new ActionExecutionPlayerState(action, unit));
         }
 
         private void TileUnderMouseChangedHandler(Tile tile)
         {
             designer.SetTileUnderMouse(tile);
+
         }
 
         private void SelectedTileChangedHandler(Tile tile)
         {
             designer.SetSelectedTile(tile);
+            _context.SelectedTile = tile;
         }
     }
 }

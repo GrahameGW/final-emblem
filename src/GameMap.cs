@@ -25,6 +25,8 @@ namespace FinalEmblem.Core
 
         public override void _UnhandledInput(InputEvent input)
         {
+            if (grid == null) { return; }
+            
             var mouse = GetGlobalMousePosition();
             var tile = GetGridTile(mouse);
             
@@ -102,7 +104,7 @@ namespace FinalEmblem.Core
         public void SelectTile(Tile tile)
         {
             selected = tile;
-            GD.Print($"Selected: {selected?.Coordinates}. Unit: {selected.Unit}");
+            GD.Print($"Selected: {selected?.Coordinates}. Unit: {selected?.Unit}");
             OnSelectedTileChanged?.Invoke(tile);
         }
 
