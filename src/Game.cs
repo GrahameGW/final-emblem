@@ -24,8 +24,9 @@ namespace FinalEmblem.Core
         private ControllerBase activeController;
 
         private AnimationController animator;
-
         private IVictoryCondition[] victories;
+
+        private const string MENU_SCENE = "res://MainMenu.tscn";
 
         public override void _Ready()
         {
@@ -112,6 +113,7 @@ namespace FinalEmblem.Core
         {
             GD.Print($"Ending turn for {CurrentFaction}");
             OnTurnEnded?.Invoke();
+            TestWinConditions();
         }
 
         public void RemoveUnit(Unit unit)
@@ -136,7 +138,7 @@ namespace FinalEmblem.Core
             return ActingUnits.All(u => u.HasActed);
         }
 
-        public void TestWinConditions()
+        public bool TestWinConditions()
         {
             for (int i = 0; i < victories.Length; i++)
             {
@@ -145,15 +147,17 @@ namespace FinalEmblem.Core
                 {
                     OnGameEnded?.Invoke((Faction)winner);
                     EndGameHandler((Faction)winner);
-                    break;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         private void EndGameHandler(Faction winner)
         {
             GD.Print($"Winner: {winner}");
-            // tactics.QueueFree();
+            GetTree().ChangeSceneToFile(MENU_SCENE);
         }
     }
 }

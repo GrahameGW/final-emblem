@@ -1,0 +1,74 @@
+[gd_scene load_steps=4 format=3 uid="uid://crgv53mrsunw1"]
+
+[ext_resource type="Theme" uid="uid://cadrofyolixbt" path="res://assets/themes/hud_theme.tres" id="1_axqnn"]
+[ext_resource type="Texture2D" uid="uid://c38bwtjr7wvjf" path="res://assets/Rin.jpg" id="2_kwqss"]
+[ext_resource type="Script" path="res://src/Core/UI/UnitInfoPanel.cs" id="2_xo280"]
+
+[node name="UnitInfoPanel" type="PanelContainer" node_paths=PackedStringArray("unitNameLabel", "unitClassLabel", "unitFactionLabel", "HpLabel", "HpBar")]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -224.0
+offset_top = -178.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("1_axqnn")
+script = ExtResource("2_xo280")
+unitNameLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UnitName")
+unitClassLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UnitClass")
+unitFactionLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UnitFaction")
+HpLabel = NodePath("MarginContainer/VBoxContainer/HPLabel")
+HpBar = NodePath("MarginContainer/VBoxContainer/HPBar")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="UnitPicture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("2_kwqss")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 2.0
+
+[node name="UnitName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Romulus"
+
+[node name="UnitFaction" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Player"
+
+[node name="UnitClass" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Barbarian"
+
+[node name="HPLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "HP: 102 / 325"
+
+[node name="HPBar" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_vertical = 8
+value = 36.2
+rounded = true
+show_percentage = false

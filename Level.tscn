@@ -1,13 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://d4blbwgry3ol0"]
+[gd_scene load_steps=16 format=3 uid="uid://d4blbwgry3ol0"]
 
 [ext_resource type="Script" path="res://src/Game.cs" id="1_1qjrp"]
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="2_6mwdb"]
 [ext_resource type="Texture2D" uid="uid://dmutbv5x2wohq" path="res://assets/16x16 Area Select.png" id="3_eq5p1"]
 [ext_resource type="Script" path="res://src/GameMap.cs" id="4_wevah"]
-[ext_resource type="Script" path="res://src/UI/ActionList.cs" id="6_veuyr"]
-[ext_resource type="Script" path="res://src/UI/LevelHUD.cs" id="7_3pf7u"]
-[ext_resource type="Script" path="res://src/UI/CurrentTurnDisplay.cs" id="9_6pi2l"]
+[ext_resource type="Script" path="res://src/Core/UI/ActionList.cs" id="6_veuyr"]
+[ext_resource type="Script" path="res://src/Core/UI/LevelHUD.cs" id="7_3pf7u"]
+[ext_resource type="Script" path="res://src/Core/UI/CurrentTurnDisplay.cs" id="9_6pi2l"]
 [ext_resource type="Script" path="res://src/AnimationController.cs" id="9_gihvx"]
+[ext_resource type="Theme" uid="uid://cadrofyolixbt" path="res://assets/themes/hud_theme.tres" id="10_tkg0p"]
+[ext_resource type="PackedScene" uid="uid://crgv53mrsunw1" path="res://UnitInfoPanel.tscn" id="10_vd4nb"]
 [ext_resource type="PackedScene" uid="uid://b6u5fjtuva313" path="res://EnemyUnit.tscn" id="11_josjp"]
 [ext_resource type="PackedScene" uid="uid://bchaxgrrm4d32" path="res://PlayerUnit.tscn" id="12_himcw"]
 
@@ -461,15 +463,27 @@ script = ExtResource("4_wevah")
 
 [node name="Enemy2" parent="GameMap" instance=ExtResource("11_josjp")]
 position = Vector2(344, 263)
-HP = 1
+HP = 24
+MaxHP = 24
+TravelSpeed = 5.0
+
+[node name="Enemy3" parent="GameMap" instance=ExtResource("11_josjp")]
+position = Vector2(93, 181)
+HP = 24
+MaxHP = 24
+TravelSpeed = 5.0
 
 [node name="Player1" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(392, 278)
-Attack = 10000
+Attack = 10
 
 [node name="Player2" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(183, 135)
-Attack = 10000
+Attack = 10
+
+[node name="Player3" parent="GameMap" instance=ExtResource("12_himcw")]
+position = Vector2(263, 135)
+Attack = 10
 
 [node name="HUD" type="CanvasLayer" parent="."]
 scale = Vector2(0.5, 0.5)
@@ -478,10 +492,15 @@ follow_viewport_enabled = true
 script = ExtResource("7_3pf7u")
 
 [node name="ActionList" type="ItemList" parent="HUD"]
-offset_left = 35.0
-offset_top = 586.0
-offset_right = 134.0
-offset_bottom = 718.0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = -136.0
+offset_right = 121.0
+offset_bottom = -4.0
+grow_vertical = 0
+theme = ExtResource("10_tkg0p")
 item_count = 1
 item_0/text = "Move"
 script = ExtResource("6_veuyr")
@@ -491,6 +510,7 @@ offset_left = 22.0
 offset_top = 24.0
 offset_right = 100.0
 offset_bottom = 55.0
+theme = ExtResource("10_tkg0p")
 text = "End Turn"
 
 [node name="CurrentTurnDisplay" type="PanelContainer" parent="HUD"]
@@ -498,11 +518,14 @@ offset_left = 22.0
 offset_top = 60.0
 offset_right = 71.0
 offset_bottom = 100.0
+theme = ExtResource("10_tkg0p")
 script = ExtResource("9_6pi2l")
 
 [node name="Label" type="Label" parent="HUD/CurrentTurnDisplay"]
 layout_mode = 2
 text = "Player's Turn"
+
+[node name="UnitInfoPanel" parent="HUD" instance=ExtResource("10_vd4nb")]
 
 [node name="AnimationController" type="Node" parent="."]
 script = ExtResource("9_gihvx")

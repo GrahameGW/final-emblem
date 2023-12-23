@@ -88,6 +88,11 @@ namespace FinalEmblem.Core
             sprite = this.FindChildOfType<Sprite2D>();
         }
 
+        public override void _ExitTree()
+        {
+            Tile.Unit = null;
+        }
+
         public List<UnitTactic> GetAvailableActions()
         {
             if (HasActed)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cim5w46gaunua"]
 
-[ext_resource type="Script" path="res://src/Designers/MoveTacticDesigner.cs" id="1_03wsx"]
+[ext_resource type="Script" path="res://src/Core/Designers/MoveTacticDesigner.cs" id="1_03wsx"]
 
 [node name="MoveLine" type="Line2D"]
 width = 5.0
