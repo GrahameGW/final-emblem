@@ -157,7 +157,7 @@ namespace FinalEmblem.Core
         private void EndGameHandler(Faction winner)
         {
             GD.Print($"Winner: {winner}");
-            GetTree().ChangeSceneToFile(MENU_SCENE);
+            GetTree().CallDeferred("change_scene_to_file", MENU_SCENE);
         }
     }
 }
