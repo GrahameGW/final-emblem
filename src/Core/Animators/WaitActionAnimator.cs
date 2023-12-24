@@ -11,7 +11,7 @@ namespace FinalEmblem.Core
             actor = unit;
         }
 
-        public override async void StartAnimation()
+        public override async void _EnterTree()
         {
             actor.ToggleActedMaterial(true);
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);

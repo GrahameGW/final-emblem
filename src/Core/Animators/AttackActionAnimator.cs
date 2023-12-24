@@ -16,7 +16,7 @@ namespace FinalEmblem.Core
             targets = affected.Select(u => u.Unit).ToList();
         }
 
-        public override async void StartAnimation()
+        public override async void _EnterTree()
         {
             GD.Print($"{actor} did an attack! Hurt {targets[0]} and {targets.Count - 1} others");
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);

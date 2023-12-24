@@ -27,7 +27,7 @@ namespace FinalEmblem.Core
             posIndex = 0;
         }
 
-        public override void StartAnimation()
+        public override void _EnterTree()
         {
             if (path.Count < 2)
             {

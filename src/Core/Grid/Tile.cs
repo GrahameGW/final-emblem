@@ -34,7 +34,8 @@ namespace FinalEmblem.Core
         public Vector3 SetWorldPosition(Vector3 gridOrigin, Vector2 cellSize, bool isXZ = false, bool invertY = false)
         {
             Vector2 pos = Coordinates * cellSize;
-            WorldPosition = isXZ ? new Vector3(pos.X, 0f, pos.Y)  : new Vector3(pos.X, pos.Y, 0f);
+            var y = invertY ? -pos.Y : pos.Y;
+            WorldPosition = isXZ ? new Vector3(pos.X, 0f, y)  : new Vector3(pos.X, y, 0f);
             WorldPosition += gridOrigin;
             return WorldPosition;
         }

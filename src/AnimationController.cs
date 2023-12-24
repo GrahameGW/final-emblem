@@ -27,7 +27,6 @@ namespace FinalEmblem.Core
                 var result = results.Dequeue();
                 animator = InitializeAnimator(result);
                 AddChild(animator);
-                animator.StartAnimation();
                 await ToSignal(animator, ActionAnimator.AnimCompleteSignal);
                 animator.QueueFree();
             }
