@@ -48,7 +48,7 @@ namespace FinalEmblem.Core
             gridWorldOrigin = ToGlobal(MapToLocal(gameRect.Position));
 
             var vec3gridOrigin = new Vector3(gridWorldOrigin.X, gridWorldOrigin.Y, 0f);
-            grid = new Grid(gameRect.Size, vec3gridOrigin, TileSet.TileSize, invertY: true);
+            grid = new Grid(gameRect.Size, vec3gridOrigin, TileSet.TileSize, invertY: false);
             GD.Print($"GI: {gridWorldOrigin} | GS: {gameRect.Size} | Rect: {gameRect}");
 
             // tiles are ordered by x, y (e.g., (0,0), (0, 1), (0, 2) etc.)
