@@ -4,6 +4,7 @@ namespace FinalEmblem.Core
 {
     public class DeathAction : IAction
     {
+        public ActionType Type => ActionType.Die;
         public Unit Actor { get; set; }
         public Action<Unit> OnDeathCallback { get; set; }
         

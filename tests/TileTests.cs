@@ -6,7 +6,7 @@ using static GdUnit4.Assertions;
 
 namespace FinalEmblem.Tests
 {
-	[TestSuite]
+    [TestSuite]
 	public class TileTests
 	{
 		private List<Tile> tiles = new();

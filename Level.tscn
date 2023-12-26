@@ -1,17 +1,18 @@
-[gd_scene load_steps=16 format=3 uid="uid://d4blbwgry3ol0"]
+[gd_scene load_steps=17 format=3 uid="uid://d4blbwgry3ol0"]
 
-[ext_resource type="Script" path="res://src/Game.cs" id="1_1qjrp"]
+[ext_resource type="Script" path="res://src/Core/Game.cs" id="1_1qjrp"]
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="2_6mwdb"]
 [ext_resource type="Texture2D" uid="uid://dmutbv5x2wohq" path="res://assets/16x16 Area Select.png" id="3_eq5p1"]
-[ext_resource type="Script" path="res://src/GameMap.cs" id="4_wevah"]
+[ext_resource type="Script" path="res://src/Core/GameMap.cs" id="4_wevah"]
 [ext_resource type="Script" path="res://src/Core/UI/ActionList.cs" id="6_veuyr"]
 [ext_resource type="Script" path="res://src/Core/UI/LevelHUD.cs" id="7_3pf7u"]
 [ext_resource type="Script" path="res://src/Core/UI/CurrentTurnDisplay.cs" id="9_6pi2l"]
-[ext_resource type="Script" path="res://src/AnimationController.cs" id="9_gihvx"]
+[ext_resource type="Script" path="res://src/Core/AnimationController.cs" id="9_gihvx"]
 [ext_resource type="Theme" uid="uid://cadrofyolixbt" path="res://assets/themes/hud_theme.tres" id="10_tkg0p"]
 [ext_resource type="PackedScene" uid="uid://crgv53mrsunw1" path="res://UnitInfoPanel.tscn" id="10_vd4nb"]
 [ext_resource type="PackedScene" uid="uid://b6u5fjtuva313" path="res://EnemyUnit.tscn" id="11_josjp"]
 [ext_resource type="PackedScene" uid="uid://bchaxgrrm4d32" path="res://PlayerUnit.tscn" id="12_himcw"]
+[ext_resource type="PackedScene" uid="uid://ck417p0xbmo0h" path="res://AttackAnimation.tscn" id="13_y6hna"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwb5v"]
 resource_name = "terrain"
@@ -468,7 +469,7 @@ MaxHP = 24
 TravelSpeed = 5.0
 
 [node name="Enemy3" parent="GameMap" instance=ExtResource("11_josjp")]
-position = Vector2(93, 181)
+position = Vector2(263, 153)
 HP = 24
 MaxHP = 24
 TravelSpeed = 5.0
@@ -529,3 +530,8 @@ text = "Player's Turn"
 
 [node name="AnimationController" type="Node" parent="."]
 script = ExtResource("9_gihvx")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="AttackDisplay" parent="CanvasLayer" instance=ExtResource("13_y6hna")]

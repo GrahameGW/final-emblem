@@ -65,13 +65,13 @@ namespace FinalEmblem.Core
             State.EnterState(this);
         }
 
-        public void BuildTacticDesigner(UnitTactic actionName, Unit unit)
+        public void BuildTacticDesigner(ActionType actionName, Unit unit)
         {
             ITacticDesigner designer = actionName switch
             {
-                UnitTactic.Move => DesignerService.GetMoveDesigner(unit.Tile, Map),
-                UnitTactic.Attack => DesignerService.GetAttackTacticDesigner(unit, Map),
-                UnitTactic.Wait => DesignerService.GetWaitTacticDesigner(unit),
+                ActionType.Move => DesignerService.GetMoveDesigner(unit.Tile, Map),
+                ActionType.Attack => DesignerService.GetAttackTacticDesigner(unit, Map),
+                ActionType.Wait => DesignerService.GetWaitTacticDesigner(unit),
                 _ => throw new ArgumentOutOfRangeException(actionName.ToString())
             };
 

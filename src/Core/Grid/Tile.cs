@@ -160,6 +160,60 @@ namespace FinalEmblem.Core
 
             return tiles;
         }
+
+        public static Compass DirectionToApproxDiagonals(this Tile tile, Tile other, bool invertY = false)
+        {
+            if (tile == other)
+            {
+                throw new System.ArgumentException($"Tile {tile.Coordinates} and arg 'other' are the same tile");
+            }
+
+            if (tile.Coordinates.Y == other.Coordinates.Y)
+            {
+                return tile.Coordinates.X < other.Coordinates.X ? Compass.E : Compass.W;
+            }
+            else if (tile.Coordinates.X == other.Coordinates.X)
+            {
+                var dir = tile.Coordinates.Y < other.Coordinates.Y;
+                return invertY ^ dir ? Compass.N : Compass.S;
+            }
+            
+            var deltaX = other.Coordinates.X - tile.Coordinates.X;
+            var deltaY = other.Coordinates.Y - tile.Coordinates.Y;
+
+            var ew = Mathf.Sign(deltaX);
+            var ns = invertY ? -1 * Mathf.Sign(deltaY) : Mathf.Sign(deltaY);
+
+            var absX = Mathf.Abs(deltaX);
+            var absY = Mathf.Abs(deltaY);
+
+            if (ew == -1 && absX > absY)
+            {
+                return Compass.W;
+
+            }
+            else if (ew == -1 && absX < absY)
+            {
+                return ns == -1 ? Compass.S : Compass.N;
+            }
+            else if (ew == -1 && absX == absY)
+            {
+                return ns == -1 ? Compass.SW : Compass.NW;
+            }
+            else if (absX > absY)
+            {
+                return Compass.E;
+            }
+            else if (absX < absY)
+            {
+                return ns == -1 ? Compass.S : Compass.N;
+            }
+            else
+            {
+                return ns == -1 ? Compass.SE : Compass.NE;
+            }
+
+        }
     }
 
 }

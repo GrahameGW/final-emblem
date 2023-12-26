@@ -4,6 +4,7 @@ namespace FinalEmblem.Core
 {
     public class AttackAction : IAction
     {
+        public ActionType Type => ActionType.Attack;
         public Unit Actor { get; set; }
         public readonly Unit Target;
 

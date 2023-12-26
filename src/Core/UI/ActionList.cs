@@ -7,12 +7,12 @@ namespace FinalEmblem.Core
 {
     public partial class ActionList : ItemList
     {
-        private List<UnitTactic> currentActions;
+        private List<ActionType> currentActions;
         private bool isPlayersTurn;
         private Unit unit;
         private PlayerController player;
 
-        public event Action<UnitTactic> OnActionSelected;
+        public event Action<ActionType> OnActionSelected;
 
         public void Initialize(PlayerController player)
         {
@@ -45,7 +45,7 @@ namespace FinalEmblem.Core
         private void GenerateActionList(Unit unit)
         {
             var actions = unit.GetAvailableActions();
-            currentActions = new List<UnitTactic>();
+            currentActions = new List<ActionType>();
             Clear();
 
             if (actions == null) { return; }

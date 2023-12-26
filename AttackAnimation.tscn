@@ -1,0 +1,64 @@
+[gd_scene load_steps=2 format=3 uid="uid://ck417p0xbmo0h"]
+
+[ext_resource type="Theme" uid="uid://d2fjh2vbe6ysj" path="res://assets/themes/display_theme.tres" id="1_m0c0m"]
+
+[node name="AttackDisplay" type="Control"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 3
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 278.0
+offset_top = -234.0
+offset_right = 278.0
+offset_bottom = -202.0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_m0c0m")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 2.0
+text = "Helloworld isn't this greatblalbalba"
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+value = 100.0
+rounded = true
+show_percentage = false
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_m0c0m")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player2"
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/PanelContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+value = 100.0
+rounded = true
+show_percentage = false

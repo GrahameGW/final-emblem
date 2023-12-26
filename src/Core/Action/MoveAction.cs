@@ -5,6 +5,7 @@ namespace FinalEmblem.Core
 {
     public class MoveAction : IAction
     {
+        public ActionType Type => ActionType.Move;
         public Unit Actor { get; set; }
         public readonly List<Tile> Path;
 

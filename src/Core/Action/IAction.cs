@@ -4,7 +4,8 @@ namespace FinalEmblem.Core
 {
     public interface IAction
     {
-        Unit Actor { get; set; }
+        ActionType Type { get; }
+        Unit Actor { get; }
         ActionResult Execute();
     }
 
@@ -28,7 +29,6 @@ namespace FinalEmblem.Core
         Moved,
         Attacked,
         Collided,
-        LostHp,
         Died
     }
 }

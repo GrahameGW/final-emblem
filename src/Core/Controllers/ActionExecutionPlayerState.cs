@@ -28,10 +28,10 @@ namespace FinalEmblem.Core
             }
 
             var actuals = CombatService.CalculateActionImplications(actor, action);
-            _context.Level.ExecuteActionQueue(actuals, ActionAnimationCompletedHandler);
+            _context.Level.ExecuteActionQueue(actuals, ActionCompletedHandler);
         }
 
-        private void ActionAnimationCompletedHandler()
+        private void ActionCompletedHandler()
         {
             _context.ChangeState(new InitialPlayerState(_context.SelectedTile));
         }

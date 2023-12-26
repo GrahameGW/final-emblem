@@ -1,26 +1,64 @@
-﻿
-using Godot;
-using System.Collections.Generic;
+﻿using Godot;
+using System;
 using System.Linq;
 
 namespace FinalEmblem.Core
 {
-    public partial class AttackActionAnimator : ActionAnimator
+    public partial class AttackActionAnimator : ActionAnimator, IAwaitActionResult
     {
+        [Export] PackedScene attackDisplay;
+        
         private Unit actor;
-        private List<Unit> targets;
+        private Unit target;
+        private int initialTargetHp;
 
-        public AttackActionAnimator(Unit actor, List<Tile> affected)
+        public AttackActionAnimator(AttackAction action)
         {
-            this.actor = actor;
-            targets = affected.Select(u => u.Unit).ToList();
+            actor = action.Actor;
+            target = action.Target;
+            initialTargetHp = target.HP;
         }
 
-        public override async void _EnterTree()
+        public void ReceiveActionResult(ActionResult result)
         {
-            GD.Print($"{actor} did an attack! Hurt {targets[0]} and {targets.Count - 1} others");
-            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+            var unitTile = actor.Tile;
+
+        }
+
+        // currently only doing the first attack
+        public override void _EnterTree()
+        {
+            GD.Print($"{actor} did an attack! Hurt {target}");
+            var display = attackDisplay.Instantiate<AttackAnimationDisplay>();
+            display.OnDisplayChangeComplete += DisplayChangeCompleteHandler;
+            AddChild(display);
+        }
+
+        private void DisplayChangeCompleteHandler()
+        {
             EmitSignal(AnimCompleteSignal);
+        }
+    }
+
+    public partial class AttackAnimationDisplay : Control
+    {
+        [Export] Label attackerName;
+        [Export] Label targetName;
+        [Export] ProgressBar attackerHealth;
+        [Export] ProgressBar targetHealth;
+
+        public event Action OnDisplayChangeComplete;
+
+        private Unit attacker, defender;
+
+        public void SetActors(Unit attacker, Unit defender)
+        {
+            this.attacker = attacker;
+            this.defender = defender;
+        }
+
+        public override void _EnterTree()
+        {
         }
     }
 }

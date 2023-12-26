@@ -18,11 +18,11 @@ namespace FinalEmblem.Core
 
         private const float ROOT_TWO = 1.41421356f;
 
-        public MoveActionAnimator(Unit unit, List<Tile> path)
+        public MoveActionAnimator(MoveAction action)
         {
-            this.path = path;
-            actor = unit;
-            speed = unit.TravelSpeed;
+            path = action.Path;
+            actor = action.Actor;
+            speed = action.Actor.TravelSpeed;
             progress = 0f;
             posIndex = 0;
         }

@@ -98,10 +98,6 @@ namespace FinalEmblem.Core
 
             return false;
         }
-
-        public override void _ExitTree()
-        {
-        }
     }
 }
 
