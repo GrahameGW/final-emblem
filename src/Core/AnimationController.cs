@@ -1,5 +1,4 @@
 ﻿using Godot;
-using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 
@@ -7,7 +6,7 @@ namespace FinalEmblem.Core
 {
     public partial class AnimationController : Node
     {
-        //[Export] public CanvasLayer AnimationCanvas { get; private set; }
+        [Export] PackedScene attackDisplay;
 
         private Game level;
         private ActionAnimator animator;
@@ -29,14 +28,14 @@ namespace FinalEmblem.Core
             {
                 ActionType.Move => new MoveActionAnimator(toAnimate as MoveAction),
                 ActionType.Wait => new WaitActionAnimator(toAnimate.Actor),
-                ActionType.Attack => new AttackActionAnimator(toAnimate as AttackAction),
+                ActionType.Attack => new AttackActionAnimator(toAnimate as AttackAction, attackDisplay),
                 ActionType.Die => new DeathActionAnimator(toAnimate.Actor),
                 ActionType.Collide => throw new NotImplementedException(),
                 _ => throw new ArgumentOutOfRangeException(toAnimate.Type.ToString()),
             };
         }
 
-        public async Task PlayActionAnim(ActionResult result)
+        public async Task PlayActionAnim(IActionResult result)
         {
             AddChild(animator);
             if (animator is IAwaitActionResult awating)

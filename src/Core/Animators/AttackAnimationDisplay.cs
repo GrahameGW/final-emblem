@@ -1,0 +1,51 @@
+﻿using Godot;
+using System.Threading.Tasks;
+
+namespace FinalEmblem.Core
+{
+    public partial class AttackAnimationDisplay : Control
+    {
+        [ExportGroup("References")]
+        [Export] Label attackerName;
+        [Export] Label targetName;
+        [Export] ProgressBar attackerHealth;
+        [Export] ProgressBar targetHealth;
+        [ExportGroup("Timing")]
+        [Export] float fullHealthDrainTime;
+        [Export] float minHealthDrainTime;
+        [Export] float closeDelay;
+
+        private Unit attacker, defender;
+
+        public void SetActors(Unit attacker, Unit defender)
+        {
+            this.attacker = attacker;
+            this.defender = defender;
+            attackerName.Text = attacker.Name;
+            targetName.Text = defender.Name;
+
+            attackerHealth.MaxValue = attacker.MaxHP;
+            attackerHealth.Value = attacker.HP;
+
+            targetHealth.MaxValue = defender.MaxHP;
+            targetHealth.MinValue = 0f;
+            targetHealth.Value = defender.HP;
+            targetHealth.AllowLesser = true;
+        }
+        
+        public async Task PlayAttack(AttackActionResult result)
+        {
+            float originalHp = Mathf.Clamp(defender.HP + result.Damage, 0f, defender.MaxHP);
+            float duration = (originalHp - defender.HP) / defender.MaxHP;
+            duration = Mathf.Clamp(duration * fullHealthDrainTime, minHealthDrainTime, fullHealthDrainTime);
+
+            targetHealth.Value = originalHp;
+
+            Tween tween = GetTree().CreateTween();
+            tween.TweenProperty(targetHealth, "value", defender.HP, duration).SetTrans(Tween.TransitionType.Quad);
+            tween.TweenInterval(closeDelay);
+            await ToSignal(tween, "finished");
+        }
+    }
+}
+

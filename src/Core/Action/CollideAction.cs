@@ -12,9 +12,9 @@
             this.obstacle = obstacle;
         }
 
-        public ActionResult Execute()
+        public IActionResult Execute()
         {
-            return new ActionResult(Actor, ActionResultId.Collided);
+            return new BaseActionResult(Actor);
         }
     }
 }

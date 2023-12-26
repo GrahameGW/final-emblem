@@ -6,30 +6,22 @@ namespace FinalEmblem.Core
     {
         ActionType Type { get; }
         Unit Actor { get; }
-        ActionResult Execute();
+        IActionResult Execute();
     }
 
-    public struct ActionResult
+    public interface IActionResult
     {
-        public Unit actor;
-        public ActionResultId result;
-        public List<Tile> affected;
+        Unit Actor { get; }
+    }
 
-        public ActionResult(Unit unit, ActionResultId outcome)
+    public class BaseActionResult : IActionResult
+    {
+        public Unit Actor { get; private set; }
+
+        public BaseActionResult(Unit unit)
         {
-            actor = unit;
-            result = outcome;
-            affected = new List<Tile> { unit.Tile };
+            Actor = unit;
         }
-    }
-
-    public enum ActionResultId
-    {
-        Waited,
-        Moved,
-        Attacked,
-        Collided,
-        Died
     }
 }
 

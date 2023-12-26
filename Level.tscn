@@ -484,7 +484,7 @@ Attack = 10
 
 [node name="Player3" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(263, 135)
-Attack = 10
+Attack = 24
 
 [node name="HUD" type="CanvasLayer" parent="."]
 scale = Vector2(0.5, 0.5)
@@ -530,8 +530,4 @@ text = "Player's Turn"
 
 [node name="AnimationController" type="Node" parent="."]
 script = ExtResource("9_gihvx")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
-
-[node name="AttackDisplay" parent="CanvasLayer" instance=ExtResource("13_y6hna")]
+attackDisplay = ExtResource("13_y6hna")

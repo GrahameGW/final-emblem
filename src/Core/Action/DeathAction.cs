@@ -8,10 +8,10 @@ namespace FinalEmblem.Core
         public Unit Actor { get; set; }
         public Action<Unit> OnDeathCallback { get; set; }
         
-        public ActionResult Execute()
+        public IActionResult Execute()
         {
             OnDeathCallback?.Invoke(Actor);
-            return new ActionResult(Actor, ActionResultId.Died);
+            return new BaseActionResult(Actor);
         }
     }
 }

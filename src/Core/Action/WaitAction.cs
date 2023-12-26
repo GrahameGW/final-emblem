@@ -5,9 +5,9 @@
         public ActionType Type => ActionType.Wait;
         public Unit Actor { get; set; }
 
-        public ActionResult Execute()
+        public IActionResult Execute()
         {
-            return new ActionResult(Actor, ActionResultId.Waited);
+            return new BaseActionResult(Actor);
         }
     }
 }

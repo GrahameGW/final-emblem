@@ -2,7 +2,7 @@
 {
     public interface IAwaitActionResult
     {
-        void ReceiveActionResult(ActionResult result);
+        void ReceiveActionResult(IActionResult result);
     }
 }
 

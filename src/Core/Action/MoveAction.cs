@@ -15,19 +15,14 @@ namespace FinalEmblem.Core
             Path = path;
         }
 
-        public ActionResult Execute() 
+        public IActionResult Execute() 
         { 
             foreach (var tile in Path)
             {
                 Actor.Tile = tile;
             }
 
-            return new ActionResult
-            {
-                actor = Actor,
-                result = ActionResultId.Moved,
-                affected = Path
-            };
+            return new BaseActionResult(Actor);
         }
     }
 }

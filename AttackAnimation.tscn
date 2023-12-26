@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://ck417p0xbmo0h"]
+[gd_scene load_steps=3 format=3 uid="uid://ck417p0xbmo0h"]
 
+[ext_resource type="Script" path="res://src/Core/Animators/AttackAnimationDisplay.cs" id="1_3afym"]
 [ext_resource type="Theme" uid="uid://d2fjh2vbe6ysj" path="res://assets/themes/display_theme.tres" id="1_m0c0m"]
 
-[node name="AttackDisplay" type="Control"]
+[node name="AttackDisplay" type="Control" node_paths=PackedStringArray("attackerName", "targetName", "attackerHealth", "targetHealth")]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 3
 anchors_preset = 4
@@ -13,52 +14,60 @@ offset_top = -234.0
 offset_right = 278.0
 offset_bottom = -202.0
 grow_vertical = 2
+script = ExtResource("1_3afym")
+attackerName = NodePath("VBoxContainer/Attacker/HBoxContainer/AttackerName")
+targetName = NodePath("VBoxContainer/Defender/HBoxContainer/DefenderName")
+attackerHealth = NodePath("VBoxContainer/Attacker/HBoxContainer/AttackerHealth")
+targetHealth = NodePath("VBoxContainer/Defender/HBoxContainer/DefenderHealth")
+fullHealthDrainTime = 2.0
+minHealthDrainTime = 0.5
+closeDelay = 1.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+[node name="Attacker" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_m0c0m")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Attacker"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="AttackerName" type="Label" parent="VBoxContainer/Attacker/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 2.0
 text = "Helloworld isn't this greatblalbalba"
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="AttackerHealth" type="ProgressBar" parent="VBoxContainer/Attacker/HBoxContainer"]
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 1
 value = 100.0
-rounded = true
 show_percentage = false
 
-[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
+[node name="Defender" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_m0c0m")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Defender"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/PanelContainer2/HBoxContainer"]
+[node name="DefenderName" type="Label" parent="VBoxContainer/Defender/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Player2"
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/PanelContainer2/HBoxContainer"]
+[node name="DefenderHealth" type="ProgressBar" parent="VBoxContainer/Defender/HBoxContainer"]
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 1
-value = 100.0
-rounded = true
+max_value = 20.0
+value = 15.0
+allow_lesser = true
 show_percentage = false

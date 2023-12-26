@@ -14,16 +14,11 @@ namespace FinalEmblem.Core
             Target = target;
         }
 
-        public ActionResult Execute()
+        public IActionResult Execute()
         {
-            Target.Damage(Actor.Attack);
-
-            return new ActionResult
-            {
-                actor = Actor,
-                result = ActionResultId.Attacked,
-                affected = new List<Tile> { Target.Tile },
-            };
+            var damage = Actor.Attack;
+            Target.Damage(damage);
+            return new AttackActionResult(this, damage);
         }
     }
 }

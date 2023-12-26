@@ -1,28 +1,22 @@
 ﻿using Godot;
 using System;
-using System.Linq;
+using TiercelFoundry.GDUtils;
 
 namespace FinalEmblem.Core
 {
     public partial class AttackActionAnimator : ActionAnimator, IAwaitActionResult
-    {
-        [Export] PackedScene attackDisplay;
-        
+    {       
         private Unit actor;
         private Unit target;
         private int initialTargetHp;
+        private PackedScene attackDisplay;
 
-        public AttackActionAnimator(AttackAction action)
+        public AttackActionAnimator(AttackAction action, PackedScene display)
         {
             actor = action.Actor;
             target = action.Target;
             initialTargetHp = target.HP;
-        }
-
-        public void ReceiveActionResult(ActionResult result)
-        {
-            var unitTile = actor.Tile;
-
+            attackDisplay = display;
         }
 
         // currently only doing the first attack
@@ -30,35 +24,33 @@ namespace FinalEmblem.Core
         {
             GD.Print($"{actor} did an attack! Hurt {target}");
             var display = attackDisplay.Instantiate<AttackAnimationDisplay>();
-            display.OnDisplayChangeComplete += DisplayChangeCompleteHandler;
             AddChild(display);
         }
 
-        private void DisplayChangeCompleteHandler()
+        public async void ReceiveActionResult(IActionResult result)
         {
+            var unitTile = actor.Tile;
+            var dir = unitTile.DirectionToApproxDiagonals(target.Tile);
+            var display = GetChild<AttackAnimationDisplay>(0);
+            display.SetActors(actor, target);
+
+            if (dir == Compass.N || dir == Compass.S)
+            {
+                // TODO: get position in viewport for left/right
+                display.GlobalPosition = unitTile.East.WorldPosition.Vector2XY();
+            }
+            else
+            {
+                // todo: get position in viewport for up/down
+                display.GlobalPosition = unitTile.South.WorldPosition.Vector2XY();
+            }
+
+            if (result is not AttackActionResult attackResult)
+            {
+                throw new ArgumentException($"Passed inappropriate action result to attack animator: {result}");
+            }
+            await display.PlayAttack(attackResult);
             EmitSignal(AnimCompleteSignal);
-        }
-    }
-
-    public partial class AttackAnimationDisplay : Control
-    {
-        [Export] Label attackerName;
-        [Export] Label targetName;
-        [Export] ProgressBar attackerHealth;
-        [Export] ProgressBar targetHealth;
-
-        public event Action OnDisplayChangeComplete;
-
-        private Unit attacker, defender;
-
-        public void SetActors(Unit attacker, Unit defender)
-        {
-            this.attacker = attacker;
-            this.defender = defender;
-        }
-
-        public override void _EnterTree()
-        {
         }
     }
 }
