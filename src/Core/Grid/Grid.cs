@@ -26,7 +26,7 @@ namespace FinalEmblem.Core
         public Tile CreateTile(Vector2I coords, Terrain terrain)
         {
             var tile = new Tile(coords, terrain);
-            tile.SetWorldPosition(WorldOrigin, CellSize, XZOrientation, InvertY);
+            tile.SetWorldPosition(WorldOrigin, CellSize, XZOrientation);
             Tiles[coords.X + coords.Y * Size.X] = tile;
             return tile;
         }

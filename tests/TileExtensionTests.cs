@@ -2,17 +2,15 @@
 using static GdUnit4.Assertions;
 using FinalEmblem.Core;
 using Godot;
-using System.Collections.Generic;
-using static Godot.HttpRequest;
+
 
 namespace FinalEmblem.Tests
 {
-	[TestSuite]
+    [TestSuite]
 	public class TileExtensionTests
 	{
 		private Tile originTile;
 		private Tile randomTile;
-		private List<(Tile, Compass)> testCases;
 
 		[Before] 
 		public void Before()

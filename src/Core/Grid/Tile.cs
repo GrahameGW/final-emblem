@@ -31,11 +31,10 @@ namespace FinalEmblem.Core
             Terrain = terrain;
         }
 
-        public Vector3 SetWorldPosition(Vector3 gridOrigin, Vector2 cellSize, bool isXZ = false, bool invertY = false)
+        public Vector3 SetWorldPosition(Vector3 gridOrigin, Vector2 cellSize, bool isXZ = false)
         {
             Vector2 pos = Coordinates * cellSize;
-            var y = invertY ? -pos.Y : pos.Y;
-            WorldPosition = isXZ ? new Vector3(pos.X, 0f, y)  : new Vector3(pos.X, y, 0f);
+            WorldPosition = isXZ ? new Vector3(pos.X, 0f, pos.Y)  : new Vector3(pos.X, pos.Y, 0f);
             WorldPosition += gridOrigin;
             return WorldPosition;
         }
