@@ -13,6 +13,7 @@ namespace FinalEmblem.Core
         public List<Faction> Factions { get; private set; }
         public List<Unit> Units { get; private set; }
         public List<Unit> ActingUnits { get; private set; }
+        public GameMap Map { get; private set; }
 
         public event Action<Faction> OnTurnStarted;
         public event Action OnTurnEnded;
@@ -31,7 +32,7 @@ namespace FinalEmblem.Core
         public override void _Ready()
         {
             // Get nodes already children of this node
-            var gameMap = GetNode<GameMap>("GameMap");
+            Map = GetNode<GameMap>("GameMap");
             var hud = GetNode<LevelHUD>("HUD");
             animator = GetNode<AnimationController>("AnimationController");
 
@@ -39,9 +40,9 @@ namespace FinalEmblem.Core
             animator.Initialize(this);
 
             // Build level
-            var grid = gameMap.GenerateGridFromMap();
-            Units = gameMap.FindNodesOfType<Unit>();
-            gameMap.SetUnitPositionsFromTokens(Units);
+            var grid = Map.GenerateGridFromMap();
+            Units = Map.FindNodesOfType<Unit>();
+            Map.SetUnitPositionsFromTokens(Units);
             Factions = Units.Select(u => u.Faction).Distinct().ToList();
             victories = Factions.Select(f => new KillAllOthersVictory(f)).ToArray();
 
@@ -54,12 +55,12 @@ namespace FinalEmblem.Core
             midTurnController = new MidTurnController();
             var player = new PlayerController();
             var enemy = new AiController();
-            player.Initialize(this, gameMap);
+            player.Initialize(this, Map);
             enemy.Initialize(this, Faction.Enemy);
             controllers = new List<ControllerBase> { player, enemy };
 
             // Initialize anything left to do
-            hud.Initialize(this, gameMap, player);
+            hud.Initialize(this, Map, player);
 
 
             // load PlayerController to start the game

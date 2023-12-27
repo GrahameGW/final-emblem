@@ -9,9 +9,9 @@ namespace FinalEmblem.Core
         private Unit actor;
         private Unit target;
         private int initialTargetHp;
-        private PackedScene attackDisplay;
+        private AttackAnimationDisplay attackDisplay;
 
-        public AttackActionAnimator(AttackAction action, PackedScene display)
+        public AttackActionAnimator(AttackAction action, AttackAnimationDisplay display)
         {
             actor = action.Actor;
             target = action.Target;
@@ -19,37 +19,28 @@ namespace FinalEmblem.Core
             attackDisplay = display;
         }
 
-        // currently only doing the first attack
-        public override void _EnterTree()
-        {
-            GD.Print($"{actor} did an attack! Hurt {target}");
-            var display = attackDisplay.Instantiate<AttackAnimationDisplay>();
-            AddChild(display);
-        }
-
         public async void ReceiveActionResult(IActionResult result)
         {
             var unitTile = actor.Tile;
-            var dir = unitTile.DirectionToApproxDiagonals(target.Tile);
-            var display = GetChild<AttackAnimationDisplay>(0);
-            display.SetActors(actor, target);
+            attackDisplay.SetActors(actor, target);
 
-            if (dir == Compass.N || dir == Compass.S)
+
+            var anchorPos = unitTile.DirectionToApproxDiagonals(target.Tile, true) switch
             {
-                // TODO: get position in viewport for left/right
-                display.GlobalPosition = unitTile.East.WorldPosition.Vector2XY();
-            }
-            else
-            {
-                // todo: get position in viewport for up/down
-                display.GlobalPosition = unitTile.South.WorldPosition.Vector2XY();
-            }
+                Compass.N => target.Tile.East.WorldPosition.Vector2XY(),
+                Compass.S => unitTile.East.WorldPosition.Vector2XY(),
+                Compass.E => unitTile.Southwest.WorldPosition.Vector2XY(),
+                Compass.W => target.Tile.Southwest.WorldPosition.Vector2XY(),
+                _ => throw new NotImplementedException()
+            };
+                
+            attackDisplay.GlobalPosition = GetViewport().CanvasTransform * anchorPos;
 
             if (result is not AttackActionResult attackResult)
             {
                 throw new ArgumentException($"Passed inappropriate action result to attack animator: {result}");
             }
-            await display.PlayAttack(attackResult);
+            await attackDisplay.PlayAttack(attackResult);
             EmitSignal(AnimCompleteSignal);
         }
     }

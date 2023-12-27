@@ -2,6 +2,7 @@ using Godot;
 
 using System.Collections.Generic;
 using System;
+using TiercelFoundry.GDUtils;
 
 namespace FinalEmblem.Core
 {
@@ -9,7 +10,7 @@ namespace FinalEmblem.Core
     {
         private Vector2 gridWorldOrigin;
         private Rect2I gameRect;
-        private Grid grid;
+        public Grid grid;
         private Tile selected;
         private Tile underPointer;
 
@@ -22,6 +23,16 @@ namespace FinalEmblem.Core
         private const int TERRAIN_BASE_SOURCE = 1;
         private const int NAV_OVERLAY_LAYER = 2;
         private const int NAV_OVERLAY_SOURCE = 4;
+
+        // Debug
+        public Vector2I DebugUnderPointerCoords
+        {
+            get => underPointer == null ? new Vector2I() : underPointer.Coordinates;
+        }
+        public Vector2 DebugUnderPointerWorldPos 
+        {
+            get => underPointer == null ? new Vector2() : underPointer.WorldPosition.Vector2XY();
+        }
 
         public override void _UnhandledInput(InputEvent input)
         {
@@ -48,11 +59,11 @@ namespace FinalEmblem.Core
             gridWorldOrigin = ToGlobal(MapToLocal(gameRect.Position));
 
             var vec3gridOrigin = new Vector3(gridWorldOrigin.X, gridWorldOrigin.Y, 0f);
-            grid = new Grid(gameRect.Size, vec3gridOrigin, TileSet.TileSize, invertY: false);
+            grid = new Grid(gameRect.Size, vec3gridOrigin, TileSet.TileSize, invertY: true);
             GD.Print($"GI: {gridWorldOrigin} | GS: {gameRect.Size} | Rect: {gameRect}");
 
             // tiles are ordered by x, y (e.g., (0,0), (0, 1), (0, 2) etc.)
-            // y gets bigger as it goes down
+            // y gets bigger as it goes down V>
             for (int x = 0; x < grid.Size.X; x++)
             {
                 for (int y = 0; y < grid.Size.Y; y++)
@@ -104,7 +115,7 @@ namespace FinalEmblem.Core
         public void SelectTile(Tile tile)
         {
             selected = tile;
-            GD.Print($"Selected: {selected?.Coordinates}. Unit: {selected?.Unit}");
+            GD.Print($"Selected: {selected?.Coordinates}. Unit: {selected?.Unit}. Tile.WorldPos: {selected?.WorldPosition}");
             OnSelectedTileChanged?.Invoke(tile);
         }
 

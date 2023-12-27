@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://d4blbwgry3ol0"]
+[gd_scene load_steps=19 format=3 uid="uid://d4blbwgry3ol0"]
 
 [ext_resource type="Script" path="res://src/Core/Game.cs" id="1_1qjrp"]
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="2_6mwdb"]
@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://b6u5fjtuva313" path="res://EnemyUnit.tscn" id="11_josjp"]
 [ext_resource type="PackedScene" uid="uid://bchaxgrrm4d32" path="res://PlayerUnit.tscn" id="12_himcw"]
 [ext_resource type="PackedScene" uid="uid://ck417p0xbmo0h" path="res://AttackAnimation.tscn" id="13_y6hna"]
+[ext_resource type="Theme" uid="uid://btxxk60e1wrf5" path="res://assets/themes/debug_theme.tres" id="14_0bygf"]
+[ext_resource type="Script" path="res://src/Utils/debug_display.gd" id="14_ucd27"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwb5v"]
 resource_name = "terrain"
@@ -528,6 +530,54 @@ text = "Player's Turn"
 
 [node name="UnitInfoPanel" parent="HUD" instance=ExtResource("10_vd4nb")]
 
-[node name="AnimationController" type="Node" parent="."]
+[node name="AnimationController" type="CanvasLayer" parent="."]
 script = ExtResource("9_gihvx")
 attackDisplay = ExtResource("13_y6hna")
+
+[node name="Debug" type="CanvasLayer" parent="." node_paths=PackedStringArray("mouse_pix_label", "tile_coords_label", "tile_pos_label")]
+script = ExtResource("14_ucd27")
+mouse_pix_label = NodePath("PanelContainer/GridContainer/MousePixValue")
+tile_coords_label = NodePath("PanelContainer/GridContainer/TileCoordsValue")
+tile_pos_label = NodePath("PanelContainer/GridContainer/TilePosValue")
+
+[node name="PanelContainer" type="PanelContainer" parent="Debug"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -168.0
+offset_top = 19.0
+offset_right = -21.0
+offset_bottom = 82.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme = ExtResource("14_0bygf")
+
+[node name="GridContainer" type="GridContainer" parent="Debug/PanelContainer"]
+layout_mode = 2
+theme = ExtResource("14_0bygf")
+columns = 2
+
+[node name="Mouse Pix" type="Label" parent="Debug/PanelContainer/GridContainer"]
+layout_mode = 2
+text = "Mouse Pix"
+
+[node name="MousePixValue" type="Label" parent="Debug/PanelContainer/GridContainer"]
+layout_mode = 2
+text = "(0.00, 0.25)"
+
+[node name="TileCoords" type="Label" parent="Debug/PanelContainer/GridContainer"]
+layout_mode = 2
+text = "Tile Coords"
+
+[node name="TileCoordsValue" type="Label" parent="Debug/PanelContainer/GridContainer"]
+layout_mode = 2
+text = "(0.00, 0.25)"
+
+[node name="TilePos" type="Label" parent="Debug/PanelContainer/GridContainer"]
+layout_mode = 2
+text = "Tile Pos"
+
+[node name="TilePosValue" type="Label" parent="Debug/PanelContainer/GridContainer"]
+layout_mode = 2
+text = "(0.00, 0.25)"

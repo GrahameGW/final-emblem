@@ -1,5 +1,6 @@
 ﻿using Godot;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FinalEmblem.Core
@@ -10,6 +11,7 @@ namespace FinalEmblem.Core
 
         private Game level;
         private ActionAnimator animator;
+        private readonly List<Node> animations = new();
 
         public void Initialize(Game level)
         {
@@ -28,11 +30,19 @@ namespace FinalEmblem.Core
             {
                 ActionType.Move => new MoveActionAnimator(toAnimate as MoveAction),
                 ActionType.Wait => new WaitActionAnimator(toAnimate.Actor),
-                ActionType.Attack => new AttackActionAnimator(toAnimate as AttackAction, attackDisplay),
+                ActionType.Attack => InstantiateAttackAnim(toAnimate as AttackAction),
                 ActionType.Die => new DeathActionAnimator(toAnimate.Actor),
                 ActionType.Collide => throw new NotImplementedException(),
                 _ => throw new ArgumentOutOfRangeException(toAnimate.Type.ToString()),
             };
+        }
+
+        private AttackActionAnimator InstantiateAttackAnim(AttackAction action)
+        {
+            var display = attackDisplay.Instantiate<AttackAnimationDisplay>();
+            AddChild(display);
+            animations.Add(display);
+            return new AttackActionAnimator(action, display);
         }
 
         public async Task PlayActionAnim(IActionResult result)
@@ -49,6 +59,11 @@ namespace FinalEmblem.Core
         {
             animator.QueueFree();
             animator = null;
+            foreach (var anim in animations)
+            {
+                anim.QueueFree();
+            }
+            animations.Clear();
         }
 
         private void TurnEndedHandler()
@@ -58,6 +73,8 @@ namespace FinalEmblem.Core
                 level.Units[i].ToggleActedMaterial(false);
             }
         }
+
+
     }
 }
 
