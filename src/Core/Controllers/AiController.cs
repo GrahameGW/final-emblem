@@ -51,6 +51,7 @@ namespace FinalEmblem.Core
                 if (possibleDestinations.Count == 0)
                 {
                     var path = NavService.ShortestPathToCollection(unit.Tile, enemies.Select(e => e.Tile).ToList());
+                    path.Insert(0, unit.Tile);
                     var move = new MoveAction(unit, path.PathTilesInRange(unit.Move));
                     var actuals = CombatService.CalculateActionImplications(unit, move);
                     await ExecuteActions(actuals);
@@ -62,7 +63,9 @@ namespace FinalEmblem.Core
                 }
                 else
                 {
-                    var move = new MoveAction(unit, NavService.ShortestPathToCollection(unit.Tile, possibleDestinations));
+                    var path = NavService.ShortestPathToCollection(unit.Tile, possibleDestinations);
+                    path.Insert(0, unit.Tile);
+                    var move = new MoveAction(unit, path);
                     var actuals = CombatService.CalculateActionImplications(unit, move);
                     await ExecuteActions(actuals);
                     unit.HasMoved = true;

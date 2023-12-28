@@ -27,7 +27,7 @@
             selectedTile = tile;
             _context.SelectedTile = tile;
             bool tileIsEmpty = tile == null || tile.Unit == null;
-            if (tileIsEmpty || tile.Unit.Faction != Faction.Player)
+            if (tileIsEmpty || tile.Unit.Faction != Faction.Player || tile.Unit.HasMoved)
             {
                 _context.Map.ClearTileHighlights();
             }

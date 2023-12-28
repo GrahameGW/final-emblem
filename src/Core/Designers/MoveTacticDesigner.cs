@@ -49,6 +49,7 @@ namespace FinalEmblem.Core
         public void SetSelectedTile(Tile _)
         {
             if (currentPath == null || currentPath.Count == 0) { return; }
+            currentPath.Insert(0, startTile);
             var action = new MoveAction(startTile.Unit, currentPath);
             OnActionBuilt?.Invoke(action);
             QueueFree();

@@ -60,6 +60,7 @@ namespace FinalEmblem.Core
 
         [ExportGroup("Playback")]
         [Export] public float TravelSpeed { get; private set; }
+        [Export] public AudioStreamMP3 FootstepsClip { get; private set; }
 
         [ExportGroup("Materials")]
         [Export] Material defaultMaterial;
@@ -74,7 +75,7 @@ namespace FinalEmblem.Core
         public event Action<int> OnUnitMoveChanged;
         public event Action<int> OnUnitHpChanged;
         public event Action<bool> OnUnitHasActedChanged;
-        public event Action<Unit> OnUnitDied;
+        public event Action OnUnitDied;
         public event Action<Tile> OnTileChanged;
 
 
@@ -114,6 +115,7 @@ namespace FinalEmblem.Core
             if (HP <= 0)
             {
                 HP = 0;
+                OnUnitDied?.Invoke();
             }
         }
 

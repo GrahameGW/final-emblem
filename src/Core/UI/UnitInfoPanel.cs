@@ -18,6 +18,7 @@ namespace FinalEmblem.Core
             if (current != null) 
             {
                 current.OnUnitHpChanged -= UnitHpHealthChanged;
+                current.OnUnitDied -= UnitDiedHandler;
             }
             current = unit;
 
@@ -35,6 +36,7 @@ namespace FinalEmblem.Core
                 HpBar.Value = 100 * unit.HP / unit.MaxHP;
 
                 current.OnUnitHpChanged += UnitHpHealthChanged;
+                current.OnUnitDied += UnitDiedHandler;
             }
         }
         
@@ -42,6 +44,11 @@ namespace FinalEmblem.Core
         {
             HpBar.Value = 100 * newHp / current.MaxHP;
             HpLabel.Text = $"HP: {newHp} / {current.MaxHP}";
+        }
+
+        private void UnitDiedHandler()
+        {
+            TogglePanel(null);
         }
     }
 }

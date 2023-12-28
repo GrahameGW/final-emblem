@@ -16,6 +16,9 @@ namespace FinalEmblem.Core
         private Vector2 start;
         private Vector2 end;
 
+        private AnimationPlayer animator;
+        private AudioStreamPlayer2D audio;
+
         private const float ROOT_TWO = 1.41421356f;
 
         public MoveActionAnimator(MoveAction action)
@@ -25,6 +28,9 @@ namespace FinalEmblem.Core
             speed = action.Actor.TravelSpeed;
             progress = 0f;
             posIndex = 0;
+
+            animator = actor.GetNode<AnimationPlayer>("AnimationPlayer");
+            audio = actor.GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D");
         }
 
         public override void _EnterTree()
@@ -36,6 +42,8 @@ namespace FinalEmblem.Core
             }
 
             NextSegment(posIndex);
+            audio.Stream = actor.FootstepsClip;
+            audio.Play();
         }
 
         public override void _Process(double deltaTime)
@@ -50,6 +58,8 @@ namespace FinalEmblem.Core
                 if (posIndex == path.Count - 1)
                 {
                     EmitSignal(AnimCompleteSignal);
+                    animator.Play("idle");
+                    audio.Stop();
                 }
                 else
                 {
@@ -66,6 +76,17 @@ namespace FinalEmblem.Core
             start = t0.WorldPosition.Vector2XY();
             end = t1.WorldPosition.Vector2XY();
             progress = 0;
+
+            string anim = t0.DirectionToApproxDiagonals(t1, true) switch
+            {
+                Compass.N => "move_up",
+                Compass.E => "move_right",
+                Compass.S => "move_down",
+                Compass.W => "move_left",
+                _ => "idle"
+            };
+
+            animator.Play(anim);
         }
     }
 }
