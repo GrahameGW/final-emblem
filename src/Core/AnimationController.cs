@@ -8,6 +8,7 @@ namespace FinalEmblem.Core
     public partial class AnimationController : Node
     {
         [Export] PackedScene attackDisplay;
+        [Export] PackedScene turnStartBanner;
 
         private Game level;
         private ActionAnimator animator;
@@ -74,7 +75,12 @@ namespace FinalEmblem.Core
             }
         }
 
-
+        public async Task PlayTurnStartBanner(Faction turn)
+        {
+            var banner = turnStartBanner.Instantiate<TurnStartBanner>();
+            banner.SetTurn(turn);
+            await banner.Play(this);
+        }
     }
 }
 

@@ -10,6 +10,7 @@ namespace FinalEmblem.Core
     {
         public int Round { get; private set; }
         public Faction CurrentFaction { get; private set; }
+        public Faction NextFaction { get; private set; }
         public List<Faction> Factions { get; private set; }
         public List<Unit> Units { get; private set; }
         public List<Unit> ActingUnits { get; private set; }
@@ -57,6 +58,7 @@ namespace FinalEmblem.Core
             var enemy = new AiController();
             player.Initialize(this, Map);
             enemy.Initialize(this, Faction.Enemy);
+            midTurnController.Initialize(this, animator);
             controllers = new List<ControllerBase> { player, enemy };
 
             // Initialize anything left to do
@@ -97,6 +99,7 @@ namespace FinalEmblem.Core
         public void StartTurn(Faction faction)
         {
             CurrentFaction = faction;
+            NextFaction = Factions.NextOrFirst(faction);
             OnTurnStarted?.Invoke(CurrentFaction);
             GD.Print($"Starting turn for {CurrentFaction}");
             ActingUnits = Units.Where(u => u.Faction == CurrentFaction).ToList();

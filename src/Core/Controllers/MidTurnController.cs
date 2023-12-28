@@ -5,17 +5,21 @@ namespace FinalEmblem.Core
     public partial class MidTurnController : ControllerBase
     {
         public override string DebugName => "MidTurnController";
-        
-        public override async void _EnterTree()
+
+        private Game level;
+        private AnimationController animator;
+
+        public void Initialize(Game game, AnimationController animController)
         {
-            GD.Print("In between turns!");
-            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-            ReleaseControl();
+            level = game;
+            animator = animController;
         }
 
-        public override void _ExitTree()
+        public override async void _EnterTree()
         {
-
+            var faction = level.NextFaction;
+            await animator.PlayTurnStartBanner(faction);
+            ReleaseControl();
         }
     }
 }
