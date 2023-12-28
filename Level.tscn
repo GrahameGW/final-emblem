@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://d4blbwgry3ol0"]
+[gd_scene load_steps=21 format=3 uid="uid://d4blbwgry3ol0"]
 
 [ext_resource type="Script" path="res://src/Core/Game.cs" id="1_1qjrp"]
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="2_6mwdb"]
@@ -16,6 +16,7 @@
 [ext_resource type="Theme" uid="uid://btxxk60e1wrf5" path="res://assets/themes/debug_theme.tres" id="14_0bygf"]
 [ext_resource type="PackedScene" uid="uid://dwt13gaooesci" path="res://TurnStartDisplay.tscn" id="14_qnook"]
 [ext_resource type="Script" path="res://src/Utils/debug_display.gd" id="14_ucd27"]
+[ext_resource type="AudioStream" uid="uid://b1wg1rv43bfg1" path="res://assets/audio/game-time-172907.mp3" id="17_jrcnr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwb5v"]
 resource_name = "terrain"
@@ -583,3 +584,7 @@ text = "Tile Pos"
 [node name="TilePosValue" type="Label" parent="Debug/PanelContainer/GridContainer"]
 layout_mode = 2
 text = "(0.00, 0.25)"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_jrcnr")
+autoplay = true
