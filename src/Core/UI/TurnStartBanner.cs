@@ -31,13 +31,13 @@ namespace FinalEmblem.Core
         private void SetLabel(Color color, string faction)
         {
             label.Text = $"{faction} Turn";
-            label.AddThemeColorOverride("font_color", color);
+            label.AddThemeColorOverride(MagicString.FONT_COLOR, color);
         }
 
         public async Task Play(Node parent)
         {
             parent.AddChild(this);
-            await ToSignal(player, "animation_finished");
+            await ToSignal(player, MagicString.ANIM_FINISHED);
             QueueFree();
         }
     }

@@ -1,6 +1,4 @@
-﻿using Godot;
-
-namespace FinalEmblem.Core
+﻿namespace FinalEmblem.Core
 {
     public partial class MidTurnController : ControllerBase
     {

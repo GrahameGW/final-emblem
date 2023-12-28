@@ -9,6 +9,7 @@ namespace FinalEmblem.Core
     {
         public override string DebugName => "AiController";
 
+        private const float nextUnitDelay = 0.3f;
         private Game level;
         
         public void Initialize(Game level, Faction faction)
@@ -34,6 +35,8 @@ namespace FinalEmblem.Core
                 {
                     return;
                 };
+
+                await ToSignal(GetTree().CreateTimer(nextUnitDelay), MagicString.TIMEOUT);
 
                 if (await TryAttackNeighbor(unit, enemies))
                 {

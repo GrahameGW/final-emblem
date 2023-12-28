@@ -470,6 +470,7 @@ script = ExtResource("4_wevah")
 position = Vector2(344, 263)
 HP = 24
 MaxHP = 24
+Attack = 30
 TravelSpeed = 5.0
 
 [node name="Enemy3" parent="GameMap" instance=ExtResource("11_josjp")]

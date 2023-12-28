@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b6u5fjtuva313"]
+[gd_scene load_steps=11 format=3 uid="uid://b6u5fjtuva313"]
 
 [ext_resource type="Script" path="res://src/Core/Unit.cs" id="1_4dptk"]
 [ext_resource type="Material" uid="uid://bajcmxt4sr0l0" path="res://assets/materials/mat_default.tres" id="2_3l0cf"]
 [ext_resource type="Material" uid="uid://ckg7368b3occv" path="res://assets/materials/mat_grayscale.tres" id="2_cfjgu"]
 [ext_resource type="Texture2D" uid="uid://bvgkr2dpuc5l4" path="res://assets/03-soldier.png" id="2_uowe4"]
+[ext_resource type="Material" uid="uid://cfyfegljep8r2" path="res://assets/materials/mat_death_flash.tres" id="3_56ucg"]
+[ext_resource type="AudioStream" uid="uid://cxyfefcafdycn" path="res://assets/audio/splash-death-splash-46048.mp3" id="6_cmha5"]
 
 [sub_resource type="Animation" id="Animation_j8syx"]
 length = 0.001
@@ -37,9 +39,53 @@ tracks/0/keys = {
 "values": [0, 1, 2, 1]
 }
 
+[sub_resource type="Animation" id="Animation_tse50"]
+resource_name = "death"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.5, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:material")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("2_3l0cf"), ExtResource("3_56ucg")]
+}
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AudioStreamPlayer2D")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.025,
+"stream": ExtResource("6_cmha5")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/2/use_blend = true
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_a64cd"]
 _data = {
 "RESET": SubResource("Animation_j8syx"),
+"death": SubResource("Animation_tse50"),
 "forward": SubResource("Animation_th0m3")
 }
 
@@ -69,3 +115,5 @@ libraries = {
 "": SubResource("AnimationLibrary_a64cd")
 }
 autoplay = "forward"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

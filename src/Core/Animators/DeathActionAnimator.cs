@@ -4,17 +4,20 @@ namespace FinalEmblem.Core
 {
     public partial class DeathActionAnimator : ActionAnimator
     {
-        private Unit actor;
+        private Unit unit;
+        private AnimationPlayer animator;
 
         public DeathActionAnimator(Unit unit)
         {
-            actor = unit;
+            this.unit = unit;
+            animator = unit.GetNode<AnimationPlayer>("AnimationPlayer");
         }
 
         public override async void _EnterTree()
         {
-            actor.QueueFree();
-            await ToSignal(actor, Node.SignalName.TreeExited);
+            animator.Play("death");
+            await ToSignal(animator, MagicString.ANIM_FINISHED);
+            unit.QueueFree();
             EmitSignal(AnimCompleteSignal);
         }
     }
