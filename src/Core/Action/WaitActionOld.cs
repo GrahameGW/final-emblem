@@ -1,6 +1,6 @@
 ﻿namespace FinalEmblem.Core
 {
-    public class WaitAction : IAction
+    public class WaitActionOld : IAction
     {
         public ActionType Type => ActionType.Wait;
         public Unit Actor { get; set; }

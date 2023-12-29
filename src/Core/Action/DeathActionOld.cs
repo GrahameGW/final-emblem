@@ -2,7 +2,7 @@
 
 namespace FinalEmblem.Core
 {
-    public class DeathAction : IAction
+    public class DeathActionOld : IAction
     {
         public ActionType Type => ActionType.Die;
         public Unit Actor { get; set; }

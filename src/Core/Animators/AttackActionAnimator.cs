@@ -1,29 +1,27 @@
-﻿using Godot;
-using System;
+﻿using System;
 using TiercelFoundry.GDUtils;
 
 namespace FinalEmblem.Core
 {
-    public partial class AttackActionAnimator : ActionAnimator, IAwaitActionResult
+    public partial class AttackActionAnimator : OneShotAnimation
     {       
         private Unit actor;
         private Unit target;
-        private int initialTargetHp;
+        private AttackAction attack;
         private AttackAnimationDisplay attackDisplay;
 
         public AttackActionAnimator(AttackAction action, AttackAnimationDisplay display)
         {
-            actor = action.Actor;
+            actor = action.Attacker;
             target = action.Target;
-            initialTargetHp = target.HP;
+            attack = action;
             attackDisplay = display;
         }
 
-        public async void ReceiveActionResult(IActionResult result)
+        public override async void _EnterTree()
         {
             var unitTile = actor.Tile;
             attackDisplay.SetActors(actor, target);
-
 
             var anchorPos = unitTile.DirectionToApproxDiagonals(target.Tile, true) switch
             {
@@ -36,12 +34,10 @@ namespace FinalEmblem.Core
                 
             attackDisplay.GlobalPosition = GetViewport().CanvasTransform * anchorPos;
 
-            if (result is not AttackActionResult attackResult)
-            {
-                throw new ArgumentException($"Passed inappropriate action result to attack animator: {result}");
-            }
-            await attackDisplay.PlayAttack(attackResult);
+            AddChild(attackDisplay);
+            await attackDisplay.PlayAttack(attack.Damage());
             EmitSignal(AnimCompleteSignal);
+            attackDisplay.QueueFree();
         }
     }
 }

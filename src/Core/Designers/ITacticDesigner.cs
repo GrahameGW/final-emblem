@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace FinalEmblem.Core
 {
     public interface ITacticDesigner
     {
-        Action<IAction> OnActionBuilt { get; set; }
+        Action<List<IUnitAction>> OnActionBuilt { get; set; }
         virtual void SetTileUnderMouse(Tile tile) { }
         virtual void SetSelectedTile(Tile tile) { }
     }

@@ -1,11 +1,12 @@
 ﻿using Godot;
 using System;
+using System.Collections.Generic;
 
 namespace FinalEmblem.Core
 {
     public partial class WaitTacticDesigner : Node, ITacticDesigner
     {
-        public Action<IAction> OnActionBuilt { get; set; }
+        public Action<List<IUnitAction>> OnActionBuilt { get; set; }
 
         private readonly Unit unit;
 
@@ -16,7 +17,8 @@ namespace FinalEmblem.Core
 
         public override void _EnterTree()
         {
-            OnActionBuilt?.Invoke(new WaitAction { Actor = unit });
+            var actuals = CombatService.CalculateWaitImplications(unit);
+            OnActionBuilt?.Invoke(actuals);
             QueueFree();
         }
     }

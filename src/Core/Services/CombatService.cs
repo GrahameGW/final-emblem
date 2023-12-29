@@ -13,49 +13,42 @@ namespace FinalEmblem.Core
             level = instance;
         }
 
-        public static List<IAction> CalculateActionImplications(Unit actor, IAction action)
+        public static List<IUnitAction> CalculateMoveImplications(Unit unit, MoveAction move)
         {
-            var actuals = new List<IAction> { action };
-
-            if (action is MoveAction move)
+            for (int i = 0; i < move.Path.Count; i++)
             {
-                for (int i = 0; i < move.Path.Count; i++)
-                {
-                    if (move.Path[i].Unit == null) { continue; }
-
-                    if (move.Path[i].Unit.Faction != actor.Faction)
-                    {
-                        var changedPath = new List<Tile>();
-                        changedPath.AddRange(move.Path);
-                        changedPath.RemoveRange(i, changedPath.Count - i);
-                        var changedMove = new MoveAction(actor, changedPath);
-                        var collision = new CollideAction(move.Path[i]);
-                        actuals = new List<IAction> { changedMove, collision };
-                        return actuals;
-                    }
-                }
-            }
-            else if (action is AttackAction attack)
-            {
-                if (attack.Target.HP <= actor.Attack)
-                {
-                    actuals.Add(KillUnit(attack.Target));
+                if (move.Path[i].Unit == null || move.Path[i].Unit == unit) 
+                { 
+                    continue; 
                 }
 
-                actuals.Add(new WaitAction { Actor = actor });
-                return actuals;
+                var changedPath = new List<Tile>();
+                changedPath.AddRange(move.Path);
+                changedPath.RemoveRange(i, changedPath.Count - i);
+                var changedMove = new MoveAction(unit, changedPath);
+                var collision = new CollideAction(unit, move.Path[i]);
+                var wait = new WaitAction(unit);
+                return new List<IUnitAction> { changedMove, collision, wait };
             }
 
+            return new List<IUnitAction> { move };
+        }
+
+        public static List<IUnitAction> CalculateAttackImplications(Unit unit, AttackAction attack)
+        {
+            var actuals = new List<IUnitAction> { attack };
+            if (attack.Damage() >= attack.Target.HP)
+            {
+                actuals.Add(new DeathAction(attack.Target, level.RemoveUnit));
+            }
+            actuals.Add(new WaitAction(unit));
             return actuals;
         }
 
-        private static DeathAction KillUnit(Unit deceased)
+        public static List<IUnitAction> CalculateWaitImplications(Unit unit)
         {
-            return new DeathAction
-            {
-                Actor = deceased,
-                OnDeathCallback = level.RemoveUnit
-            };
+            return new List<IUnitAction> { new WaitAction(unit) };
         }
+
     }
 }

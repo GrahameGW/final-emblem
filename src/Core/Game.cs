@@ -29,6 +29,8 @@ namespace FinalEmblem.Core
         private IVictoryCondition[] victories;
 
         private const string MENU_SCENE = "res://scenes/MainMenu.tscn";
+        [Export] ActionRunnerFactory actionFactory;
+
 
         public override void _Ready()
         {
@@ -126,14 +128,15 @@ namespace FinalEmblem.Core
             // will have stuff about end of game logic and stuff here
         }
 
-        public async void ExecuteActionQueue(List<IAction> actions, Action onActionsCompleted)
+        public async void ExecuteActionQueue(List<IUnitAction> actions, Action onActionsCompleted)
         {
-            foreach (var action in actions)
+            var runners = actions.Select(actionFactory.Assemble);
+            
+            foreach (var item in runners)
             {
-                animator.LoadActionAnim(action);
-                var res = action.Execute();
-                await animator.PlayActionAnim(res);
-                animator.ClearActionAnim();
+                animator.AddChild(item);
+                await item.Run();
+                item.QueueFree();
             }
 
             onActionsCompleted?.Invoke();

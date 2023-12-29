@@ -7,7 +7,7 @@ namespace FinalEmblem.Core
 {
     public partial class MoveTacticDesigner : Line2D, ITacticDesigner
     {
-        public Action<IAction> OnActionBuilt { get; set; }
+        public Action<List<IUnitAction>> OnActionBuilt { get; set; }
 
         private Tile startTile;
         private List<Tile> tilesInRange;
@@ -49,9 +49,9 @@ namespace FinalEmblem.Core
         public void SetSelectedTile(Tile _)
         {
             if (currentPath == null || currentPath.Count == 0) { return; }
-            currentPath.Insert(0, startTile);
             var action = new MoveAction(startTile.Unit, currentPath);
-            OnActionBuilt?.Invoke(action);
+            var actuals = CombatService.CalculateMoveImplications(startTile.Unit, action);
+            OnActionBuilt?.Invoke(actuals);
             QueueFree();
         }
 
@@ -59,7 +59,7 @@ namespace FinalEmblem.Core
         {
             var path = NavService.FindShortestPath(start, end, tilesInRange);
 
-            for (int i = 0; i < path.Count; i++)
+            for (int i = 1; i < path.Count; i++)
             {
                 AddPoint(path[i].WorldPosition.Vector2XY());
             }

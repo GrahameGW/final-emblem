@@ -127,6 +127,10 @@ namespace FinalEmblem.Core
                     }
                 }
             }
+            if (includeStart)
+            {
+                path.Add(start);
+            }
             path.Reverse();
             return path;
         }       
@@ -137,7 +141,7 @@ namespace FinalEmblem.Core
             return list.Where(t => t.Unit == null).ToList();
         }
 
-        public static List<Tile> ShortestPathToCollection(Tile start, List<Tile> possibleEnds, bool diagonalEdges = false) 
+        public static List<Tile> ShortestPathToCollection(Tile start, List<Tile> possibleEnds, bool includeStart = true, bool diagonalEdges = false) 
         {
             var sorted = possibleEnds.OrderBy(t => t.DistanceTo(start));
             List<Tile> bestPath = null;
@@ -147,7 +151,7 @@ namespace FinalEmblem.Core
             {
                 if (start.DistanceTo(end) > bestDistance) { continue; }
 
-                var path = FindShortestPath(start, end, grid.Tiles.ToList(), diagonalEdges);
+                var path = FindShortestPath(start, end, grid.Tiles.ToList(), includeStart, diagonalEdges);
                 var distance = path.TotalDistance();
 
                 if (distance < bestDistance)

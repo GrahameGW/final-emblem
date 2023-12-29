@@ -2,7 +2,7 @@
 
 namespace FinalEmblem.Core
 {
-    public abstract partial class ActionAnimator : OneShotAnimation
+    public abstract partial class OneShotAnimation : Node
     {
         [Signal]
         public delegate void AnimationCompleteEventHandler();

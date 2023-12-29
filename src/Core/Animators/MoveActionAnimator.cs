@@ -5,7 +5,7 @@ using Godot;
 
 namespace FinalEmblem.Core
 {
-    public partial class MoveActionAnimator : ActionAnimator
+    public partial class MoveActionAnimator : OneShotAnimation
     {
         private Unit actor;
         private List<Tile> path;
@@ -24,8 +24,8 @@ namespace FinalEmblem.Core
         public MoveActionAnimator(MoveAction action)
         {
             path = action.Path;
-            actor = action.Actor;
-            speed = action.Actor.TravelSpeed;
+            actor = action.Unit;
+            speed = action.Unit.TravelSpeed;
             progress = 0f;
             posIndex = 0;
 

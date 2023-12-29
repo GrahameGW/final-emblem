@@ -24,28 +24,28 @@ namespace FinalEmblem.Core
         {
             level.OnTurnEnded -= TurnEndedHandler;
         }
-
+        /*
         public void LoadActionAnim(IAction toAnimate)
         {
             animator = toAnimate.Type switch
             {
-                ActionType.Move => new MoveActionAnimator(toAnimate as MoveAction),
+                //ActionType.Move => new MoveActionAnimator(toAnimate as MoveActionOld),
                 ActionType.Wait => new WaitActionAnimator(toAnimate.Actor),
-                ActionType.Attack => InstantiateAttackAnim(toAnimate as AttackAction),
+                ActionType.Attack => InstantiateAttackAnim(toAnimate as AttackActionOld),
                 ActionType.Die => new DeathActionAnimator(toAnimate.Actor),
                 ActionType.Collide => throw new NotImplementedException(),
                 _ => throw new ArgumentOutOfRangeException(toAnimate.Type.ToString()),
             };
         }
 
-        private AttackActionAnimator InstantiateAttackAnim(AttackAction action)
+        private AttackActionAnimator InstantiateAttackAnim(AttackActionOld action)
         {
             var display = attackDisplay.Instantiate<AttackAnimationDisplay>();
             AddChild(display);
             animations.Add(display);
             return new AttackActionAnimator(action, display);
         }
-
+        */
         public async Task PlayActionAnim(IActionResult result)
         {
             AddChild(animator);

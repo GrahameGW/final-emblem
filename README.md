@@ -8,6 +8,16 @@
 
 - `dotnet/format`: Install by running `dotnet tool install -g dotnet-format` in your project folder
 
+## Debugger Setup
+
+### VS 2022
+
+1. Create a new executable debug profile
+2. Set the executable path to the Godot editor exe; e.g., `C:/Users/Grahame/Desktop/Godot/Godot4_2.exe`
+3. Set the command line arguments to `--path . --verbose`
+4. Set the working directory to `.` (current folder)
+5. If you want to see better C++ errors from the engine, enable **Native Code Debugging**. Note that it will disable hot reloading to do so.
+
 ## Troubleshooting
 
 ### Attack animation

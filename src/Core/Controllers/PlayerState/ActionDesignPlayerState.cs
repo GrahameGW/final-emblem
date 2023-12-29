@@ -1,4 +1,5 @@
 ﻿using Godot;
+using System.Collections.Generic;
 
 namespace FinalEmblem.Core
 {
@@ -44,9 +45,9 @@ namespace FinalEmblem.Core
             }
         }
 
-        private void ActionBuiltHandler(IAction action)
+        private void ActionBuiltHandler(List<IUnitAction> actions)
         {
-            _context.ChangeState(new ActionExecutionPlayerState(action, unit));
+            _context.ChangeState(new ActionExecutionPlayerState(actions, unit));
         }
 
         private void TileUnderMouseChangedHandler(Tile tile)

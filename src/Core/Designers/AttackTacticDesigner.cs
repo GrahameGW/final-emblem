@@ -6,7 +6,7 @@ namespace FinalEmblem.Core
 {
     public partial class AttackTacticDesigner : Node, ITacticDesigner
     {
-        public Action<IAction> OnActionBuilt { get; set; }
+        public Action<List<IUnitAction>> OnActionBuilt { get; set; }
 
         private Unit attacker;
         private List<Tile> inRange;
@@ -37,7 +37,8 @@ namespace FinalEmblem.Core
             if (inRange.Contains(tile) && tile.Unit?.Faction != Faction.Player)
             {
                 var action = new AttackAction(attacker, tile.Unit);
-                OnActionBuilt?.Invoke(action);
+                var actuals = CombatService.CalculateAttackImplications(attacker, action);
+                OnActionBuilt?.Invoke(actuals);
                 map.ClearTileHighlights();
                 QueueFree();
             }

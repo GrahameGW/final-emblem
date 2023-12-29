@@ -29,7 +29,7 @@ namespace FinalEmblem.Core
 
         private async void Act(List<Unit> units, List<Unit> enemies)
         {
-            foreach (var unit in units) 
+            foreach (var unit in units)
             {
                 if (level.TestWinConditions())
                 {
@@ -42,46 +42,46 @@ namespace FinalEmblem.Core
                 {
                     continue;
                 }
-                
+
                 var tilesInRange = NavService.FindTilesInRange(unit.Move, unit.Tile);
                 var possibleDestinations = enemies.SelectMany(e => e.Tile.GetNeighbors())
                                                   .Where(s => tilesInRange.Contains(s))
                                                   .ToList();
-
-                if (possibleDestinations.Count == 0)
-                {
-                    var path = NavService.ShortestPathToCollection(unit.Tile, enemies.Select(e => e.Tile).ToList());
-                    path.Insert(0, unit.Tile);
-                    var move = new MoveAction(unit, path.PathTilesInRange(unit.Move));
-                    var actuals = CombatService.CalculateActionImplications(unit, move);
-                    await ExecuteActions(actuals);
-                    unit.HasMoved = true;
-                    var wait = new WaitAction() { Actor = unit };
-                    actuals = CombatService.CalculateActionImplications(unit, wait);
-                    await ExecuteActions(actuals);
-                    unit.HasActed = true;
-                }
-                else
-                {
-                    var path = NavService.ShortestPathToCollection(unit.Tile, possibleDestinations);
-                    path.Insert(0, unit.Tile);
-                    var move = new MoveAction(unit, path);
-                    var actuals = CombatService.CalculateActionImplications(unit, move);
-                    await ExecuteActions(actuals);
-                    unit.HasMoved = true;
-                    var target = possibleDestinations[0].GetNeighbors().First(t => t.Unit != null && t.Unit.Faction != Faction);
-                    var attack = new AttackAction(unit, target.Unit);
-                    actuals = CombatService.CalculateActionImplications(unit, attack);
-                    await ExecuteActions(actuals);
-                    unit.HasActed = true;
-                }
+                /*
+                    if (possibleDestinations.Count == 0)
+                    {
+                        var path = NavService.ShortestPathToCollection(unit.Tile, enemies.Select(e => e.Tile).ToList());
+                        // path.Insert(0, unit.Tile);
+                        var move = new MoveAction(unit, path.PathTilesInRange(unit.Move));
+                        var actuals = CombatService.CalculateMoveImplications(unit, move);
+                        await ExecuteActions(actuals);
+                        unit.HasMoved = true;
+                        var wait = new WaitAction() { Actor = unit };
+                        actuals = CombatService.CalculateActionImplications(unit, wait);
+                        await ExecuteActions(actuals);
+                        unit.HasActed = true;
+                    }
+                    else
+                    {
+                        var path = NavService.ShortestPathToCollection(unit.Tile, possibleDestinations);
+                        path.Insert(0, unit.Tile);
+                        var move = new MoveActionOld(unit, path);
+                        var actuals = CombatService.CalculateActionImplications(unit, move);
+                        await ExecuteActions(actuals);
+                        unit.HasMoved = true;
+                        var target = possibleDestinations[0].GetNeighbors().First(t => t.Unit != null && t.Unit.Faction != Faction);
+                        var attack = new AttackAction(unit, target.Unit);
+                        actuals = CombatService.CalculateActionImplications(unit, attack);
+                        await ExecuteActions(actuals);
+                        unit.HasActed = true;
+                    }
+                */
             }
-
             level.EndTurn();
             ReleaseControl();
         }
 
-        private Task ExecuteActions(List<IAction> actions)
+        private Task ExecuteActions(List<IUnitAction> actions)
         {
             var tcs = new TaskCompletionSource();
             level.ExecuteActionQueue(actions, () => tcs.SetResult());
@@ -95,7 +95,7 @@ namespace FinalEmblem.Core
                 if (enemies.Contains(tile.Unit))
                 {
                     var attack = new AttackAction(unit, tile.Unit);
-                    var actuals = CombatService.CalculateActionImplications(unit, attack);
+                    var actuals = CombatService.CalculateAttackImplications(unit, attack);
                     await ExecuteActions(actuals);
                     unit.HasActed = true;
                     return true;

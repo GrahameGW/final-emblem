@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace FinalEmblem.Core
 {
-    public class MoveAction : IAction
+    public class MoveActionOld : IAction
     {
         public ActionType Type => ActionType.Move;
         public Unit Actor { get; set; }
         public readonly List<Tile> Path;
 
-        public MoveAction(Unit unit, List<Tile> path)
+        public MoveActionOld(Unit unit, List<Tile> path)
         {
             Actor = unit;
             Path = path;

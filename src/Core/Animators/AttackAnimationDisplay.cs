@@ -1,4 +1,5 @@
 ﻿using Godot;
+using System.Formats.Asn1;
 using System.Threading.Tasks;
 
 namespace FinalEmblem.Core
@@ -33,18 +34,16 @@ namespace FinalEmblem.Core
             targetHealth.AllowLesser = true;
         }
         
-        public async Task PlayAttack(AttackActionResult result)
+        public async Task PlayAttack(int damage)
         {
-            float originalHp = Mathf.Clamp(defender.HP + result.Damage, 0f, defender.MaxHP);
-            float duration = (originalHp - defender.HP) / defender.MaxHP;
+            float resultHealth = Mathf.Clamp(defender.HP - damage, 0, defender.MaxHP);
+            float duration = damage / defender.MaxHP;
             duration = Mathf.Clamp(duration * fullHealthDrainTime, minHealthDrainTime, fullHealthDrainTime);
 
-            targetHealth.Value = originalHp;
-
             Tween tween = GetTree().CreateTween();
-            tween.TweenProperty(targetHealth, "value", defender.HP, duration).SetTrans(Tween.TransitionType.Quad);
+            tween.TweenProperty(targetHealth, "value", resultHealth, duration).SetTrans(Tween.TransitionType.Quad);
             tween.TweenInterval(closeDelay);
-            await ToSignal(tween, "finished");
+            await ToSignal(tween, MagicString.TWEEN_FINISHED);
         }
     }
 }
