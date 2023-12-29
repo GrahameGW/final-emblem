@@ -1,22 +1,23 @@
-[gd_scene load_steps=22 format=3 uid="uid://bm14n0jwt8jhn"]
+[gd_scene load_steps=23 format=3 uid="uid://bm14n0jwt8jhn"]
 
 [ext_resource type="Script" path="res://src/Core/Game.cs" id="1_1qjrp"]
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="2_6mwdb"]
 [ext_resource type="Resource" uid="uid://dr4c50y7mlhpg" path="res://data/action_factory.tres" id="2_plpxm"]
+[ext_resource type="PackedScene" uid="uid://co5ee2mt34t8c" path="res://scenes/MainMenu.tscn" id="3_dnqpu"]
 [ext_resource type="Texture2D" uid="uid://dmutbv5x2wohq" path="res://assets/16x16 Area Select.png" id="3_eq5p1"]
 [ext_resource type="Script" path="res://src/Core/GameMap.cs" id="4_wevah"]
 [ext_resource type="Script" path="res://src/Core/UI/ActionList.cs" id="6_veuyr"]
 [ext_resource type="Script" path="res://src/Core/UI/LevelHUD.cs" id="7_3pf7u"]
 [ext_resource type="Script" path="res://src/Core/UI/CurrentTurnDisplay.cs" id="9_6pi2l"]
-[ext_resource type="Script" path="res://src/Core/AnimationController.cs" id="9_gihvx"]
+[ext_resource type="Resource" uid="uid://cc4dfar4vnoan" path="res://data/axe_weapon.tres" id="9_8pmd6"]
 [ext_resource type="Theme" uid="uid://cadrofyolixbt" path="res://assets/themes/hud_theme.tres" id="10_tkg0p"]
 [ext_resource type="PackedScene" uid="uid://crgv53mrsunw1" path="res://scenes/UnitInfoPanel.tscn" id="10_vd4nb"]
 [ext_resource type="PackedScene" uid="uid://b6u5fjtuva313" path="res://scenes/EnemyUnit.tscn" id="11_josjp"]
 [ext_resource type="PackedScene" uid="uid://bv0521lfrirx8" path="res://scenes/PlayerUnit.tscn" id="12_himcw"]
-[ext_resource type="PackedScene" uid="uid://ck417p0xbmo0h" path="res://scenes/AttackAnimation.tscn" id="13_y6hna"]
 [ext_resource type="Theme" uid="uid://btxxk60e1wrf5" path="res://assets/themes/debug_theme.tres" id="14_0bygf"]
-[ext_resource type="PackedScene" uid="uid://dwt13gaooesci" path="res://scenes/TurnStartDisplay.tscn" id="14_qnook"]
 [ext_resource type="Script" path="res://src/Utils/debug_display.gd" id="14_ucd27"]
+[ext_resource type="Script" path="res://src/Core/GlobalAnimations.cs" id="15_yainx"]
+[ext_resource type="PackedScene" uid="uid://dwt13gaooesci" path="res://scenes/TurnStartBanner.tscn" id="16_xmujs"]
 [ext_resource type="AudioStream" uid="uid://b1wg1rv43bfg1" path="res://assets/audio/game-time-172907.mp3" id="17_jrcnr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwb5v"]
@@ -452,6 +453,7 @@ sources/4 = SubResource("TileSetAtlasSource_7utes")
 [node name="Main" type="Node"]
 script = ExtResource("1_1qjrp")
 actionFactory = ExtResource("2_plpxm")
+menuScene = ExtResource("3_dnqpu")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(324, 184)
@@ -486,6 +488,7 @@ Move = 20
 
 [node name="Player2" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(183, 135)
+Weapon = ExtResource("9_8pmd6")
 
 [node name="Player3" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(263, 135)
@@ -533,9 +536,8 @@ text = "Player's Turn"
 [node name="UnitInfoPanel" parent="HUD" instance=ExtResource("10_vd4nb")]
 
 [node name="AnimationController" type="CanvasLayer" parent="."]
-script = ExtResource("9_gihvx")
-attackDisplay = ExtResource("13_y6hna")
-turnStartBanner = ExtResource("14_qnook")
+script = ExtResource("15_yainx")
+turnStartBanner = ExtResource("16_xmujs")
 
 [node name="Debug" type="CanvasLayer" parent="." node_paths=PackedStringArray("mouse_pix_label", "tile_coords_label", "tile_pos_label")]
 script = ExtResource("14_ucd27")

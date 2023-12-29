@@ -2,7 +2,7 @@
 
 namespace FinalEmblem.Core
 {
-    public partial class DeathActionAnimator : ActionAnimator
+    public partial class DeathActionAnimator : OneShotAnimation
     {
         private Unit unit;
         private AnimationPlayer animator;

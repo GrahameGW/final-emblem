@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=2 format=3 uid="uid://cc4dfar4vnoan"]
+
+[ext_resource type="Script" path="res://src/Core/Weapon.cs" id="1_shaeo"]
+
+[resource]
+script = ExtResource("1_shaeo")
+Name = "Axe"
+Damage = 10

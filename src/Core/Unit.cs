@@ -23,7 +23,7 @@ namespace FinalEmblem.Core
                 OnTileChanged?.Invoke(value);
             }
         }
-        public List<ActionType> Actions { get; private set; }
+        public List<UnitAction> Actions { get; private set; }
         public bool HasActed 
         { 
             get => _hasActed; 
@@ -54,9 +54,10 @@ namespace FinalEmblem.Core
             }
         }
         [Export] public int MaxHP { get; set; }
-        [Export] public int Attack { get; set; }
+        [Export] public int Strength { get; set; }
         [Export] public Faction Faction { get; set; }
-        [Export] Array<ActionType> actions;
+        [Export] Array<UnitAction> actions;
+        [Export] public Weapon Weapon { get; set; }
 
         [ExportGroup("Playback")]
         [Export] public float TravelSpeed { get; private set; }
@@ -94,7 +95,7 @@ namespace FinalEmblem.Core
             Tile.Unit = null;
         }
 
-        public List<ActionType> GetAvailableActions()
+        public List<UnitAction> GetAvailableActions()
         {
             if (HasActed)
             {
@@ -103,7 +104,7 @@ namespace FinalEmblem.Core
 
             if (HasMoved)
             {
-                return Actions.Where(a => a != ActionType.Move).ToList();
+                return Actions.Where(a => a != UnitAction.Move).ToList();
             }
 
             return Actions;

@@ -25,11 +25,11 @@ namespace FinalEmblem.Core
         private int activeControllerIndex;
         private ControllerBase activeController;
 
-        private AnimationController animator;
+        private GlobalAnimations animator;
         private IVictoryCondition[] victories;
 
-        private const string MENU_SCENE = "res://scenes/MainMenu.tscn";
         [Export] ActionRunnerFactory actionFactory;
+        [Export] PackedScene menuScene;
 
 
         public override void _Ready()
@@ -37,7 +37,7 @@ namespace FinalEmblem.Core
             // Get nodes already children of this node
             Map = GetNode<GameMap>("GameMap");
             var hud = GetNode<LevelHUD>("HUD");
-            animator = GetNode<AnimationController>("AnimationController");
+            animator = GetNode<GlobalAnimations>("AnimationController");
 
             // Initialize anything that can be immediately initialized
             animator.Initialize(this);
@@ -166,7 +166,7 @@ namespace FinalEmblem.Core
         private void EndGameHandler(Faction winner)
         {
             GD.Print($"Winner: {winner}");
-            GetTree().CallDeferred("change_scene_to_file", MENU_SCENE);
+            GetTree().CallDeferred(MagicString.CHANGE_SCENE_TO_PACKED, menuScene);
         }
     }
 }

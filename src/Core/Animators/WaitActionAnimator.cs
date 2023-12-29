@@ -2,7 +2,7 @@
 
 namespace FinalEmblem.Core
 {
-    public partial class WaitActionAnimator : ActionAnimator
+    public partial class WaitActionAnimator : OneShotAnimation
     {
         private Unit actor;
 
