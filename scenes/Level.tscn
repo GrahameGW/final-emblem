@@ -480,6 +480,7 @@ TravelSpeed = 5.0
 
 [node name="Player1" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(392, 278)
+Move = 20
 
 [node name="Player2" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(183, 135)

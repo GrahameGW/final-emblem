@@ -4,7 +4,7 @@ namespace FinalEmblem.Core
 {
     public static class DesignerService
     {
-        private const string MOVE_DESIGNER = "res://MoveTacticDesigner.tscn";
+        private const string MOVE_DESIGNER = "res://scenes/MoveTacticDesigner.tscn";
 
         private static PackedScene packedMoveDesigner;
 

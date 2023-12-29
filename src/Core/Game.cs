@@ -28,7 +28,7 @@ namespace FinalEmblem.Core
         private AnimationController animator;
         private IVictoryCondition[] victories;
 
-        private const string MENU_SCENE = "res://MainMenu.tscn";
+        private const string MENU_SCENE = "res://scenes/MainMenu.tscn";
 
         public override void _Ready()
         {
