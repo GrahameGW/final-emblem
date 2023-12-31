@@ -152,7 +152,7 @@ namespace FinalEmblem.Core
                 if (start.DistanceTo(end) > bestDistance) { continue; }
 
                 var path = FindShortestPath(start, end, grid.Tiles.ToList(), includeStart, diagonalEdges);
-                var distance = path.TotalDistance();
+                var distance = path.TileDistance();
 
                 if (distance < bestDistance)
                 {

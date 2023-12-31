@@ -6,6 +6,8 @@
         Attack,
         Wait,
         Die,
-        Collide
+        Collide,
+        Interact,
+        Speak
     }
 }

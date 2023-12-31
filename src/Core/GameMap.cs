@@ -19,9 +19,12 @@ namespace FinalEmblem.Core
 
         // CDL = Custom Data Layer
         private const string CDL_TERRAIN = "CDL_TERRAIN";
+        private const string CDL_FEATURE = "CDL_FEATURE";
         private const int TERRAIN_BASE_LAYER = 1;
         private const int TERRAIN_BASE_SOURCE = 1;
-        private const int NAV_OVERLAY_LAYER = 2;
+        private const int FEATURE_BASE_LAYER = 2;
+        private const int FEATURE_BASE_SOURCE = 1;
+        private const int NAV_OVERLAY_LAYER = 3;
         private const int NAV_OVERLAY_SOURCE = 4;
 
         // Debug
@@ -70,13 +73,18 @@ namespace FinalEmblem.Core
                 {
                     var coord = new Vector2I(x, y);
                     var tilemapCoords = coord + gameRect.Position;
-                    var tile = GetCellTileData(TERRAIN_BASE_LAYER, tilemapCoords);
-                    if (tile == null)
-                    {
-                        continue;
-                    }
-                    int terrainIdx = tile.GetCustomData(CDL_TERRAIN).AsInt32();
-                    grid.CreateTile(coord, (Terrain)terrainIdx);
+                    var tileData = GetCellTileData(TERRAIN_BASE_LAYER, tilemapCoords);
+                    
+                    if (tileData == null) { continue; }
+
+                    int terrainIdx = tileData.GetCustomData(CDL_TERRAIN).AsInt32();
+                    var tile = grid.CreateTile(coord, (Terrain)terrainIdx);
+                    tileData = GetCellTileData(FEATURE_BASE_LAYER, tilemapCoords);
+                    if (tileData == null) { continue; };
+                    
+                    var resource = tileData.GetCustomData(CDL_FEATURE).As<Resource>();
+                    var feature = resource as Feature;
+                    tile.Feature = feature;
                 }
             }
 

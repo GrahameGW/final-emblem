@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -34,7 +34,7 @@ namespace FinalEmblem.Core
         public Vector3 SetWorldPosition(Vector3 gridOrigin, Vector2 cellSize, bool isXZ = false)
         {
             Vector2 pos = Coordinates * cellSize;
-            WorldPosition = isXZ ? new Vector3(pos.X, 0f, pos.Y)  : new Vector3(pos.X, pos.Y, 0f);
+            WorldPosition = isXZ ? new Vector3(pos.X, 0f, pos.Y) : new Vector3(pos.X, pos.Y, 0f);
             WorldPosition += gridOrigin;
             return WorldPosition;
         }
@@ -89,6 +89,7 @@ namespace FinalEmblem.Core
             };
             return neighbors.Where(n => n != null).ToList();
         }
+
         public Tile[] GetNeighborsAsArray(bool includeDiagonals = false)
         {
             return includeDiagonals ? new Tile[]
@@ -99,6 +100,37 @@ namespace FinalEmblem.Core
                 North, East, South, West
             };
         }
+
+        public Tile GetNeighbor(Compass direction)
+        {
+            return direction switch
+            {
+                Compass.N => North,
+                Compass.NE => Northeast,
+                Compass.E => East,
+                Compass.SE => Southeast,
+                Compass.S => South,
+                Compass.SW => Southwest,
+                Compass.W => West,
+                Compass.NW => Northwest,
+                _ => throw new ArgumentOutOfRangeException(direction.ToString())
+            };
+        }
+        
+        public List<UnitAction> Interactions(Compass facing)
+        {
+            var actions = new List<UnitAction>();
+            if (Feature?.Interaction != null)
+            {
+                actions.Add(Feature.Interaction);
+            }
+            var neighbor = GetNeighbor(facing);
+            if (neighbor?.Feature?.Interaction != null)
+            {
+                actions.Add(neighbor.Feature.Interaction);
+            }
+            return actions;
+        } 
     }
 
     public static class TileExtensions
@@ -140,7 +172,7 @@ namespace FinalEmblem.Core
             return Mathf.Abs(delta.X) - Mathf.Abs(delta.Y) == 0;
         }
 
-        public static int TotalDistance(this IEnumerable<Tile> tiles)
+        public static int TileDistance(this IEnumerable<Tile> tiles)
         {
             return tiles.Count();
         }

@@ -23,6 +23,7 @@ namespace FinalEmblem.Core
                 OnTileChanged?.Invoke(value);
             }
         }
+        public Compass Facing { get; set; } = Compass.S;
         public List<UnitAction> Actions { get; private set; }
         public bool HasActed 
         { 
@@ -56,8 +57,8 @@ namespace FinalEmblem.Core
         [Export] public int MaxHP { get; set; }
         [Export] public int Strength { get; set; }
         [Export] public Faction Faction { get; set; }
-        [Export] Array<UnitAction> actions;
         [Export] public Weapon Weapon { get; set; }
+        [Export] Array<UnitAction> actions;
 
         [ExportGroup("Playback")]
         [Export] public float TravelSpeed { get; private set; }
@@ -97,17 +98,13 @@ namespace FinalEmblem.Core
 
         public List<UnitAction> GetAvailableActions()
         {
-            if (HasActed)
-            {
-                return null;
-            }
+            if (HasActed) { return null; }
 
-            if (HasMoved)
-            {
-                return Actions.Where(a => a != UnitAction.Move).ToList();
-            }
+            var actions = new List<UnitAction>();
+            actions.AddRange(HasMoved ? Actions.Where(a => a != UnitAction.Move) : Actions);
+            actions.AddRange(Tile.Interactions(Facing));
 
-            return Actions;
+            return actions;
         }
 
         public void Damage(int damage)
