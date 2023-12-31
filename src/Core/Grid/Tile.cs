@@ -14,7 +14,7 @@ namespace FinalEmblem.Core
         public Vector3 WorldPosition { get; set; }
 
         public Unit Unit { get; set; }
-        public readonly List<Feature> Features = new();
+        public Feature Feature { get; set; }
 
         public Tile East { get; set; }
         public Tile West { get; set; }

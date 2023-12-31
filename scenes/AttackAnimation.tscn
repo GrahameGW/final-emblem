@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/Core/Animators/AttackAnimationDisplay.cs" id="1_3afym"]
 [ext_resource type="Theme" uid="uid://d2fjh2vbe6ysj" path="res://assets/themes/display_theme.tres" id="1_m0c0m"]
-[ext_resource type="AudioStream" uid="uid://dkp4c0v5g61ho" path="res://assets/audio/clean-fast-swooshaiff-14784.mp3" id="3_u7bis"]
+[ext_resource type="AudioStream" uid="uid://dkp4c0v5g61ho" path="res://assets/audio/placeholder/clean-fast-swooshaiff-14784.mp3" id="3_u7bis"]
 
 [node name="AttackDisplay" type="Control" node_paths=PackedStringArray("attackerName", "targetName", "attackerHealth", "targetHealth")]
 custom_minimum_size = Vector2(0, 32)

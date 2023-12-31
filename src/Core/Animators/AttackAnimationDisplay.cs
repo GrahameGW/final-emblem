@@ -1,5 +1,4 @@
 ﻿using Godot;
-using System.Formats.Asn1;
 using System.Threading.Tasks;
 
 namespace FinalEmblem.Core
@@ -11,6 +10,7 @@ namespace FinalEmblem.Core
         [Export] Label targetName;
         [Export] ProgressBar attackerHealth;
         [Export] ProgressBar targetHealth;
+
         [ExportGroup("Timing")]
         [Export] float fullHealthDrainTime;
         [Export] float minHealthDrainTime;
