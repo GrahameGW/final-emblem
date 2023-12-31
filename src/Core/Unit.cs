@@ -73,6 +73,7 @@ namespace FinalEmblem.Core
         private int _move;
         private int _hp;
         private Sprite2D sprite;
+        private AnimationPlayer animator;
 
         public event Action<int> OnUnitMoveChanged;
         public event Action<int> OnUnitHpChanged;
@@ -84,6 +85,7 @@ namespace FinalEmblem.Core
         public override void _Ready()
         {
             Actions = actions.ToList();
+            animator = GetNode<AnimationPlayer>("AnimationPlayer");
         }
 
         public override void _EnterTree()
@@ -102,7 +104,7 @@ namespace FinalEmblem.Core
 
             var actions = new List<UnitAction>();
             actions.AddRange(HasMoved ? Actions.Where(a => a != UnitAction.Move) : Actions);
-            actions.AddRange(Tile.Interactions(Facing));
+            actions.AddRange(Tile.Interactions());
 
             return actions;
         }
@@ -120,6 +122,31 @@ namespace FinalEmblem.Core
         public void ToggleActedMaterial(bool hasActed)
         {
             sprite.Material = hasActed ? unitActedMaterial : defaultMaterial;
+        }
+
+        public void SetIdleAnimation()
+        {
+            var anim = Facing switch
+            {
+                Compass.N => "idle_up",
+                Compass.E => "idle_right",
+                Compass.S => "idle_down",
+                Compass.W => "idle_left",
+                _ => throw new NotImplementedException()
+            };
+            animator.Play(anim);
+        }
+        public void SetIdleAnimation(Compass direction)
+        {
+            var anim = direction switch
+            {
+                Compass.N => "idle_up",
+                Compass.E => "idle_right",
+                Compass.S => "idle_down",
+                Compass.W => "idle_left",
+                _ => throw new NotImplementedException()
+            };
+            animator.Play(anim);
         }
     }
 }

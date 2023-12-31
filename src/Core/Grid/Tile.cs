@@ -117,17 +117,27 @@ namespace FinalEmblem.Core
             };
         }
         
-        public List<UnitAction> Interactions(Compass facing)
+        public List<UnitAction> Interactions()
         {
             var actions = new List<UnitAction>();
-            if (Feature?.Interaction != null)
+            if (Feature != null) 
             {
-                actions.Add(Feature.Interaction);
+                if (Feature.InteractMode.CanInteractOnTile())
+                {
+                    actions.Add(Feature.Interaction);
+                }
             }
-            var neighbor = GetNeighbor(facing);
-            if (neighbor?.Feature?.Interaction != null)
+            
+            foreach (var neighbor in GetNeighbors())
             {
-                actions.Add(neighbor.Feature.Interaction);
+                var feature = neighbor?.Feature;
+                if (feature != null) 
+                {
+                    if (feature.InteractMode.CanInteractAdjacent())
+                    {
+                        actions.Add(neighbor.Feature.Interaction);
+                    }
+                }
             }
             return actions;
         } 
@@ -192,11 +202,25 @@ namespace FinalEmblem.Core
             return tiles;
         }
 
+        public static Compass DirectionToNeighbor(this Tile tile, Tile other)
+        {
+            if (other == tile.North) return Compass.N;
+            if (other == tile.East) return Compass.E;
+            if (other == tile.South) return Compass.S;
+            if (other == tile.West) return Compass.W;
+            if (other == tile.Northwest) return Compass.NW;
+            if (other == tile.Northeast) return Compass.NE;
+            if (other == tile.Southeast) return Compass.SE;
+            if (other == tile.Southwest) return Compass.SW;
+            
+            throw new ArgumentException($"{other} is not a neighbor of {tile}. Use DirectionToApproxDiagonals() instead");
+        }
+
         public static Compass DirectionToApproxDiagonals(this Tile tile, Tile other, bool invertY = false)
         {
             if (tile == other)
             {
-                throw new System.ArgumentException($"Tile {tile.Coordinates} and arg 'other' are the same tile");
+                throw new ArgumentException($"Tile {tile.Coordinates} and arg 'other' are the same tile");
             }
 
             if (tile.Coordinates.Y == other.Coordinates.Y)

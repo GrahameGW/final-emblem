@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b6u5fjtuva313"]
+[gd_scene load_steps=20 format=3 uid="uid://b6u5fjtuva313"]
 
 [ext_resource type="Script" path="res://src/Core/Unit.cs" id="1_4dptk"]
 [ext_resource type="Material" uid="uid://bajcmxt4sr0l0" path="res://assets/materials/mat_default.tres" id="2_3l0cf"]
@@ -68,7 +68,7 @@ tracks/2/keys = {
 tracks/2/use_blend = true
 
 [sub_resource type="Animation" id="Animation_th0m3"]
-resource_name = "idle"
+resource_name = "idle_down"
 length = 1.2
 loop_mode = 1
 tracks/0/type = "value"
@@ -82,6 +82,57 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 1]
+}
+
+[sub_resource type="Animation" id="Animation_i85s0"]
+resource_name = "idle_left"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 4]
+}
+
+[sub_resource type="Animation" id="Animation_glei5"]
+resource_name = "idle_right"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 7]
+}
+
+[sub_resource type="Animation" id="Animation_bry5u"]
+resource_name = "idle_up"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [9, 10, 11, 10]
 }
 
 [sub_resource type="Animation" id="Animation_r0vnq"]
@@ -156,7 +207,10 @@ tracks/0/keys = {
 _data = {
 "RESET": SubResource("Animation_j8syx"),
 "death": SubResource("Animation_tse50"),
-"idle": SubResource("Animation_th0m3"),
+"idle_down": SubResource("Animation_th0m3"),
+"idle_left": SubResource("Animation_i85s0"),
+"idle_right": SubResource("Animation_glei5"),
+"idle_up": SubResource("Animation_bry5u"),
 "move_down": SubResource("Animation_r0vnq"),
 "move_left": SubResource("Animation_mmwkn"),
 "move_right": SubResource("Animation_eieel"),
@@ -171,8 +225,8 @@ HP = 2
 MaxHP = 2
 Strength = 3
 Faction = 1
-actions = Array[int]([0, 1, 2])
 Weapon = ExtResource("2_7gi51")
+actions = Array[int]([0, 1, 2])
 FootstepsClip = ExtResource("2_nna6y")
 unitActedMaterial = ExtResource("2_cfjgu")
 
@@ -190,6 +244,6 @@ region_filter_clip_enabled = true
 libraries = {
 "": SubResource("AnimationLibrary_a64cd")
 }
-autoplay = "idle"
+autoplay = "idle_down"
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

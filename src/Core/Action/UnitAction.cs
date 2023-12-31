@@ -8,6 +8,7 @@
         Die,
         Collide,
         Interact,
-        Speak
+        Speak,
+        Rotate
     }
 }

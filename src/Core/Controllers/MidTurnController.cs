@@ -4,10 +4,10 @@
     {
         public override string DebugName => "MidTurnController";
 
-        private Game level;
+        private Level level;
         private GlobalAnimations animator;
 
-        public void Initialize(Game game, GlobalAnimations animController)
+        public void Initialize(Level game, GlobalAnimations animController)
         {
             level = game;
             animator = animController;

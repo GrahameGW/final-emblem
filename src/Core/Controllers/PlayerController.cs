@@ -8,7 +8,7 @@ namespace FinalEmblem.Core
         public override string DebugName => "PlayerController";
 
         public PlayerState State { get; private set; }
-        public Game Level { get; private set; }
+        public Level Level { get; private set; }
         public GameMap Map { get; private set; }
         public Tile SelectedTile
         {
@@ -24,7 +24,7 @@ namespace FinalEmblem.Core
 
         public event Action<Unit> OnUnitSelected;
 
-        public void Initialize(Game level, GameMap map)
+        public void Initialize(Level level, GameMap map)
         {
             Faction = Faction.Player;
             Level = level;

@@ -31,7 +31,8 @@ namespace FinalEmblem.Core
             while (frontier.Count > 0)
             {
                 var current = frontier.Dequeue();
-                if (impassable.Contains(current.Tile.Terrain)) { continue; }
+                bool isObstacle = current.Tile.Feature?.IsObstacle ?? false;
+                if (impassable.Contains(current.Tile.Terrain) || isObstacle) { continue; }
 
                 inRange.Add(current.Tile);
                 if (current.Distance == maxDistance) { continue; }

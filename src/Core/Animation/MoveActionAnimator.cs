@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TiercelFoundry.GDUtils;
 using Godot;
+using System;
 
 namespace FinalEmblem.Core
 {
@@ -15,6 +16,7 @@ namespace FinalEmblem.Core
         private float progress;
         private Vector2 start;
         private Vector2 end;
+        private Compass facing;
 
         private AnimationPlayer animator;
         private AudioStreamPlayer2D audio;
@@ -58,7 +60,7 @@ namespace FinalEmblem.Core
                 if (posIndex == path.Count - 1)
                 {
                     EmitSignal(AnimCompleteSignal);
-                    animator.Play("idle");
+                    actor.SetIdleAnimation(facing);
                     audio.Stop();
                 }
                 else
@@ -76,18 +78,19 @@ namespace FinalEmblem.Core
             start = t0.WorldPosition.Vector2XY();
             end = t1.WorldPosition.Vector2XY();
             progress = 0;
-
-            string anim = t0.DirectionToApproxDiagonals(t1, true) switch
+            facing = t0.DirectionToApproxDiagonals(t1, true); 
+            string anim = facing switch
             {
                 Compass.N => "move_up",
                 Compass.E => "move_right",
                 Compass.S => "move_down",
                 Compass.W => "move_left",
-                _ => "idle"
+                _ => throw new NotImplementedException()
             };
 
             animator.Play(anim);
         }
+
     }
 }
 

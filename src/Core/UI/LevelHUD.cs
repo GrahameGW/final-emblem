@@ -5,7 +5,7 @@ namespace FinalEmblem.Core
 {
     public partial class LevelHUD : CanvasLayer
     {
-        private Game level;
+        private Level level;
         private GameMap map;
         private PlayerController player;
 
@@ -13,7 +13,7 @@ namespace FinalEmblem.Core
         private CurrentTurnDisplay turnDisplay;
         private UnitInfoPanel unitInfoPanel;
 
-        public void Initialize(Game level, GameMap map, PlayerController player)
+        public void Initialize(Level level, GameMap map, PlayerController player)
         {
             this.level = level;
             this.map = map;

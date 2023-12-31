@@ -15,8 +15,9 @@ namespace FinalEmblem.Core
 
         public void Execute()
         {
-            for (int i = 0; i < Path.Count; i++)
+            for (int i = 1; i < Path.Count; i++)
             {
+                Unit.Facing = Unit.Tile.DirectionToNeighbor(Path[i]);
                 Unit.Tile = Path[i];
             }
 

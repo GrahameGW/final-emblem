@@ -7,9 +7,9 @@ namespace FinalEmblem.Core
     {
         [Export] PackedScene turnStartBanner;
 
-        private Game level;
+        private Level level;
 
-        public void Initialize(Game level)
+        public void Initialize(Level level)
         {
             this.level = level;
             level.OnTurnEnded += TurnEndedHandler;

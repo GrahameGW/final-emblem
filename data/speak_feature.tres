@@ -4,4 +4,6 @@
 
 [resource]
 script = ExtResource("1_n3f1b")
-Interaction = 5
+Interaction = 6
+IsObstacle = true
+InteractMode = 2

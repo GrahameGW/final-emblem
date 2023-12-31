@@ -6,9 +6,9 @@ namespace FinalEmblem.Core
 {
     public static class CombatService
     {
-        private static Game level;
+        private static Level level;
 
-        public static void SetLevelInstance(Game instance)
+        public static void SetLevelInstance(Level instance)
         {
             level = instance;
         }

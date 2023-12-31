@@ -10,9 +10,9 @@ namespace FinalEmblem.Core
         public override string DebugName => "AiController";
 
         private const float nextUnitDelay = 0.3f;
-        private Game level;
+        private Level level;
         
-        public void Initialize(Game level, Faction faction)
+        public void Initialize(Level level, Faction faction)
         {
             this.level = level;
             Faction = faction;
@@ -47,35 +47,30 @@ namespace FinalEmblem.Core
                 var possibleDestinations = enemies.SelectMany(e => e.Tile.GetNeighbors())
                                                   .Where(s => tilesInRange.Contains(s))
                                                   .ToList();
-                /*
-                    if (possibleDestinations.Count == 0)
-                    {
-                        var path = NavService.ShortestPathToCollection(unit.Tile, enemies.Select(e => e.Tile).ToList());
-                        // path.Insert(0, unit.Tile);
-                        var move = new MoveAction(unit, path.PathTilesInRange(unit.Move));
-                        var actuals = CombatService.CalculateMoveImplications(unit, move);
-                        await ExecuteActions(actuals);
-                        unit.HasMoved = true;
-                        var wait = new WaitAction() { Actor = unit };
-                        actuals = CombatService.CalculateActionImplications(unit, wait);
-                        await ExecuteActions(actuals);
-                        unit.HasActed = true;
-                    }
-                    else
-                    {
-                        var path = NavService.ShortestPathToCollection(unit.Tile, possibleDestinations);
-                        path.Insert(0, unit.Tile);
-                        var move = new MoveActionOld(unit, path);
-                        var actuals = CombatService.CalculateActionImplications(unit, move);
-                        await ExecuteActions(actuals);
-                        unit.HasMoved = true;
-                        var target = possibleDestinations[0].GetNeighbors().First(t => t.Unit != null && t.Unit.Faction != Faction);
-                        var attack = new AttackAction(unit, target.Unit);
-                        actuals = CombatService.CalculateActionImplications(unit, attack);
-                        await ExecuteActions(actuals);
-                        unit.HasActed = true;
-                    }
-                */
+                if (possibleDestinations.Count == 0)
+                {
+                    var path = NavService.ShortestPathToCollection(unit.Tile, enemies.Select(e => e.Tile).ToList());
+                    var move = new MoveAction(unit, path.PathTilesInRange(unit.Move));
+                    var actuals = CombatService.CalculateMoveImplications(unit, move);
+                    await ExecuteActions(actuals);
+                    unit.HasMoved = true;
+                    actuals = CombatService.CalculateWaitImplications(unit);
+                    await ExecuteActions(actuals);
+                    unit.HasActed = true;
+                }
+                else
+                {
+                    var path = NavService.ShortestPathToCollection(unit.Tile, possibleDestinations);
+                    var move = new MoveAction(unit, path);
+                    var actuals = CombatService.CalculateMoveImplications(unit, move);
+                    await ExecuteActions(actuals);
+                    unit.HasMoved = true;
+                    var target = possibleDestinations[0].GetNeighbors().First(t => t.Unit != null && t.Unit.Faction != Faction);
+                    var attack = new AttackAction(unit, target.Unit);
+                    actuals = CombatService.CalculateAttackImplications(unit, attack);
+                    await ExecuteActions(actuals);
+                    unit.HasActed = true;
+                }
             }
             level.EndTurn();
             ReleaseControl();
