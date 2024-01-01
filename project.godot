@@ -26,7 +26,8 @@ directories/dch_directory={
 "Serra": "res://dialogue/Serra.dch"
 }
 directories/dtl_directory={
-"myfirsttimeline": "res://dialogue/myfirsttimeline.dtl"
+"myfirsttimeline": "res://dialogue/myfirsttimeline.dtl",
+"player_lost": "res://dialogue/player_lost.dtl"
 }
 layout/style_list=["res://dialogue/dialog_style.tres"]
 layout/default_style="res://dialogue/dialog_style.tres"

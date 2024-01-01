@@ -1,4 +1,5 @@
 ﻿using Godot;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace FinalEmblem.Core
         public List<Unit> Units { get; private set; }
         public List<Unit> ActingUnits { get; private set; }
         public GameMap Map { get; private set; }
+        public App App { private get; set; }
 
         public event Action<Faction> OnTurnStarted;
         public event Action OnTurnEnded;
@@ -30,7 +32,7 @@ namespace FinalEmblem.Core
 
         [Export] ActionRunnerFactory actionFactory;
 
-
+        
         public override void _Ready()
         {
             // Get nodes already children of this node
@@ -68,9 +70,9 @@ namespace FinalEmblem.Core
 
 
             // load PlayerController to start the game
-            //activeController = controllers[0];
             activeController = midTurnController;
-            activeControllerIndex = -1;
+            Round = 0;
+            activeControllerIndex = -1; // haven't started the game yet so will queue into game
             LoadActiveController();
         }
 
@@ -79,7 +81,7 @@ namespace FinalEmblem.Core
             activeController.OnControllerExited += ControllerExitHandler;
             activeController.Name = activeController.DebugName;
             AddChild(activeController, true);
-            GD.Print($"Active Controller: {activeController.Name}");
+            GD.Print($"Loaded new Active Controller: {activeController.Name}");
         }
 
         private void ControllerExitHandler()
@@ -89,13 +91,17 @@ namespace FinalEmblem.Core
             if (activeController == midTurnController)
             {
                 activeControllerIndex = controllers.NextOrFirstIndex(activeControllerIndex);
+                if (activeControllerIndex == 0)
+                {
+                    Round++;
+                }
                 activeController = controllers[activeControllerIndex];
             }
             else
             {
                 activeController = midTurnController;
             }
-
+            GD.Print($"New acIdx: {activeControllerIndex}");
             LoadActiveController();
         }
 
@@ -163,14 +169,27 @@ namespace FinalEmblem.Core
 
             return false;
         }
-
+        
         private void EndGameHandler(Faction winner)
         {
             GD.Print($"Winner: {winner}");
-            var parent = GetParent<App>();
-            if (parent != null)
+            activeController = midTurnController = null;
+            if (winner != Faction.Player)
             {
-                parent.LoadMainMenu();
+                var parent = GetParent();
+
+                DialogService.PlayerLost((restart) => 
+                {
+                    if (parent is not App app) { return; }
+                    if (restart)
+                    {
+                        app.LoadLevel();
+                    }
+                    else
+                    {
+                        app.LoadMainMenu();
+                    }
+                });
             }
         }
     }

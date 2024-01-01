@@ -35,6 +35,10 @@ namespace FinalEmblem.Core
                 throw new NotImplementedException(collide.ToString());
             }
 
+            if (action is RotateAction _)
+            {
+                return new ActionRunner(action, new NoOpAnimation());
+            }
             throw new NotImplementedException("Unknown action");
         }
     }

@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://co5ee2mt34t8c"]
+[gd_scene load_steps=6 format=3 uid="uid://co5ee2mt34t8c"]
 
 [ext_resource type="Theme" uid="uid://tgu8sgcanlt4" path="res://assets/themes/mainmenu_theme.tres" id="1_ewltn"]
 [ext_resource type="Script" path="res://src/main_menu/new_game_button.gd" id="2_ud5gx"]
-[ext_resource type="PackedScene" uid="uid://bm14n0jwt8jhn" path="res://scenes/Level.tscn" id="3_8an0e"]
 [ext_resource type="Script" path="res://src/main_menu/quit_button.gd" id="4_7iby4"]
 [ext_resource type="AudioStream" uid="uid://dfaskq0olal8b" path="res://assets/audio/448086__breviceps__normal-click.wav" id="4_rwvvr"]
 [ext_resource type="Script" path="res://src/main_menu/press_sound.gd" id="6_ipwy6"]
@@ -44,11 +43,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ewltn")
 
-[node name="NewGameButton" type="Button" parent="VBoxContainer"]
+[node name="NewGameButton" type="Button" parent="VBoxContainer" node_paths=PackedStringArray("menu_root")]
 layout_mode = 2
 text = "New Game"
 script = ExtResource("2_ud5gx")
-level = ExtResource("3_8an0e")
+menu_root = NodePath("../..")
 
 [node name="SettingsButton" type="Button" parent="VBoxContainer"]
 visible = false

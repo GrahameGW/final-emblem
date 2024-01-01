@@ -47,6 +47,7 @@ namespace FinalEmblem.Core
                 var possibleDestinations = enemies.SelectMany(e => e.Tile.GetNeighbors())
                                                   .Where(s => tilesInRange.Contains(s))
                                                   .ToList();
+
                 if (possibleDestinations.Count == 0)
                 {
                     var path = NavService.ShortestPathToCollection(unit.Tile, enemies.Select(e => e.Tile).ToList());
@@ -71,6 +72,10 @@ namespace FinalEmblem.Core
                     await ExecuteActions(actuals);
                     unit.HasActed = true;
                 }
+            }
+            if (level.TestWinConditions())
+            {
+                return;
             }
             level.EndTurn();
             ReleaseControl();

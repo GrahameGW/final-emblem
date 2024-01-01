@@ -36,7 +36,8 @@ namespace FinalEmblem.Core
 
         public static List<IUnitAction> CalculateAttackImplications(Unit unit, AttackAction attack)
         {
-            var actuals = new List<IUnitAction> { attack };
+            //var rotate = new RotateAction(unit, unit.Tile.DirectionToApproxDiagonals(attack.Target.Tile));
+            var actuals = new List<IUnitAction> { attack /*, rotate */ };
             if (attack.Damage() >= attack.Target.HP)
             {
                 actuals.Add(new DeathAction(attack.Target, level.RemoveUnit));

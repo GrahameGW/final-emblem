@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bm14n0jwt8jhn"]
+[gd_scene load_steps=25 format=3 uid="uid://bm14n0jwt8jhn"]
 
 [ext_resource type="Script" path="res://src/core/Level.cs" id="1_tvtsp"]
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="2_6mwdb"]
@@ -7,7 +7,6 @@
 [ext_resource type="Resource" uid="uid://cblkb5w5da0sj" path="res://data/speak_feature.tres" id="4_vmk5d"]
 [ext_resource type="Resource" uid="uid://b7w7firptyatb" path="res://data/interact_feature.tres" id="5_jhkj1"]
 [ext_resource type="Script" path="res://src/core/GameMap.cs" id="7_viyte"]
-[ext_resource type="Resource" uid="uid://cc4dfar4vnoan" path="res://data/axe_weapon.tres" id="9_8pmd6"]
 [ext_resource type="Theme" uid="uid://cadrofyolixbt" path="res://assets/themes/hud_theme.tres" id="10_tkg0p"]
 [ext_resource type="PackedScene" uid="uid://crgv53mrsunw1" path="res://scenes/UnitInfoPanel.tscn" id="10_vd4nb"]
 [ext_resource type="PackedScene" uid="uid://b6u5fjtuva313" path="res://scenes/EnemyUnit.tscn" id="11_josjp"]
@@ -483,6 +482,7 @@ script = ExtResource("7_viyte")
 position = Vector2(344, 263)
 HP = 24
 MaxHP = 24
+Strength = 10
 TravelSpeed = 5.0
 
 [node name="Enemy3" parent="GameMap" instance=ExtResource("11_josjp")]
@@ -495,12 +495,10 @@ TravelSpeed = 5.0
 position = Vector2(392, 278)
 Move = 20
 
-[node name="Player2" parent="GameMap" instance=ExtResource("12_himcw")]
-position = Vector2(183, 135)
-Weapon = ExtResource("9_8pmd6")
-
 [node name="Player3" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(263, 135)
+HP = 1
+MaxHP = 1
 
 [node name="HUD" type="CanvasLayer" parent="."]
 scale = Vector2(0.5, 0.5)

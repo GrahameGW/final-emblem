@@ -7,18 +7,23 @@ namespace FinalEmblem.Core
         [Export] PackedScene level;
         [Export] PackedScene mainMenu;
 
-        public const string CHANGE_SCENE_TO_PACKED = "change_scene_to_packed";
+        private Node currentScene;
+
 
         public override void _Ready()
         {
-            var menu = mainMenu.Instantiate();
-            AddChild(menu);
+            LoadMainMenu();
         }
 
-        public void LoadMainMenu()
+        private void ChangeScene(PackedScene scene)
         {
-            CallDeferred(CHANGE_SCENE_TO_PACKED, mainMenu);
+            currentScene?.QueueFree();
+            currentScene = scene.Instantiate();
+            AddChild(currentScene);
         }
+
+        public void LoadMainMenu() => ChangeScene(mainMenu);
+        public void LoadLevel() => ChangeScene(level);
     }
 }
 

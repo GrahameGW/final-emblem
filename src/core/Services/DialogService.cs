@@ -1,4 +1,5 @@
 ﻿using Godot;
+using System;
 using System.Threading.Tasks;
 using TiercelFoundry.GDUtils;
 
@@ -13,10 +14,16 @@ namespace FinalEmblem.Core
             dialogic = new DialogicWrapper(node);
         }
 
-        public static async Task Play()
+        public static void Play(Action callback)
         {
             dialogic.Start("myfirsttimeline");
-            await AsyncEvent.AwaitAction(dialogic.TimelineEnded);
+            dialogic.TimelineEnded += callback;
+        }
+
+        public static void PlayerLost(Action<bool> callback)
+        {
+            dialogic.Start("player_lost");
+            dialogic.SignalBoolEvent += callback;
         }
     }
 }

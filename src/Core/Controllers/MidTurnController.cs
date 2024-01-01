@@ -1,4 +1,6 @@
 ﻿
+using System.Threading.Tasks;
+
 namespace FinalEmblem.Core
 {
     public partial class MidTurnController : ControllerBase
@@ -16,11 +18,19 @@ namespace FinalEmblem.Core
 
         public override async void _EnterTree()
         {
-            var faction = level.NextFaction;
             if (level.Round == 0)
             {
-                await DialogService.Play();
+                DialogService.Play(async () => await TurnBanner());
             }
+            else
+            {
+                await TurnBanner();
+            }
+        }
+
+        private async Task TurnBanner()
+        {
+            var faction = level.NextFaction;
             await animator.PlayTurnStartBanner(faction);
             ReleaseControl();
         }
