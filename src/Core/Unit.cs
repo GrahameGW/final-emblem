@@ -147,6 +147,7 @@ namespace FinalEmblem.Core
                 _ => throw new NotImplementedException()
             };
             animator.Play(anim);
+            
         }
     }
 }

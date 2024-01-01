@@ -161,7 +161,6 @@ namespace FinalEmblem.Core
                 var winner = victories[i].TestCondition(this);
                 if (winner != null)
                 {
-                    OnGameEnded?.Invoke((Faction)winner);
                     EndGameHandler((Faction)winner);
                     return true;
                 }
@@ -173,7 +172,6 @@ namespace FinalEmblem.Core
         private void EndGameHandler(Faction winner)
         {
             GD.Print($"Winner: {winner}");
-            activeController = midTurnController = null;
             if (winner != Faction.Player)
             {
                 var parent = GetParent();
@@ -191,6 +189,16 @@ namespace FinalEmblem.Core
                     }
                 });
             }
+        }
+
+        public override void _ExitTree()
+        {
+            foreach(var ctrl in controllers)
+            {
+                ctrl.QueueFree();
+            }
+
+            midTurnController.QueueFree();
         }
     }
 }

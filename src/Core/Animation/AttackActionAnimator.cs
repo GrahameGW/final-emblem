@@ -21,9 +21,10 @@ namespace FinalEmblem.Core
         public override async void _EnterTree()
         {
             var unitTile = actor.Tile;
+            var targetDir = unitTile.DirectionToApproxDiagonals(target.Tile, true);
             attackDisplay.SetActors(actor, target);
 
-            var anchorPos = unitTile.DirectionToApproxDiagonals(target.Tile, true) switch
+            var anchorPos = targetDir switch
             {
                 Compass.N => target.Tile.East.WorldPosition.Vector2XY(),
                 Compass.S => unitTile.East.WorldPosition.Vector2XY(),
@@ -32,6 +33,7 @@ namespace FinalEmblem.Core
                 _ => throw new NotImplementedException()
             };
                 
+            actor.SetIdleAnimation(targetDir);
             attackDisplay.GlobalPosition = GetViewport().CanvasTransform * anchorPos;
 
             AddChild(attackDisplay);
