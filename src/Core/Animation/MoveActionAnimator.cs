@@ -59,9 +59,9 @@ namespace FinalEmblem.Core
                 posIndex += 1;
                 if (posIndex == path.Count - 1)
                 {
-                    EmitSignal(AnimCompleteSignal);
                     actor.SetIdleAnimation(facing);
                     audio.Stop();
+                    EmitSignal(AnimCompleteSignal);
                 }
                 else
                 {

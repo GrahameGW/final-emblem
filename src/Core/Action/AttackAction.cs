@@ -20,6 +20,7 @@
         {
             Target.Damage(Damage());
             Attacker.HasActed = true;
+            Attacker.Facing = Attacker.Tile.DirectionToApproxDiagonals(Target.Tile);
         }
     }
 }

@@ -22,6 +22,7 @@ namespace FinalEmblem.Core
         {
             var unitTile = actor.Tile;
             var targetDir = unitTile.DirectionToApproxDiagonals(target.Tile, true);
+            actor.SetIdleAnimation(targetDir);
             attackDisplay.SetActors(actor, target);
 
             var anchorPos = targetDir switch
@@ -33,7 +34,6 @@ namespace FinalEmblem.Core
                 _ => throw new NotImplementedException()
             };
                 
-            actor.SetIdleAnimation(targetDir);
             attackDisplay.GlobalPosition = GetViewport().CanvasTransform * anchorPos;
 
             AddChild(attackDisplay);

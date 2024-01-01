@@ -1,6 +1,5 @@
 ﻿using Godot;
 using System;
-using System.Threading.Tasks;
 using TiercelFoundry.GDUtils;
 
 namespace FinalEmblem.Core
