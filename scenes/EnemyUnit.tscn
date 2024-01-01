@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://b6u5fjtuva313"]
 
-[ext_resource type="Script" path="res://src/Core/Unit.cs" id="1_4dptk"]
+[ext_resource type="Script" path="res://src/core/Unit.cs" id="1_4dptk"]
 [ext_resource type="Material" uid="uid://bajcmxt4sr0l0" path="res://assets/materials/mat_default.tres" id="2_3l0cf"]
 [ext_resource type="Resource" uid="uid://cvu77s7kkekdb" path="res://data/sword_weapon.tres" id="2_7gi51"]
 [ext_resource type="Material" uid="uid://ckg7368b3occv" path="res://assets/materials/mat_grayscale.tres" id="2_cfjgu"]

@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://co5ee2mt34t8c"]
 
 [ext_resource type="Theme" uid="uid://tgu8sgcanlt4" path="res://assets/themes/mainmenu_theme.tres" id="1_ewltn"]
-[ext_resource type="Script" path="res://src/MainMenu/new_game_button.gd" id="2_ksf7n"]
+[ext_resource type="Script" path="res://src/main_menu/new_game_button.gd" id="2_ud5gx"]
 [ext_resource type="PackedScene" uid="uid://bm14n0jwt8jhn" path="res://scenes/Level.tscn" id="3_8an0e"]
-[ext_resource type="Script" path="res://src/MainMenu/quit_button.gd" id="3_rn2im"]
-[ext_resource type="Script" path="res://src/MainMenu/press_sound.gd" id="4_1xmrc"]
+[ext_resource type="Script" path="res://src/main_menu/quit_button.gd" id="4_7iby4"]
 [ext_resource type="AudioStream" uid="uid://dfaskq0olal8b" path="res://assets/audio/448086__breviceps__normal-click.wav" id="4_rwvvr"]
+[ext_resource type="Script" path="res://src/main_menu/press_sound.gd" id="6_ipwy6"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -47,7 +47,7 @@ theme = ExtResource("1_ewltn")
 [node name="NewGameButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "New Game"
-script = ExtResource("2_ksf7n")
+script = ExtResource("2_ud5gx")
 level = ExtResource("3_8an0e")
 
 [node name="SettingsButton" type="Button" parent="VBoxContainer"]
@@ -58,11 +58,11 @@ text = "Settings"
 [node name="QuitButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Quit"
-script = ExtResource("3_rn2im")
+script = ExtResource("4_7iby4")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="VBoxContainer"]
 stream = ExtResource("4_rwvvr")
-script = ExtResource("4_1xmrc")
+script = ExtResource("6_ipwy6")
 
 [connection signal="pressed" from="VBoxContainer/NewGameButton" to="VBoxContainer/NewGameButton" method="_on_pressed" flags=3]
 [connection signal="pressed" from="VBoxContainer/NewGameButton" to="VBoxContainer/AudioStreamPlayer" method="_on_button_pressed"]

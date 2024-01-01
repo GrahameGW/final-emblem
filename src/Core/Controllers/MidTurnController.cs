@@ -1,4 +1,5 @@
-﻿namespace FinalEmblem.Core
+﻿
+namespace FinalEmblem.Core
 {
     public partial class MidTurnController : ControllerBase
     {
@@ -16,6 +17,10 @@
         public override async void _EnterTree()
         {
             var faction = level.NextFaction;
+            if (level.Round == 0)
+            {
+                await DialogService.Play();
+            }
             await animator.PlayTurnStartBanner(faction);
             ReleaseControl();
         }

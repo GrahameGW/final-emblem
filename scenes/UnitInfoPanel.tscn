@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://cadrofyolixbt" path="res://assets/themes/hud_theme.tres" id="1_axqnn"]
 [ext_resource type="Texture2D" uid="uid://c38bwtjr7wvjf" path="res://assets/Rin.jpg" id="2_kwqss"]
-[ext_resource type="Script" path="res://src/Core/UI/UnitInfoPanel.cs" id="2_xo280"]
+[ext_resource type="Script" path="res://src/core/UI/UnitInfoPanel.cs" id="2_xo280"]
 
 [node name="UnitInfoPanel" type="PanelContainer" node_paths=PackedStringArray("unitNameLabel", "unitClassLabel", "unitFactionLabel", "HpLabel", "HpBar")]
 anchors_preset = 3

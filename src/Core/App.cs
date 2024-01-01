@@ -9,6 +9,12 @@ namespace FinalEmblem.Core
 
         public const string CHANGE_SCENE_TO_PACKED = "change_scene_to_packed";
 
+        public override void _Ready()
+        {
+            var menu = mainMenu.Instantiate();
+            AddChild(menu);
+        }
+
         public void LoadMainMenu()
         {
             CallDeferred(CHANGE_SCENE_TO_PACKED, mainMenu);

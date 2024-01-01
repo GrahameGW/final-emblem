@@ -1,27 +1,27 @@
 [gd_scene load_steps=26 format=3 uid="uid://bm14n0jwt8jhn"]
 
-[ext_resource type="Script" path="res://src/Core/Level.cs" id="1_mtkml"]
+[ext_resource type="Script" path="res://src/core/Level.cs" id="1_tvtsp"]
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="2_6mwdb"]
 [ext_resource type="Resource" uid="uid://dr4c50y7mlhpg" path="res://data/action_factory.tres" id="2_plpxm"]
 [ext_resource type="Texture2D" uid="uid://dmutbv5x2wohq" path="res://assets/16x16 Area Select.png" id="3_eq5p1"]
 [ext_resource type="Resource" uid="uid://cblkb5w5da0sj" path="res://data/speak_feature.tres" id="4_vmk5d"]
-[ext_resource type="Script" path="res://src/Core/GameMap.cs" id="4_wevah"]
 [ext_resource type="Resource" uid="uid://b7w7firptyatb" path="res://data/interact_feature.tres" id="5_jhkj1"]
-[ext_resource type="Script" path="res://src/Core/UI/ActionList.cs" id="6_veuyr"]
-[ext_resource type="Script" path="res://src/Core/UI/LevelHUD.cs" id="7_3pf7u"]
-[ext_resource type="Script" path="res://src/Core/UI/CurrentTurnDisplay.cs" id="9_6pi2l"]
+[ext_resource type="Script" path="res://src/core/GameMap.cs" id="7_viyte"]
 [ext_resource type="Resource" uid="uid://cc4dfar4vnoan" path="res://data/axe_weapon.tres" id="9_8pmd6"]
 [ext_resource type="Theme" uid="uid://cadrofyolixbt" path="res://assets/themes/hud_theme.tres" id="10_tkg0p"]
 [ext_resource type="PackedScene" uid="uid://crgv53mrsunw1" path="res://scenes/UnitInfoPanel.tscn" id="10_vd4nb"]
 [ext_resource type="PackedScene" uid="uid://b6u5fjtuva313" path="res://scenes/EnemyUnit.tscn" id="11_josjp"]
+[ext_resource type="Script" path="res://src/core/UI/LevelHUD.cs" id="11_tro1u"]
 [ext_resource type="PackedScene" uid="uid://bv0521lfrirx8" path="res://scenes/PlayerUnit.tscn" id="12_himcw"]
 [ext_resource type="AudioStream" uid="uid://dfaskq0olal8b" path="res://assets/audio/448086__breviceps__normal-click.wav" id="13_abmbv"]
+[ext_resource type="Script" path="res://src/core/UI/ActionList.cs" id="13_hy2cx"]
 [ext_resource type="Theme" uid="uid://btxxk60e1wrf5" path="res://assets/themes/debug_theme.tres" id="14_0bygf"]
-[ext_resource type="Script" path="res://src/MainMenu/press_sound.gd" id="14_uad1f"]
-[ext_resource type="Script" path="res://src/Utils/debug_display.gd" id="14_ucd27"]
+[ext_resource type="Script" path="res://src/main_menu/press_sound.gd" id="15_jcptv"]
+[ext_resource type="Script" path="res://src/core/UI/CurrentTurnDisplay.cs" id="16_7qq6d"]
 [ext_resource type="PackedScene" uid="uid://dwt13gaooesci" path="res://scenes/TurnStartBanner.tscn" id="16_xmujs"]
 [ext_resource type="AudioStream" uid="uid://b1wg1rv43bfg1" path="res://assets/audio/placeholder/game-time-172907.mp3" id="17_jrcnr"]
-[ext_resource type="Script" path="res://src/Core/Animation/GlobalAnimations.cs" id="19_lhkg6"]
+[ext_resource type="Script" path="res://src/core/Animation/GlobalAnimations.cs" id="18_oc2kt"]
+[ext_resource type="Script" path="res://src/utils/debug_display.gd" id="20_k1jue"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwb5v"]
 resource_name = "terrain"
@@ -459,7 +459,7 @@ sources/0 = SubResource("TileSetAtlasSource_hwb5v")
 sources/4 = SubResource("TileSetAtlasSource_7utes")
 
 [node name="Main" type="Node"]
-script = ExtResource("1_mtkml")
+script = ExtResource("1_tvtsp")
 actionFactory = ExtResource("2_plpxm")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -477,7 +477,7 @@ layer_2/name = "interactable"
 layer_2/tile_data = PackedInt32Array(393225, 524288, 8, 393233, 1310720, 8)
 layer_3/name = "nav_overlay"
 layer_3/tile_data = PackedInt32Array()
-script = ExtResource("4_wevah")
+script = ExtResource("7_viyte")
 
 [node name="Enemy2" parent="GameMap" instance=ExtResource("11_josjp")]
 position = Vector2(344, 263)
@@ -494,22 +494,19 @@ TravelSpeed = 5.0
 [node name="Player1" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(392, 278)
 Move = 20
-Faction = 0
 
 [node name="Player2" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(183, 135)
-Faction = 0
 Weapon = ExtResource("9_8pmd6")
 
 [node name="Player3" parent="GameMap" instance=ExtResource("12_himcw")]
 position = Vector2(263, 135)
-Faction = 0
 
 [node name="HUD" type="CanvasLayer" parent="."]
 scale = Vector2(0.5, 0.5)
 transform = Transform2D(0.5, 0, 0, 0.5, 0, 0)
 follow_viewport_enabled = true
-script = ExtResource("7_3pf7u")
+script = ExtResource("11_tro1u")
 
 [node name="ActionList" type="ItemList" parent="HUD"]
 anchors_preset = 2
@@ -523,11 +520,11 @@ grow_vertical = 0
 theme = ExtResource("10_tkg0p")
 item_count = 1
 item_0/text = "Move"
-script = ExtResource("6_veuyr")
+script = ExtResource("13_hy2cx")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="HUD/ActionList"]
 stream = ExtResource("13_abmbv")
-script = ExtResource("14_uad1f")
+script = ExtResource("15_jcptv")
 
 [node name="EndTurnButton" type="Button" parent="HUD"]
 offset_left = 22.0
@@ -539,7 +536,7 @@ text = "End Turn"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="HUD/EndTurnButton"]
 stream = ExtResource("13_abmbv")
-script = ExtResource("14_uad1f")
+script = ExtResource("15_jcptv")
 
 [node name="CurrentTurnDisplay" type="PanelContainer" parent="HUD"]
 offset_left = 22.0
@@ -547,7 +544,7 @@ offset_top = 60.0
 offset_right = 71.0
 offset_bottom = 100.0
 theme = ExtResource("10_tkg0p")
-script = ExtResource("9_6pi2l")
+script = ExtResource("16_7qq6d")
 
 [node name="Label" type="Label" parent="HUD/CurrentTurnDisplay"]
 layout_mode = 2
@@ -556,11 +553,11 @@ text = "Player's Turn"
 [node name="UnitInfoPanel" parent="HUD" instance=ExtResource("10_vd4nb")]
 
 [node name="AnimationController" type="CanvasLayer" parent="."]
-script = ExtResource("19_lhkg6")
+script = ExtResource("18_oc2kt")
 turnStartBanner = ExtResource("16_xmujs")
 
 [node name="Debug" type="CanvasLayer" parent="." node_paths=PackedStringArray("mouse_pix_label", "tile_coords_label", "tile_pos_label")]
-script = ExtResource("14_ucd27")
+script = ExtResource("20_k1jue")
 mouse_pix_label = NodePath("PanelContainer/GridContainer/MousePixValue")
 tile_coords_label = NodePath("PanelContainer/GridContainer/TileCoordsValue")
 tile_pos_label = NodePath("PanelContainer/GridContainer/TilePosValue")

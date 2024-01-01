@@ -6,7 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://cg6vcdk4b8r0t" path="res://assets/audio/placeholder/running-in-grass-6237.mp3" id="2_qyh6p"]
 [ext_resource type="Resource" uid="uid://cvu77s7kkekdb" path="res://data/sword_weapon.tres" id="2_ukayr"]
 [ext_resource type="Material" uid="uid://cfyfegljep8r2" path="res://assets/materials/mat_death_flash.tres" id="3_rpyoq"]
-[ext_resource type="Script" path="res://src/Core/Unit.cs" id="5_xxkk1"]
+[ext_resource type="Script" path="res://src/core/Unit.cs" id="5_xxkk1"]
 [ext_resource type="AudioStream" uid="uid://cxyfefcafdycn" path="res://assets/audio/placeholder/splash-death-splash-46048.mp3" id="6_kbes2"]
 
 [sub_resource type="Animation" id="Animation_j8syx"]

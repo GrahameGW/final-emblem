@@ -52,6 +52,7 @@ namespace FinalEmblem.Core
             NavService.SetGridInstance(grid);
             CombatService.SetLevelInstance(this);
             DesignerService.Initialize();
+            DialogService.Initialize(this);
 
             // Set up controllers 
             midTurnController = new MidTurnController();
@@ -67,8 +68,9 @@ namespace FinalEmblem.Core
 
 
             // load PlayerController to start the game
-            activeController = controllers[0];
-            activeControllerIndex = 0;
+            //activeController = controllers[0];
+            activeController = midTurnController;
+            activeControllerIndex = -1;
             LoadActiveController();
         }
 

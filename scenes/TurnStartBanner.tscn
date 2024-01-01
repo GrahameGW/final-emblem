@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://dwt13gaooesci"]
 
 [ext_resource type="Texture2D" uid="uid://bbf2g3yk414xa" path="res://assets/textures/turn-banner.png" id="1_opm18"]
-[ext_resource type="Script" path="res://src/Core/UI/TurnStartBanner.cs" id="1_rte71"]
+[ext_resource type="Script" path="res://src/core/UI/TurnStartBanner.cs" id="1_rte71"]
 [ext_resource type="FontFile" uid="uid://cdpntl5qng5c1" path="res://assets/themes/fonts/RacingSansOne-Regular.ttf" id="2_juk7v"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qe7tv"]
