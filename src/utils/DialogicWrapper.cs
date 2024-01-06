@@ -11,6 +11,9 @@ namespace TiercelFoundry.GDUtils
         //
         // node reference to dialogic singleton
         private readonly Node _dialogic;
+        private readonly Node _runtimePortrait;
+
+        private const string RUNTIME_PORTRAIT_SCENE_PATH = "res://dialogue/runtime_portrait.tscn";
         // a dict of signals so the lambda callables can be disconnected when this
         private readonly System.Collections.Generic.Dictionary<string, Callable> _signalRefs;
         // a dict of string names to reduce allocations
@@ -23,6 +26,8 @@ namespace TiercelFoundry.GDUtils
         public DialogicWrapper(Node node)
         {
             _dialogic = node.GetNode("/root/Dialogic");
+            var runtimeChar = ResourceLoader.Load<PackedScene>(RUNTIME_PORTRAIT_SCENE_PATH);
+            _runtimePortrait = runtimeChar.Instantiate<Node>();
 
             _signalRefs = new() {
                 // callable lambdas are cached to allow disconnecting when this object is disposed. Prevents huge amounts of dead signal connections
@@ -79,10 +84,6 @@ namespace TiercelFoundry.GDUtils
                 _dialogic.Disconnect(_names[entry.Key], entry.Value);
             }
         }
-
-        //
-        //  Wrapped properties, functions, and more???
-        //
 
         // mirrored enums
         public enum States { IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING }

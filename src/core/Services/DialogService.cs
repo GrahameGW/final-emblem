@@ -24,6 +24,18 @@ namespace FinalEmblem.Core
 
             dialogic.TimelineEnded += OnTimelineEnded;
         }
+
+        public static void Play(Resource timeline,  Action callback)
+        {
+            dialogic.Start(timeline);
+            void OnTimelineEnded()
+            {
+                callback.Invoke();
+                dialogic.TimelineEnded -= OnTimelineEnded;
+            }
+
+            dialogic.TimelineEnded += OnTimelineEnded;
+        }
         
         public static void PlayerLost(Action<bool> callback)
         {

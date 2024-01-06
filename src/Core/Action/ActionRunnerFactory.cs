@@ -30,6 +30,11 @@ namespace FinalEmblem.Core
                 return new ActionRunner(action, new DeathActionAnimator(death.Unit));
             }
 
+            if (action is SpeakAction speak)
+            {
+                return new ActionRunner(speak, new SpeakActionAnimation(speak));
+            }
+
             if (action is CollideAction collide)
             {
                 throw new NotImplementedException(collide.ToString());
@@ -39,6 +44,7 @@ namespace FinalEmblem.Core
             {
                 return new ActionRunner(action, new NoOpAnimation());
             }
+
             throw new NotImplementedException("Unknown action");
         }
     }

@@ -31,7 +31,7 @@ namespace FinalEmblem.Core
             map.ClearTileHighlights();
         }
 
-        public virtual void SetSelectedTile(Tile tile) 
+        public void SetSelectedTile(Tile tile) 
         {
             // hard code attack enemy faction 
             if (inRange.Contains(tile) && tile.Unit?.Faction != Faction.Player)

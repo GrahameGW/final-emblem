@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace FinalEmblem.Core
 {
@@ -49,6 +47,11 @@ namespace FinalEmblem.Core
         public static List<IUnitAction> CalculateWaitImplications(Unit unit)
         {
             return new List<IUnitAction> { new WaitAction(unit) };
+        }
+
+        public static List<IUnitAction> CalculateSpeakImplications(SpeakAction action)
+        {
+            return new List<IUnitAction> { action };
         }
 
     }

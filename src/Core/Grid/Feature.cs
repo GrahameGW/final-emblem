@@ -8,6 +8,16 @@ namespace FinalEmblem.Core
         [Export] public UnitAction Interaction { get; private set; }
         [Export] public bool IsObstacle { get; private set; }
         [Export] public FeatureInteraction InteractMode { get; private set; }
+        [Export] public Resource Data { get; private set; }
+        [Export] private bool disableAfterInteraction;
+        
+        public void LogInteraction(Unit _)
+        {
+            if (disableAfterInteraction)
+            {
+                InteractMode = FeatureInteraction.None;
+            }
+        }
     }
     
     public enum FeatureInteraction

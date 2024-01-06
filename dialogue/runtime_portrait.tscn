@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpmk7tj3cc5n5"]
+
+[ext_resource type="Script" path="res://dialogue/runtime_portrait.gd" id="1_il624"]
+
+[node name="RuntimePortrait" type="Node"]
+script = ExtResource("1_il624")

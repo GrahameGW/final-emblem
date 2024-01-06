@@ -1,4 +1,6 @@
-﻿namespace FinalEmblem.Core
+﻿using System;
+
+namespace FinalEmblem.Core
 {
     public class AttackAction : IUnitAction
     {

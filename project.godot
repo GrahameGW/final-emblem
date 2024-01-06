@@ -23,11 +23,14 @@ Dialogic="*res://addons/dialogic/Other/DialogicGameHandler.gd"
 
 directories/dch_directory={
 "Oswin": "res://dialogue/Oswin.dch",
-"Serra": "res://dialogue/Serra.dch"
+"Runtime": "res://dialogue/Runtime.dch",
+"Serra": "res://dialogue/Serra.dch",
+"Skeleton": "res://dialogue/Skeleton.dch"
 }
 directories/dtl_directory={
 "myfirsttimeline": "res://dialogue/myfirsttimeline.dtl",
-"player_lost": "res://dialogue/player_lost.dtl"
+"player_lost": "res://dialogue/player_lost.dtl",
+"skeleton_test": "res://dialogue/skeleton_test.dtl"
 }
 layout/style_list=["res://dialogue/dialog_style.tres"]
 layout/default_style="res://dialogue/dialog_style.tres"

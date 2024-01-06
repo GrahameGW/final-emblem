@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bm14n0jwt8jhn"]
+[gd_scene load_steps=26 format=3 uid="uid://bm14n0jwt8jhn"]
 
 [ext_resource type="Script" path="res://src/core/Level.cs" id="1_tvtsp"]
 [ext_resource type="Texture2D" uid="uid://blghcnpavgwg7" path="res://assets/Solaria Demo Pack Update 03/16x16/Tilesets/Solaria Demo Update 01.png" id="2_6mwdb"]
@@ -21,6 +21,7 @@
 [ext_resource type="AudioStream" uid="uid://b1wg1rv43bfg1" path="res://assets/audio/placeholder/game-time-172907.mp3" id="17_jrcnr"]
 [ext_resource type="Script" path="res://src/core/Animation/GlobalAnimations.cs" id="18_oc2kt"]
 [ext_resource type="Script" path="res://src/utils/debug_display.gd" id="20_k1jue"]
+[ext_resource type="PackedScene" uid="uid://dpmk7tj3cc5n5" path="res://dialogue/runtime_portrait.tscn" id="22_u6dtu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwb5v"]
 resource_name = "terrain"
@@ -605,6 +606,8 @@ text = "(0.00, 0.25)"
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_jrcnr")
 autoplay = true
+
+[node name="RuntimePortrait" parent="." instance=ExtResource("22_u6dtu")]
 
 [connection signal="item_clicked" from="HUD/ActionList" to="HUD/ActionList/AudioStreamPlayer" method="_on_button_pressed" unbinds=3]
 [connection signal="pressed" from="HUD/EndTurnButton" to="HUD/EndTurnButton/AudioStreamPlayer" method="_on_button_pressed"]
