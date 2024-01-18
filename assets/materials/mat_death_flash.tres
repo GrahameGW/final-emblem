@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cfyfegljep8r2"]
+
+[ext_resource type="Shader" path="res://assets/materials/shaders/death_flash.gdshader" id="1_gb2fg"]
+
+[resource]
+shader = ExtResource("1_gb2fg")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_opacity = 1.0

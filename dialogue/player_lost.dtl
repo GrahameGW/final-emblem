@@ -1,0 +1,8 @@
+join Oswin 1
+join Serra 3
+Serra: Wow, you're just trash at this huh? 
+Oswin: It takes practice to be great. In your case...a lot of practice. Go again?
+- Try Again
+	[signal arg="true"]
+- Quit
+	[signal arg="false"]

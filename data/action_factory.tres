@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://dr4c50y7mlhpg"]
+
+[ext_resource type="PackedScene" uid="uid://ck417p0xbmo0h" path="res://scenes/AttackAnimation.tscn" id="1_q6qo0"]
+[ext_resource type="Script" path="res://src/Core/Action/ActionRunnerFactory.cs" id="2_hrcv4"]
+
+[resource]
+script = ExtResource("2_hrcv4")
+attackAnimation = ExtResource("1_q6qo0")

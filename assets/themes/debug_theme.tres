@@ -1,0 +1,14 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://btxxk60e1wrf5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3cpnj"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0.8)
+
+[resource]
+GridContainer/constants/h_separation = 12
+Label/colors/font_color = Color(0.0823529, 0.0823529, 0.0823529, 1)
+Label/font_sizes/font_size = 12
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_3cpnj")

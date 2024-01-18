@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Feature" load_steps=2 format=3 uid="uid://cblkb5w5da0sj"]
+
+[ext_resource type="Script" path="res://src/Core/Grid/Feature.cs" id="1_qxlyq"]
+
+[resource]
+script = ExtResource("1_qxlyq")
+Interaction = 6
+IsObstacle = true
+InteractMode = 2

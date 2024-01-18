@@ -1,0 +1,79 @@
+[gd_scene load_steps=7 format=3 uid="uid://dwt13gaooesci"]
+
+[ext_resource type="Texture2D" uid="uid://bbf2g3yk414xa" path="res://assets/textures/turn-banner.png" id="1_opm18"]
+[ext_resource type="Script" path="res://src/Core/UI/TurnStartBanner.cs" id="1_rte71"]
+[ext_resource type="FontFile" uid="uid://cdpntl5qng5c1" path="res://assets/themes/fonts/RacingSansOne-Regular.ttf" id="2_juk7v"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qe7tv"]
+texture = ExtResource("1_opm18")
+modulate_color = Color(1, 1, 1, 0.439216)
+
+[sub_resource type="Animation" id="Animation_ko1mh"]
+resource_name = "turn_banner_slide"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.5, 2),
+"transitions": PackedFloat32Array(0.3, 1, 2, 1),
+"update": 0,
+"values": [Vector2(-2000, 0), Vector2(0, 0), Vector2(0, 0), Vector2(2000, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i8a50"]
+_data = {
+"turn_banner_slide": SubResource("Animation_ko1mh")
+}
+
+[node name="TurnStartDisplay" type="Control" node_paths=PackedStringArray("label", "player")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2000.0
+offset_right = -2000.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rte71")
+label = NodePath("PanelContainer/Label")
+playerColor = Color(0, 0.470588, 0.972549, 1)
+enemyColor = Color(1, 0.231373, 0, 1)
+otherColor = Color(0, 0.686275, 0, 1)
+player = NodePath("AnimationPlayer")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -940.0
+offset_top = -118.0
+offset_right = 980.0
+offset_bottom = 118.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_qe7tv")
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.101961, 0.101961, 0.101961, 1)
+theme_override_constants/outline_size = 5
+theme_override_constants/line_spacing = 3
+theme_override_fonts/font = ExtResource("2_juk7v")
+theme_override_font_sizes/font_size = 100
+text = "Player Turn"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_i8a50")
+}
+autoplay = "turn_banner_slide"

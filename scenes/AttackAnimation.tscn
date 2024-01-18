@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=3 uid="uid://ck417p0xbmo0h"]
+
+[ext_resource type="Script" path="res://src/Core/Animation/AttackAnimationDisplay.cs" id="1_3afym"]
+[ext_resource type="Theme" uid="uid://d2fjh2vbe6ysj" path="res://assets/themes/display_theme.tres" id="1_m0c0m"]
+[ext_resource type="AudioStream" uid="uid://dkp4c0v5g61ho" path="res://assets/audio/placeholder/clean-fast-swooshaiff-14784.mp3" id="3_u7bis"]
+
+[node name="AttackDisplay" type="Control" node_paths=PackedStringArray("attackerName", "targetName", "attackerHealth", "targetHealth")]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 3
+anchors_preset = 0
+offset_bottom = 32.0
+size_flags_horizontal = 0
+script = ExtResource("1_3afym")
+attackerName = NodePath("VBoxContainer/Attacker/HBoxContainer/AttackerName")
+targetName = NodePath("VBoxContainer/Defender/HBoxContainer/DefenderName")
+attackerHealth = NodePath("VBoxContainer/Attacker/HBoxContainer/AttackerHealth")
+targetHealth = NodePath("VBoxContainer/Defender/HBoxContainer/DefenderHealth")
+fullHealthDrainTime = 2.0
+minHealthDrainTime = 0.5
+closeDelay = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_top = -12.0
+offset_bottom = 64.0
+grow_vertical = 2
+
+[node name="Attacker" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_m0c0m")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Attacker"]
+layout_mode = 2
+
+[node name="AttackerName" type="Label" parent="VBoxContainer/Attacker/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Helloworld isn't this greatblalbalba"
+
+[node name="AttackerHealth" type="ProgressBar" parent="VBoxContainer/Attacker/HBoxContainer"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+value = 100.0
+show_percentage = false
+
+[node name="Defender" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_m0c0m")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Defender"]
+layout_mode = 2
+
+[node name="DefenderName" type="Label" parent="VBoxContainer/Defender/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Player2"
+
+[node name="DefenderHealth" type="ProgressBar" parent="VBoxContainer/Defender/HBoxContainer"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+max_value = 20.0
+value = 15.0
+allow_lesser = true
+show_percentage = false
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_u7bis")
+autoplay = true
